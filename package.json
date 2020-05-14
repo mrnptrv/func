@@ -1,0 +1,23 @@
+{
+  "name": "Func",
+  "version": "1.0.0",
+  "description": "IT коворкинг в Ижевске",
+  "main": "index.js",
+  "scripts": {
+    "editorconfig": "editorconfig-cli",
+    "stylelint": "stylelint 'sass/**/*.scss' --syntax scss",
+    "test": "npm run editorconfig && npm run stylelint",
+    "build": "gulp build",
+    "start": "npm run build && gulp serve"
+  },
+  "author": "Piano Inc.",
+  "license": "ISC",
+  "devDependencies": {},
+  "browserslist": [
+    "last 2 versions",
+    "Firefox ESR"
+  ],
+  "dependencies": {
+    "@glidejs/glide": "^3.4.1"
+  }
+}

@@ -1,0 +1,371 @@
+/* HEADER */
+
+.page-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 88px 0 160px;
+  color: #ffffff;
+  background-color: #444444;
+  background-image: url("../../img/func-hall.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.page-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333333;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* HEADER -> navigation */
+
+.nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav__container {
+  display: flex;
+  align-items: center;
+  height: 88px;
+}
+
+.nav__logo {
+  margin-right: 104px;
+  z-index: 21;
+}
+
+.nav__menu {
+  display: flex;
+  z-index: 20;
+}
+
+.nav__item {
+  margin-right: 42px;
+}
+
+.nav__item:last-child {
+  margin-right: 0;
+}
+
+.nav__item--button {
+  display: none;
+}
+
+.nav__link {
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* HEADER -> slider */
+
+.slider {
+  position: relative;
+  margin: auto 0;
+}
+
+.slider__item {
+  padding: 122px 0 136px;
+}
+
+.slider__headline {
+  max-width: 780px;
+  margin-bottom: 34px;
+  font-size: 44px;
+  line-height: 64px;
+}
+
+.slider__text {
+  max-width: 520px;
+  line-height: 32px;
+  color: rgba(255, 255, 255, 0.8);
+  opacity: 0.8;
+}
+
+.slider__button {
+  min-width: 288px;
+  margin-top: 82px;
+}
+
+/* HEADER -> contacts */
+
+.page-header__contacts {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contacts__container {
+  display: flex;
+  align-items: center;
+  min-height: 159px;
+}
+
+.contacts__down {
+  stroke: #ffffff;
+  margin-right: 88px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.35s ease-out;
+  outline: 0;
+}
+
+.contacts__down:hover,
+.contacts__down:focus {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.contacts__down svg {
+  margin: auto;
+}
+
+.contacts__list {
+  display: flex;
+}
+
+.contacts__item {
+  flex-shrink: 0;
+  margin-right: 110px;
+}
+
+.contacts__text {
+  line-height: 32px;
+}
+
+.contacts__text--secondary {
+  opacity: 0.5;
+}
+
+.contacts__social {
+  margin-left: auto;
+}
+
+/* responsive */
+
+@media (max-width: 1280px) {
+  .nav__menu {
+    margin-left: auto;
+  }
+
+  .slider__item {
+    padding: 32px 0 42px;
+  }
+
+  .slider__headline {
+    margin-bottom: 18px;
+  }
+
+  .slider__button {
+    margin-top: 32px;
+  }
+
+  .contacts__container {
+    justify-content: space-between;
+    min-height: 120px;
+  }
+
+  .contacts__down {
+    margin-right: 48px;
+  }
+
+  .contacts__item {
+    margin-right: 48px;
+  }
+
+  .contacts__social {
+    margin-left: 0;
+  }
+
+  .social__button {
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 959px) {
+  .page-header {
+    padding: 64px 0;
+  }
+
+  .nav__container {
+    height: 64px;
+  }
+
+  .nav__menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    flex-direction: column;
+    width: calc(100% + 48px);
+    height: 100%;
+    padding: 84px 72px 28px var(--basic-gap);
+    background-color: #333333;
+    transform: translateX(100vw);
+    transition-property: transform;
+    transition-duration: 0.6s;
+    transition-timing-function: cubic-bezier(0.34, 0, 0, 1.22);
+  }
+
+  .nav__menu::before {
+    content: "";
+    position: absolute;
+    top: 63px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__container--open-menu .nav__menu {
+    transform: translateX(0);
+  }
+
+  .nav__burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    margin-left: auto;
+    margin-right: -7px;
+    z-index: 21;
+    outline: 0;
+    transition-property: transform;
+    transition-duration: 0.35s;
+    transition-timing-function: ease-in;
+    transition-delay: 0.5s;
+  }
+
+  .nav__container--open-menu .nav__burger {
+    transform: rotate(-225deg);
+  }
+
+  .nav__burger::before,
+  .nav__burger::after {
+    content: "";
+  }
+
+  .nav__line,
+  .nav__burger::before,
+  .nav__burger::after {
+    display: block;
+    width: 14px;
+    height: 2px;
+    margin-bottom: 3px;
+    background-color: #ffffff;
+    transition-property: transform;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in;
+  }
+
+  .nav__container--open-menu .nav__line {
+    transition-delay: 0.25s;
+    transform: rotate(90deg);
+  }
+
+  .nav__container--open-menu .nav__burger::before {
+    transform: translateY(5px);
+  }
+
+  .nav__container--open-menu .nav__burger::after {
+    transform: translateY(-5px);
+  }
+
+  .nav__item {
+    margin-right: 0;
+  }
+
+  .nav__item--button {
+    order: 2;
+    display: block;
+    margin-top: auto;
+    text-align: center;
+  }
+
+  .nav__link {
+    display: inline-block;
+    padding: 10px 0;
+    font-size: 18px;
+    line-height: 32px;
+  }
+
+  .nav__button {
+    min-width: 288px;
+  }
+
+  .slider__headline {
+    font-size: 34px;
+    line-height: 48px;
+  }
+
+  .contacts__container {
+    min-height: 64px;
+  }
+
+  .contacts__down {
+    width: 44px;
+    height: 44px;
+  }
+
+  .page-header .contacts__list {
+    display: none;
+  }
+}
+
+@media (max-width: 666px) {
+  .page-header__slider {
+    flex-grow: 1;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .slider__item {
+    width: 100%;
+  }
+
+  .slider__container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .slider__headline {
+    margin-bottom: 24px;
+    font-size: 24px;
+    line-height: 34px;
+  }
+
+  .slider__text {
+    margin-bottom: 24px;
+    line-height: 24px;
+  }
+
+  .slider__button {
+    margin: auto auto 0;
+  }
+
+  .contacts__down {
+    margin-left: -14px;
+    border: 0;
+  }
+
+  .page-header__contacts .contacts__social {
+    display: none;
+  }
+}

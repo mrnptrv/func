@@ -1,0 +1,9 @@
+:root {
+  --feature-color: #f06724;
+  --secondary-feature-color: #fcbf37;
+  --copy-color: #333333;
+  --secondary-copy-color: rgba(51, 51, 51, 0.8);
+
+  --container-width: 1224px;
+  --basic-gap: 24px;
+}

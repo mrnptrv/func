@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="preload" href="css/style.min.css" as="style">
+    <link rel="preload" href="fonts/roboto-regular.woff2" as="font">
+    <link rel="preload" href="fonts/roboto-black.woff2" as="font"> -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="node_modules/@glidejs/glide/dist/css/glide.core.min.css">
+    <title>Fun(c)</title>
+  </head>
+
+  <body>
+
+    <header class="page-header">
+
+      <h1 class="visually-hidden">Func: круглосуточный IT коворкинг в Ижевске</h1>
+
+      <nav class="page-header__nav nav" role="navigation">
+        <div class="nav__container container">
+          <img class="nav__logo" src="img/logo.svg" width="104" height="29" alt="Func">
+          <ul class="nav__menu list">
+            <li class="nav__item nav__item--button">
+              <button class="nav__button button unbutton" type="button">Запишись на экскурсию</button>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#about">О нас</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#rooms">Пространства</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#prices">Тарифы</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#events">События</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#contacts">Контакты</a>
+            </li>
+          </ul>
+          <button class="nav__burger unbutton" type="button">
+            <span class="visually-hidden">Открыть меню</span>
+            <span class="nav__line"></span>
+          </button>
+        </div>
+      </nav>
+
+      <ul class="page-header__slider slider list">
+        <li class="slider__item">
+          <div class="slider__container container">
+            <b class="slider__headline headline">Круглосуточный коворкинг для <span>ИТ-сообщества</span> Ижевска</b>
+            <p class="slider__text text">Открой для себя рабочее пространство современного формата. Здесь легко сосредоточиться на работе, провести переговоры, найти единомышленников и расслабиться.</p>
+            <button class="slider__button button unbutton" type="button">Запишись на экскурсию</button>
+          </div>
+        </li>
+        <li class="slider__item" hidden>
+          <b class="slider__headline">Второй слайд</b>
+          <p class="slider__text">Открой для себя рабочее пространство современного формата. Здесь легко сосредоточиться на работе, провести переговоры, найти единомышленников и расслабиться.</p>
+          <button class="slider__button button unbutton" type="button">Запишись на экскурсию</button>
+        </li>
+      </ul>
+
+      <div class="page-header__contacts contacts">
+        <div class="contacts__container container">
+          <button class="contacts__down circle-button unbutton" type="button">
+            <span class="visually-hidden">Прокрутить страницу вниз</span>
+            <svg width="16" height="16">
+              <use xlink:href="img/sprite.svg#arrow-down"></use>
+            </svg>
+          </button>
+          <ul class="contacts__list list">
+            <li class="contacts__item">
+              <p class="contacts__text contacts__text--secondary">Email</p>
+              <p class="contacts__text">
+                <a href="mailto:hello@func.town">hello@func.town</a>
+              </p>
+            </li>
+            <li class="contacts__item">
+              <p class="contacts__text contacts__text--secondary">Телефон</p>
+              <p class="contacts__text">
+                <a href="tel:+7 3412 550-44-44">+7 3412 550-44-44</a>
+              </p>
+            </li>
+            <li class="contacts__item">
+              <p class="contacts__text contacts__text--secondary">Адрес</p>
+              <p class="contacts__text">им. Дерябина проезд, 3/4</p>
+            </li>
+          </ul>
+          <p class="contacts__social social">
+            <a class="social__button unbutton" href="#">
+              <span class="visually-hidden">ВКонтакте</span>
+              <svg width="20" height="20">
+                <use xlink:href="img/sprite.svg#social-vk"></use>
+              </svg>
+            </a>
+            <a class="social__button unbutton" href="#">
+              <span class="visually-hidden">Instagram</span>
+              <svg width="20" height="20">
+                <use xlink:href="img/sprite.svg#social-instagram"></use>
+              </svg>
+            </a>
+            <a class="social__button unbutton" href="#">
+              <span class="visually-hidden">Facebook</span>
+              <svg width="20" height="20">
+                <use xlink:href="img/sprite.svg#social-facebook"></use>
+              </svg>
+            </a>
+          </p>
+        </div>
+      </div>
+
+    </header>
+
+    <main class="page-main" role="main">
+
+      <div class="page-main__container container">
+
+        <section class="section intro" role="region">
+          <h2 class="intro__headline headline">Занимайся любимым делом, об&nbsp;остальном  позаботимся мы</h2>
+          <div class="intro__content">
+            <p class="intro__column text">
+              <i>Коворкинг fun(c)</i> — это рабочее пространство с мебелью, офисной техникой, переговорными, зонами для отдыха, спортзалом и открытыми офисами для продуктивной работы.
+            </p>
+            <p class="intro__column intro__column--border text">Резиденту коворкинга не нужно доплачивать за интернет, уборку, бумагу для распечатки, воду, кофе и чай. Всё это уже включено в стоимость.</p>
+          </div>
+        </section>
+
+        <section class="section overlayed rooms" role="region">
+          <div class="rooms__content">
+            <h2 class="rooms__headline headline">fun<i>(</i>c<i>)</i> — многофункциональное пространство, где продумана каждая мелочь</h2>
+            <p class="rooms__text text">Мы уделили особое внимание мелочам, которые помогают войти в состояние потока, эффективно решать возникающие задачи и достигать поставленные цели.</p>
+            <!-- СЛАЙДЕР: чтобы добавить слайд, скопируй секцию li и обнови src и alt у картинки (из alt берётся название слайда) -->
+            <div class="rooms__slider glide">
+              <div class="rooms__track glide__track" data-glide-el="track">
+                <ul class="rooms__slides-list list glide__slides">
+                  <li class="rooms__slide glide__slide">
+                    <img src="img/func-hall.jpg" width="1120" height="640" alt="Кафетерий">
+                  </li>
+                  <li class="rooms__slide glide__slide">
+                    <img src="img/func-hall.jpg" width="1120" height="640" alt="Отжаться">
+                  </li>
+                  <li class="rooms__slide glide__slide">
+                    <img src="img/func-hall.jpg" width="1120" height="640" alt="Почилить">
+                  </li>
+                </ul>
+                <p class="rooms__caption">fun(c)</p>
+              </div>
+              <div class="rooms__footer">
+                <p class="rooms__counter">
+                  <span class="rooms__index" id="slider-index">1</span>/<span id="slider-total">5</span>
+                </p>
+                <p class="rooms__controls" data-glide-el="controls">
+                  <button class="rooms__arrow slider-control unbutton" data-glide-dir="<">
+                    <span class="visually-hidden">Листать назад</span>
+                    <svg width="16" height="16">
+                      <use xlink:href="img/sprite.svg#arrow-left"></use>
+                    </svg>
+                  </button>
+                  <button class="rooms__arrow slider-control unbutton" data-glide-dir=">">
+                    <svg width="16" height="16">
+                      <use xlink:href="img/sprite.svg#arrow-right"></use>
+                    </svg>
+                    <span class="visually-hidden">Листать вперёд</span>
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section amenities" role="region">
+          <h2 class="amenities__headline headline">Что включено абсолютно для всех резидентов fun<i>(</i>c<i>)</i></h2>
+          <ul class="amenities__categories-list list">
+            <li class="amenities__category amenities__category--work" data-id="work">Работа</li>
+            <li class="amenities__category amenities__category--art" data-id="art">Творчество</li>
+            <li class="amenities__category amenities__category--people" data-id="people">Общение</li>
+            <li class="amenities__category amenities__category--sport" data-id="sport">Спорт</li>
+            <li class="amenities__category amenities__category--chill" data-id="chill">Отдых</li>
+          </ul>
+          <ul class="amenities__list list">
+            <li class="amenities__item" data-category="work">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#space"></use>
+              </svg>
+              <p class="amenities__text text"><i>3000 м2 многофункционального пространства</i> для продуктивной работы</p>
+            </li>
+            <li class="amenities__item" data-category="people">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#chair"></use>
+              </svg>
+              <p class="amenities__text text"><i>320</i> комфортных <i>рабочих мест </i> с&nbsp;современной системой вентиляции и фильтрации воздуха</p>
+            </li>
+            <li class="amenities__item" data-category="work">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#rooms"></use>
+              </svg>
+              <p class="amenities__text text"><i>55</i> изолированных, <i>просторных офисных помещений</i> (4-12 человек)</p>
+            </li>
+            <li class="amenities__item" data-category="people art">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#meeting"></use>
+              </svg>
+              <p class="amenities__text text"><i>17</i> ярких <i>переговорных</i> с экранами, спикерами, встроенными в столы розетками и отличной связью</p>
+            </li>
+            <li class="amenities__item" data-category="people">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#internet"></use>
+              </svg>
+              <p class="amenities__text text"><i>2 провайдера</i> шустрого интернета (500mbps)</p>
+            </li>
+            <li class="amenities__item" data-category="work">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#phone-booth"></use>
+              </svg>
+              <p class="amenities__text text"><i>10</i> комфортных <i>телефонных будок </i> с&nbsp;шумоизоляцией и вентиляцией</p>
+            </li>
+            <li class="amenities__item" data-category="people art">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#meetup"></use>
+              </svg>
+              <p class="amenities__text text"><i>320 м<sup>2</sup></i> обустроенный <i>зал </i> для&nbsp;проведения конференций  и&nbsp;митапов (300+&nbsp;человек)</p>
+            </li>
+            <li class="amenities__item" data-category="people sport chill">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#gym"></use>
+              </svg>
+              <p class="amenities__text text"><i>3 лаунжа</i> + кухня + тренажёрный  и&nbsp;игровой&nbsp;залы</p>
+            </li>
+            <li class="amenities__item" data-category="sport">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#shower"></use>
+              </svg>
+              <p class="amenities__text text"><i>3 душевые</i> со шкафами  для&nbsp;личных&nbsp;вещей</p>
+            </li>
+            <li class="amenities__item" data-category="chill">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#parking"></use>
+              </svg>
+              <p class="amenities__text text"><i>200</i> мест на парковке + <br>велопарковка</p>
+            </li>
+            <li class="amenities__item" data-category="work">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#time"></use>
+              </svg>
+              <p class="amenities__text text"><i>24 / 7 доступ</i> + ресепшн</p>
+            </li>
+            <li class="amenities__item" data-category="chill">
+              <svg class="amenities__pic" width="20" height="20">
+                <use xlink:href="img/sprite.svg#yummies"></use>
+              </svg>
+              <p class="amenities__text text"><i>∞</i> безлимитный кофе, чай, снеки</p>
+            </li>
+          </ul>
+          <button class="amenities__show-more button button--secondary unbutton" type="button">Показать ещё</button>
+          <a class="amenities__button button" href="#prices">Узнать тарифы</a>
+        </section>
+
+        <section class="section overlayed events" role="region">
+          <h2 class="events__headline headline">fun<i>(</i>c<i>)</i> — это не просто набор услуг, а свои люди и атмосфера развития</h2>
+          <p class="events__text text">Мы создали коворкинг как центр притяжения ИТ-тусовки, а также дизайнеров, маркетологов, верстальщиков, копирайтеров и людей, работающих с цифровыми технологиями. В нашем коворкинге вы будете среди «своих».</p>
+          <ul class="events__slides-list list">
+            <li class="events__slide">
+              <figure class="events__pic-wrapper">
+                <img class="events__pic" src="img/event-1.jpg" width="496" height="396" alt="">
+                <figcaption class="events__caption">Большой frontend meetup</figcaption>
+              </figure>
+              <div class="events__content">
+                <span class="events__tag">Образование</span>
+                <span class="events__tag events__tag--pics">24</span>
+              </div>
+            </li>
+            <!-- <li class="events__slide">
+              <figure class="events__pic-wrapper">
+                <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
+                <figcaption class="events__caption">Бесплатный мастер-класс: Цифровой сторителлинг</figcaption>
+              </figure>
+              <div class="events__content">
+                <span class="events__tag">Образование</span>
+                <span class="events__tag events__tag--pics">16</span>
+              </div>
+            </li>
+            <li class="events__slide">
+              <div class="events__content">
+                <span class="events__tag">Вечеринка</span>
+                <span class="events__tag events__tag--pics">32</span>
+              </div>
+              <figure class="events__pic-wrapper">
+                <img class="events__pic" src="img/event-3.jpg" width="496" height="396" alt="">
+                <figcaption class="events__caption">Func New Year’s Party 2019</figcaption>
+              </figure>
+            </li> -->
+          </ul>
+        </section>
+
+        <section class="section organize">
+          <ul class="organize__gallery-list list">
+            <li class="organize__gallery-item">
+              <img src="img/organize-1.jpg" width="496" height="592" alt="">
+            </li>
+            <!-- <li class="organize__gallery-item">
+              <img src="img/organize.jpg" width="496" height="592" alt="">
+            </li> -->
+          </ul>
+          <div class="organize__info">
+            <h2 class="organize__headline headline">Будь в центре ИТ-тусовки Ижевска: участвуй в&nbsp;мероприятиях или&nbsp;организуй свои</h2>
+            <p class="organize__text text">В лаунж-спейсе площадью 320 м2 удобно проводить лекции, митапы, хакатоны, концерты, вечеринки или просто совместные посиделки после долгого рабочего дня. Лаунж вмещает 300+ человек.</p>
+            <ul class="organize__list list">
+              <li class="organize__item">
+                <svg class="organize__pic" width="20" height="20">
+                  <use xlink:href="img/sprite.svg#projector"></use>
+                </svg>
+                Есть проектор
+              </li>
+              <li class="organize__item">
+                <svg class="organize__pic" width="20" height="20">
+                  <use xlink:href="img/sprite.svg#screen"></use>
+                </svg>
+                Экраны для трансляции
+              </li>
+              <li class="organize__item">
+                <svg class="organize__pic" width="20" height="20">
+                  <use xlink:href="img/sprite.svg#gear"></use>
+                </svg>
+                Концертное звуковое оборудование
+              </li>
+              <li class="organize__item">
+                <svg class="organize__pic" width="20" height="20">
+                  <use xlink:href="img/sprite.svg#acoustics"></use>
+                </svg>
+                В зале проведен акустический тюнинг
+              </li>
+              <li class="organize__item">
+                <svg class="organize__pic" width="20" height="20">
+                  <use xlink:href="img/sprite.svg#eatery"></use>
+                </svg>
+                Также есть выделенное место для кейтеринга со столами
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section prices">
+          <h2 class="prices__headline headline">fun<i>(</i>c<i>)</i> — это прозрачные тарифы, доступ к сервисам  и пространствам без депозита и доплат</h2>
+          <div class="prices__wrapper wrapper">
+            <p class="prices__text prices__text--left text">Выбери подходящий тариф и плати,  как удобно&nbsp;&mdash; сразу за месяц или только за те дни, в которые приходишь.</p>
+            <p class="prices__text prices__text--right text">Без депозита и скрытых доплат. В стоимость включены абсолютно все услуги коворкинга&nbsp;&mdash; переговорные, интернет, ежедневная уборка, кофе, плюшки, проведение открытых мероприятий, спортзал, душевые, игровая комната, парковка, прием почты и прочие услуги.</p>
+          </div>
+          <ul class="prices__list list">
+            <li class="prices__item">
+              <b class="prices__name">«Горячий» стол</b>
+              <p class="prices__description text">любое свободное рабочее место в общем пространстве</p>
+              <p class="prices__toggler">
+                <input class="prices__input visually-hidden" id="hot-table-toggler-day" type="radio" name="hot-table">
+                <label class="prices__label" for="hot-table-toggler-day">День</label>
+                <input class="prices__input visually-hidden" id="hot-table-toggler-month" type="radio" name="hot-table" checked>
+                <label class="prices__label" for="hot-table-toggler-month">Месяц</label>
+              </p>
+              <b class="prices__amount">500&#8381;</b>
+              <button class="prices__button button unbutton" type="button">Оставить заявку</button>
+            </li>
+            <li class="prices__item">
+              <b class="prices__name">«Свой» стол</b>
+              <p class="prices__description text">закрепленное рабочее место  в общем пространстве</p>
+              <p class="prices__toggler">
+                <input class="prices__input visually-hidden" id="personal-table-toggler-month" type="radio" name="personal-table" checked>
+                <label class="prices__label" for="personal-table-toggler-month">Месяц</label>
+                <input class="prices__input visually-hidden" id="personal-table-toggler-quarter" type="radio" name="personal-table">
+                <label class="prices__label" for="personal-table-toggler-quarter">Квартал</label>
+              </p>
+              <b class="prices__amount">500&#8381;</b>
+              <button class="prices__button button unbutton" type="button">Оставить заявку</button>
+            </li>
+            <li class="prices__item">
+              <b class="prices__name">«Свой» офис</b>
+              <p class="prices__description text">для команды, организации или нескольких человек</p>
+              <b class="prices__amount">договорная цена</b>
+              <button class="prices__button button unbutton" type="button">Оставить заявку</button>
+            </li>
+          </ul>
+        </section>
+
+        <section class="section overlayed speech" role="region">
+          <div class="speech__wrapper">
+            <img class="speech__pic" src="img/speech.jpg" width="712" height="592" alt="">
+            <div class="speech__content">
+              <h2 class="speech__headline headline">Найдем решения, заточенные под вас</h2>
+              <blockquote class="speech__blockquote">
+                <p class="speech__text text">«Если в вашей команде есть традиции и привычки, мы&nbsp;готовы создать под их условия</p>
+                <p class="speech__text text">Под ваши требования мы подбираем офисы, делаем&nbsp;перестановку, докупаем мебель по запросу, подстраиваем систему управления доступом в&nbsp;помещение.</p>
+                <p class="speech__text text">Нам важно, чтобы в fun(c) было комфортно каждому.»</p>
+              </blockquote>
+              <p class="speech__author text">
+                <i>Алексей Кутергин</i>
+                сооснователь fun(c)
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section guide">
+          <h2 class="guide__headline headline">Как стать резидентом</h2>
+          <div class="guide__wrapper wrapper">
+            <img class="guide__pic" src="img/guide.jpg" width="520" height="592" alt="">
+            <div class="guide__content">
+              <ol class="guide__list list">
+                <li class="guide__item">
+                  Записывайся  на&nbsp;бесплатную экскурсию
+                </li>
+                <li class="guide__item">
+                  Оставайся в коворкинге на&nbsp;бесплатный демо-день
+                </li>
+                <li class="guide__item">
+                  Оплачивай картой размещение на день, месяц или квартал
+                </li>
+                <li class="guide__item">
+                  Твори и работай в любое время суток, участвуй в&nbsp;мероприятиях
+                </li>
+              </ol>
+              <button class="guide__button button unbutton" type="button">Оставить заявку</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <section class="section feedback" role="region">
+        <div class="feedback__container container">
+          <h2 class="feedback__headline headline">Отзывы резидентов</h2>
+          <ul class="feedback__list list">
+            <li class="feedback__item">
+              <div class="feedback__header">
+                <img class="feedback__pic" src="img/feedback-1.jpg" width="64" height="64" alt="">
+                <p class="feedback__name text">
+                  <i>Иван Мартьянов</i>
+                  Senior Software Engineer, Freelancer
+                </p>
+              </div>
+              <p class="feedback__text">Понравилась обстановка, атмосфера и наличие инфраструктуры в одном здании: небольшой спортзал, нормальные конференц-румы, отличный опен-спейс, выделенные рабочие места и большая открытая площадка для проведения мероприятий.</p>
+            </li>
+            <!-- <li class="feedback__item">
+              <div class="feedback__header">
+                <img class="feedback__pic" src="img/feedback-1.jpg" width="64" height="64" alt="">
+                <p class="feedback__name text">
+                  <i>Мартьян Иванов</i>
+                  Senior Software Engineer, Freelancer
+                </p>
+              </div>
+              <p class="feedback__text">В коворкинге fun(c) я полностью поглощен работой, а в свободное время общаюсь с коллегами по цеху.</p>
+              <p class="feedback__text">Мы играем в пинг-понг в игровом зале или просто разговариваем на кухне за кофе. Планирую отправиться в тренажёрку в ближайшее время.</p>
+              <a class="feedback__link unbutton" href="#">Читать дальше</a>
+            </li> -->
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <h2 class="visually-hidden">Контактная информация Func</h2>
+      <map class="footer__map"></map>
+      <div class="footer__contacts contacts">
+        <div class="footer__container container">
+          <p class="contacts__description text">Fun(c) – круглосуточный коворкинг  для ИТ-сообщества Ижевска</p>
+          <ul class="contacts__list list">
+            <li class="contacts__item">
+              <p class="contacts__text contacts__text--secondary">Email</p>
+              <p class="contacts__text">
+                <a href="mailto:hello@func.town">hello@func.town</a>
+              </p>
+            </li>
+            <li class="contacts__item">
+              <p class="contacts__text contacts__text--secondary">Телефон</p>
+              <p class="contacts__text">
+                <a href="tel:+7 3412 550-44-44">+7 3412 550-44-44</a>
+              </p>
+            </li>
+            <li class="contacts__item">
+              <p class="contacts__text contacts__text--secondary">Адрес</p>
+              <p class="contacts__text">им. Дерябина проезд, 3/4</p>
+            </li>
+          </ul>
+          <p class="contacts__social social">
+            <a class="social__button unbutton" href="#">
+              <span class="visually-hidden">ВКонтакте</span>
+              <svg width="20" height="20">
+                <use xlink:href="img/sprite.svg#social-vk"></use>
+              </svg>
+            </a>
+            <a class="social__button unbutton" href="#">
+              <span class="visually-hidden">Instagram</span>
+              <svg width="20" height="20">
+                <use xlink:href="img/sprite.svg#social-instagram"></use>
+              </svg>
+            </a>
+            <a class="social__button unbutton" href="#">
+              <span class="visually-hidden">Facebook</span>
+              <svg width="20" height="20">
+                <use xlink:href="img/sprite.svg#social-facebook"></use>
+              </svg>
+            </a>
+          </p>
+        </div>
+      </div>
+      <div class="footer__links">
+        <div class="footer__container container">
+          <p class="footer__copyright footer__text">© Коворкинг «fun(c)», 2019 &ndash; 2020</p>
+          <ul class="footer__list list">
+            <li class="footer__item">
+              <a class="footer__link" href="#">Обработка персональных данных</a>
+            </li>
+            <li class="footer__item">
+              <a class="footer__link" href="#">Договор оферты</a>
+            </li>
+            <li class="footer__item">
+              <a class="footer__link" href="#">Реквизиты</a>
+            </li>
+          </ul>
+          <button class="footer__up circle-button unbutton" type="button">
+            <span class="visually-hidden">Прокрутить страницу вверх</span>
+            <svg width="16" height="16">
+              <use xlink:href="img/sprite.svg#arrow-up"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Запускаем слайдер -->
+
+    <script src="node_modules/@glidejs/glide/dist/glide.min.js"></script>
+
+    <script>
+      const glide = new Glide('.glide', {
+        type: 'carousel',
+        peek: {
+          before: 0,
+          after: 100
+        },
+        gap: 22,
+        // rewind: false,
+        breakpoints: {
+          666: {
+            peek: 0
+          }
+        }
+      });
+
+      glide.on(['mount.after', 'run'], () => {
+        let index = glide.index;
+        let slides = document.querySelectorAll('.rooms__slide');
+        let cloneSlides = document.querySelectorAll('.glide__slide--clone');
+        let caption = slides[index].querySelector('img').alt;
+
+        document.querySelector('#slider-index').innerHTML = index + 1;
+        document.querySelector('#slider-total').innerHTML = slides.length - cloneSlides.length;
+        document.querySelector('.rooms__caption').innerHTML = caption;
+      });
+
+      glide.mount();
+    </script>
+
+    <!-- Вставляем Google Maps -->
+
+    <!-- <script>
+      const map;
+      function initMap() {
+        map = new google.maps.Map(document.querySelector('.footer__map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+      }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAU86x4mXVWZVh01-0y_wcMMb-hKk0ZsYU&callback=initMap"
+    async defer></script> -->
+
+    <!-- Хэндлим мобильное меню -->
+
+    <script>
+      document.querySelector('.nav__burger').addEventListener('click', (event) => {
+        document.querySelector('.nav__container').classList.toggle('nav__container--open-menu');
+      });
+    </script>
+
+    <!-- Назначаем кнопки для скроллирования -->
+
+    <script>
+      document.querySelector('.contacts__down').addEventListener('click', () => {
+        document.querySelector('.intro').scrollIntoView({
+          behavior: 'smooth'
+        })
+      });
+
+      document.querySelector('.footer__up').addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        })
+      });
+    </script>
+
+    <!-- Добавляем эффект наведения на категории -->
+
+    <script>
+      const categories = document.querySelectorAll('.amenities__category');
+      const amenities = document.querySelectorAll('.amenities__item');
+
+      categories.forEach((item) => {
+        item.addEventListener('mouseover', (event) => {
+          const filteredAmenities = Array.from(amenities).filter(item => item.dataset.category.includes(event.target.dataset.id));
+
+          filteredAmenities.map(item => item.classList.add('amenities__item--highlighted'));
+
+          event.target.addEventListener('mouseout', () => {
+            filteredAmenities.map(item => item.classList.remove('amenities__item--highlighted'));
+          })
+        });
+      });
+    </script>
+
+  </body>
+</html>
