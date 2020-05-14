@@ -4,11 +4,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="preload" href="css/style.min.css" as="style">
-    <link rel="preload" href="fonts/roboto-regular.woff2" as="font">
+    <link rel="preload" href="css/style.css" as="style">
+    <!-- <link rel="preload" href="fonts/roboto-regular.woff2" as="font">
     <link rel="preload" href="fonts/roboto-black.woff2" as="font"> -->
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="node_modules/@glidejs/glide/dist/css/glide.core.min.css">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=e6088de5-1948-4cf8-a851-7d091ae279ce&lang=ru_RU" type="text/javascript"></script>
     <title>Fun(c)</title>
   </head>
 
@@ -26,7 +26,7 @@
               <button class="nav__button button unbutton" type="button">Запишись на экскурсию</button>
             </li>
             <li class="nav__item">
-              <a class="nav__link" href="#about">О нас</a>
+              <a class="nav__link" href="#intro">О нас</a>
             </li>
             <li class="nav__item">
               <a class="nav__link" href="#rooms">Пространства</a>
@@ -118,7 +118,7 @@
 
       <div class="page-main__container container">
 
-        <section class="section intro" role="region">
+        <section class="section intro" id="intro" role="region">
           <h2 class="intro__headline headline">Занимайся любимым делом, об&nbsp;остальном  позаботимся мы</h2>
           <div class="intro__content">
             <p class="intro__column text">
@@ -128,7 +128,7 @@
           </div>
         </section>
 
-        <section class="section overlayed rooms" role="region">
+        <section class="section overlayed rooms" id="rooms" role="region">
           <div class="rooms__content">
             <h2 class="rooms__headline headline">fun<i>(</i>c<i>)</i> — многофункциональное пространство, где продумана каждая мелочь</h2>
             <p class="rooms__text text">Мы уделили особое внимание мелочам, которые помогают войти в состояние потока, эффективно решать возникающие задачи и достигать поставленные цели.</p>
@@ -258,7 +258,7 @@
           <a class="amenities__button button" href="#prices">Узнать тарифы</a>
         </section>
 
-        <section class="section overlayed events" role="region">
+        <section class="section overlayed events" id="events" role="region">
           <h2 class="events__headline headline">fun<i>(</i>c<i>)</i> — это не просто набор услуг, а свои люди и атмосфера развития</h2>
           <p class="events__text text">Мы создали коворкинг как центр притяжения ИТ-тусовки, а также дизайнеров, маркетологов, верстальщиков, копирайтеров и людей, работающих с цифровыми технологиями. В нашем коворкинге вы будете среди «своих».</p>
           <ul class="events__slides-list list">
@@ -342,7 +342,7 @@
           </div>
         </section>
 
-        <section class="section prices">
+        <section class="section prices" id="prices" role="region">
           <h2 class="prices__headline headline">fun<i>(</i>c<i>)</i> — это прозрачные тарифы, доступ к сервисам  и пространствам без депозита и доплат</h2>
           <div class="prices__wrapper wrapper">
             <p class="prices__text prices__text--left text">Выбери подходящий тариф и плати,  как удобно&nbsp;&mdash; сразу за месяц или только за те дни, в которые приходишь.</p>
@@ -458,9 +458,9 @@
 
     </main>
 
-    <footer class="footer" role="contentinfo">
+    <footer class="footer" id="contacts" role="contentinfo">
       <h2 class="visually-hidden">Контактная информация Func</h2>
-      <map class="footer__map"></map>
+      <map class="footer__map map" id="map"></map>
       <div class="footer__contacts contacts">
         <div class="footer__container container">
           <p class="contacts__description text">Fun(c) – круглосуточный коворкинг  для ИТ-сообщества Ижевска</p>
@@ -561,20 +561,79 @@
       glide.mount();
     </script>
 
-    <!-- Вставляем Google Maps -->
+    <!-- Вставляем Яндекс.Карту -->
 
-    <!-- <script>
-      const map;
-      function initMap() {
-        map = new google.maps.Map(document.querySelector('.footer__map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
+    <script type="text/javascript">
+    ymaps.ready(init);
+
+    function init() {
+        const myMap = new ymaps.Map('map', {
+            center: [56.844870, 53.182412],
+            zoom: 16,
+            controls: ['routeButtonControl'],
+            type: 'yandex#satellite'
+        }),
+        ZoomLayout = ymaps.templateLayoutFactory.createClass('<p class="map__buttons">' +
+            '<button class="map__button map__button--plus circle-button unbutton" type="button" id="zoom-in">+</button>' +
+            '<button class="map__button map__button--minus circle-button unbutton" type="button" id="zoom-out">&dash;</button>' +
+            '</ul>', {
+
+            build: function () {
+                ZoomLayout.superclass.build.call(this);
+
+                this.zoomInCallback = ymaps.util.bind(this.zoomIn, this);
+                this.zoomOutCallback = ymaps.util.bind(this.zoomOut, this);
+
+                $('#zoom-in').bind('click', this.zoomInCallback);
+                $('#zoom-out').bind('click', this.zoomOutCallback);
+            },
+
+            clear: function () {
+                $('#zoom-in').unbind('click', this.zoomInCallback);
+                $('#zoom-out').unbind('click', this.zoomOutCallback);
+
+                ZoomLayout.superclass.clear.call(this);
+            },
+
+            zoomIn: function () {
+                var map = this.getData().control.getMap();
+                map.setZoom(map.getZoom() + 1, {checkZoomRange: true});
+            },
+
+            zoomOut: function () {
+                var map = this.getData().control.getMap();
+                map.setZoom(map.getZoom() - 1, {checkZoomRange: true});
+            }
+        }),
+
+        zoomControl = new ymaps.control.ZoomControl({
+          options: {
+            layout: ZoomLayout,
+            position: {
+              bottom: '88px',
+              right: '30px'
+            }
+          }
         });
-      }
-    </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAU86x4mXVWZVh01-0y_wcMMb-hKk0ZsYU&callback=initMap"
-    async defer></script> -->
+        // myMap.controls.add(zoomControl);
+
+        myMap.controls.add('zoomControl', {
+          size: 'small',
+          float: 'none',
+          position: {
+            bottom: '88px',
+            right: '30px'
+          }
+        });
+
+        myMap.controls.get('routeButtonControl').routePanel.state.set('to', 'Ижевск, проезд Дерябина, 3/4');
+
+        var placemark = new ymaps.Placemark([56.844870, 53.182412]);
+
+        myMap.geoObjects.add(placemark);
+    }
+</script>
 
     <!-- Хэндлим мобильное меню -->
 

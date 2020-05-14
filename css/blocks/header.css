@@ -329,6 +329,10 @@
 }
 
 @media (max-width: 666px) {
+  .page-header {
+    min-height: -webkit-fill-available;
+  }
+
   .page-header__slider {
     flex-grow: 1;
     display: flex;
