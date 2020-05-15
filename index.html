@@ -148,18 +148,18 @@
                 </ul>
                 <p class="rooms__caption">fun(c)</p>
               </div>
-              <div class="rooms__footer">
-                <p class="rooms__counter">
-                  <span class="rooms__index" id="slider-index">1</span>/<span id="slider-total">5</span>
+              <div class="rooms__footer slider-footer">
+                <p class="slider-footer__counter">
+                  <span class="slider-footer__index" id="rooms-slider-index">1</span>/<span id="rooms-slider-total">5</span>
                 </p>
-                <p class="rooms__controls" data-glide-el="controls">
-                  <button class="rooms__arrow slider-control unbutton" data-glide-dir="<">
+                <p class="slider-footer__controls" data-glide-el="controls">
+                  <button class="slider-footer__arrow slider-control unbutton" data-glide-dir="<">
                     <span class="visually-hidden">Листать назад</span>
                     <svg width="16" height="16">
                       <use xlink:href="img/sprite.svg#arrow-left"></use>
                     </svg>
                   </button>
-                  <button class="rooms__arrow slider-control unbutton" data-glide-dir=">">
+                  <button class="slider-footer__arrow slider-control unbutton" data-glide-dir=">">
                     <svg width="16" height="16">
                       <use xlink:href="img/sprite.svg#arrow-right"></use>
                     </svg>
@@ -261,38 +261,71 @@
         <section class="section overlayed events" id="events" role="region">
           <h2 class="events__headline headline">fun<i>(</i>c<i>)</i> — это не просто набор услуг, а свои люди и атмосфера развития</h2>
           <p class="events__text text">Мы создали коворкинг как центр притяжения ИТ-тусовки, а также дизайнеров, маркетологов, верстальщиков, копирайтеров и людей, работающих с цифровыми технологиями. В нашем коворкинге вы будете среди «своих».</p>
-          <ul class="events__slides-list list">
-            <li class="events__slide">
-              <figure class="events__pic-wrapper">
-                <img class="events__pic" src="img/event-1.jpg" width="496" height="396" alt="">
-                <figcaption class="events__caption">Большой frontend meetup</figcaption>
-              </figure>
-              <div class="events__content">
-                <span class="events__tag">Образование</span>
-                <span class="events__tag events__tag--pics">24</span>
-              </div>
-            </li>
-            <!-- <li class="events__slide">
-              <figure class="events__pic-wrapper">
-                <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
-                <figcaption class="events__caption">Бесплатный мастер-класс: Цифровой сторителлинг</figcaption>
-              </figure>
-              <div class="events__content">
-                <span class="events__tag">Образование</span>
-                <span class="events__tag events__tag--pics">16</span>
-              </div>
-            </li>
-            <li class="events__slide">
-              <div class="events__content">
-                <span class="events__tag">Вечеринка</span>
-                <span class="events__tag events__tag--pics">32</span>
-              </div>
-              <figure class="events__pic-wrapper">
-                <img class="events__pic" src="img/event-3.jpg" width="496" height="396" alt="">
-                <figcaption class="events__caption">Func New Year’s Party 2019</figcaption>
-              </figure>
-            </li> -->
-          </ul>
+          <div class="events__slider glide">
+            <div class="events__track" data-glide-el="track">
+              <ul class="events__slides-list list">
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-1.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">Большой frontend meetup</figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Образование</span>
+                    <span class="events__tag events__tag--pics">24</span>
+                  </div>
+                </li>
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">Бесплатный мастер-класс: Цифровой&nbsp;сторителлинг</figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Образование</span>
+                    <span class="events__tag events__tag--pics">16</span>
+                  </div>
+                </li>
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-3.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">Func New Year’s Party 2019</figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Вечеринка</span>
+                    <span class="events__tag events__tag--pics">32</span>
+                  </div>
+                </li>
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">Как мы изолировались 2020</figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Рандом</span>
+                    <span class="events__tag events__tag--pics">2</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="events__footer slider-footer">
+              <p class="slider-footer__counter">
+                <span class="slider-footer__index" id="events-slider-index">1</span>/<span id="events-slider-total">5</span>
+              </p>
+              <p class="slider-footer__controls" data-glide-el="controls">
+                <button class="slider-footer__arrow slider-control unbutton" data-glide-dir="<">
+                  <span class="visually-hidden">Листать назад</span>
+                  <svg width="16" height="16">
+                    <use xlink:href="img/sprite.svg#arrow-left"></use>
+                  </svg>
+                </button>
+                <button class="slider-footer__arrow slider-control unbutton" data-glide-dir=">">
+                  <svg width="16" height="16">
+                    <use xlink:href="img/sprite.svg#arrow-right"></use>
+                  </svg>
+                  <span class="visually-hidden">Листать вперёд</span>
+                </button>
+              </p>
+            </div>
+          </div>
         </section>
 
         <section class="section organize">
@@ -506,7 +539,7 @@
       </div>
       <div class="footer__links">
         <div class="footer__container container">
-          <p class="footer__copyright footer__text">© Коворкинг «fun(c)», 2019 &ndash; 2020</p>
+          <p class="footer__copyright footer__text">© Коворкинг «fun(c)», 2019 &ndash; <span id="current-year">2020</span></p>
           <ul class="footer__list list">
             <li class="footer__item">
               <a class="footer__link" href="#">Обработка персональных данных</a>
@@ -528,112 +561,93 @@
       </div>
     </footer>
 
+    <!-- Пишем, какой на дворе год -->
+
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const date = new Date();
+        document.querySelector('#current-year').innerText = date.getFullYear();
+      })
+    </script>
+
     <!-- Запускаем слайдер -->
 
     <script src="https://unpkg.com/@glidejs/glide"></script>
-
-    <script>
-      const glide = new Glide('.glide', {
-        type: 'carousel',
-        peek: {
-          before: 0,
-          after: 100
-        },
-        gap: 22,
-        breakpoints: {
-          666: {
-            peek: 0
-          }
-        }
-      });
-
-      glide.on(['mount.after', 'run'], () => {
-        let index = glide.index;
-        let slides = document.querySelectorAll('.rooms__slide');
-        let cloneSlides = document.querySelectorAll('.glide__slide--clone');
-        let caption = slides[index].querySelector('img').alt;
-
-        document.querySelector('#slider-index').innerHTML = index + 1;
-        document.querySelector('#slider-total').innerHTML = slides.length - cloneSlides.length;
-        document.querySelector('.rooms__caption').innerHTML = caption;
-      });
-
-      glide.mount();
-    </script>
+    <script src="js/sliders.js"></script>
 
     <!-- Вставляем Яндекс.Карту -->
 
-    <script type="text/javascript">
-    ymaps.ready(init);
+    <script>
+      ymaps.ready(init);
 
-    function init() {
-        const myMap = new ymaps.Map('map', {
-            center: [56.844870, 53.182412],
-            zoom: 16,
-            controls: ['routeButtonControl'],
-            type: 'yandex#satellite'
-        }),
-        ZoomLayout = ymaps.templateLayoutFactory.createClass('<p class="map__buttons">' +
-            '<button class="map__button map__button--plus circle-button unbutton" type="button" id="zoom-in">+</button>' +
-            '<button class="map__button map__button--minus circle-button unbutton" type="button" id="zoom-out">&dash;</button>' +
-            '</ul>', {
+      function init() {
+          const myMap = new ymaps.Map('map', {
+              center: [56.844870, 53.182412],
+              zoom: 16,
+              controls: ['routeButtonControl'],
+              type: 'yandex#satellite'
+          }),
+          ZoomLayout = ymaps.templateLayoutFactory.createClass('<p class="map__buttons">' +
+              '<button class="map__button map__button--plus circle-button unbutton" type="button" id="zoom-in">+</button>' +
+              '<button class="map__button map__button--minus circle-button unbutton" type="button" id="zoom-out">&dash;</button>' +
+              '</ul>', {
 
-            build: function () {
-                ZoomLayout.superclass.build.call(this);
+              build: function () {
+                  ZoomLayout.superclass.build.call(this);
 
-                this.zoomInCallback = ymaps.util.bind(this.zoomIn, this);
-                this.zoomOutCallback = ymaps.util.bind(this.zoomOut, this);
+                  this.zoomInCallback = ymaps.util.bind(this.zoomIn, this);
+                  this.zoomOutCallback = ymaps.util.bind(this.zoomOut, this);
 
-                $('#zoom-in').bind('click', this.zoomInCallback);
-                $('#zoom-out').bind('click', this.zoomOutCallback);
-            },
+                  $('#zoom-in').bind('click', this.zoomInCallback);
+                  $('#zoom-out').bind('click', this.zoomOutCallback);
+              },
 
-            clear: function () {
-                $('#zoom-in').unbind('click', this.zoomInCallback);
-                $('#zoom-out').unbind('click', this.zoomOutCallback);
+              clear: function () {
+                  $('#zoom-in').unbind('click', this.zoomInCallback);
+                  $('#zoom-out').unbind('click', this.zoomOutCallback);
 
-                ZoomLayout.superclass.clear.call(this);
-            },
+                  ZoomLayout.superclass.clear.call(this);
+              },
 
-            zoomIn: function () {
-                var map = this.getData().control.getMap();
-                map.setZoom(map.getZoom() + 1, {checkZoomRange: true});
-            },
+              zoomIn: function () {
+                  var map = this.getData().control.getMap();
+                  map.setZoom(map.getZoom() + 1, {checkZoomRange: true});
+              },
 
-            zoomOut: function () {
-                var map = this.getData().control.getMap();
-                map.setZoom(map.getZoom() - 1, {checkZoomRange: true});
+              zoomOut: function () {
+                  var map = this.getData().control.getMap();
+                  map.setZoom(map.getZoom() - 1, {checkZoomRange: true});
+              }
+          }),
+
+          zoomControl = new ymaps.control.ZoomControl({
+            options: {
+              layout: ZoomLayout,
+              position: {
+                bottom: '88px',
+                right: '30px'
+              }
             }
-        }),
+          });
 
-        zoomControl = new ymaps.control.ZoomControl({
-          options: {
-            layout: ZoomLayout,
+          // myMap.controls.add(zoomControl);
+
+          myMap.controls.add('zoomControl', {
+            size: 'small',
+            float: 'none',
             position: {
               bottom: '88px',
               right: '30px'
             }
-          }
-        });
+          });
 
-        // myMap.controls.add(zoomControl);
+          myMap.controls.get('routeButtonControl').routePanel.state.set('to', 'Ижевск, проезд Дерябина, 3/4');
 
-        myMap.controls.add('zoomControl', {
-          size: 'small',
-          float: 'none',
-          position: {
-            bottom: '88px',
-            right: '30px'
-          }
-        });
+          var placemark = new ymaps.Placemark([56.844870, 53.182412]);
 
-        myMap.controls.get('routeButtonControl').routePanel.state.set('to', 'Ижевск, проезд Дерябина, 3/4');
-
-        var placemark = new ymaps.Placemark([56.844870, 53.182412]);
-
-        myMap.geoObjects.add(placemark);
-    }
-</script>
+          myMap.geoObjects.add(placemark);
+      }
+    </script>
 
     <!-- Хэндлим мобильное меню -->
 
@@ -641,6 +655,13 @@
       document.querySelector('.nav__burger').addEventListener('click', (event) => {
         document.querySelector('.nav__container').classList.toggle('nav__container--open-menu');
       });
+
+      document.querySelectorAll('.nav__item').forEach((item) => {
+        item.addEventListener('click', () => {
+          console.log('click menu');
+          document.querySelector('.nav__container').classList.remove('nav__container--open-menu');
+        });
+      })
     </script>
 
     <!-- Назначаем кнопки для скроллирования -->
