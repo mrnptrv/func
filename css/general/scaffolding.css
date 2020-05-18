@@ -241,6 +241,10 @@ body {
   opacity: 0.3;
 }
 
+.slider-control:disabled {
+  opacity: 0.1;
+}
+
 .slider-control svg {
   display: inline-block;
 }
