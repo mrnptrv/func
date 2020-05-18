@@ -3,6 +3,12 @@
     <clipPath id="clip0">
       <rect width="20" height="20" fill="white"/>
     </clipPath>
+    <radialGradient id="paint_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(5.78176 20.3864) rotate(-90) scale(17.8393 16.592)">
+      <stop stop-color="#FFDD55"/>
+      <stop offset="0.1" stop-color="#FFDD55"/>
+      <stop offset="0.5" stop-color="#FF543E"/>
+      <stop offset="1" stop-color="#C837AB"/>
+    </radialGradient>
   </defs>
   <symbol id="acoustics" viewBox="0 0 20 20">
     <path
@@ -37,6 +43,9 @@
   </symbol>
   <symbol id="arrow-right" viewBox="0 0 16 16">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9427 7.00003L7.32202 2.73474L8.67858 1.26514L15.1786 7.26514L15.9434 7.97109L15.2074 8.70705L9.2074 14.707L7.79319 13.2928L12.086 9.00003H0.000738144V7.00003H11.9427Z"/>
+  </symbol>
+  <symbol id="long-arrow-right" width="20" height="16" viewBox="0 0 20 16" fill="none">
+    <path d="M13 2.5L18.5 8M18.5 8L13 13.5M18.5 8H0" stroke="white" stroke-width="2"/>
   </symbol>
   <symbol id="chair" viewBox="0 0 20 20" fill="none">
     <g clip-path="url(#clip0)">

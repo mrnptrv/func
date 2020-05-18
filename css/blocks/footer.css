@@ -25,6 +25,8 @@
 }
 
 .footer__links {
+  font-size: 14px;
+  line-height: 20px;
   color: rgba(255, 255, 255, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -36,16 +38,6 @@
 .footer__link {
   outline: 0;
   transition: color 0.35s ease-out;
-}
-
-.footer__up {
-  opacity: 0.4;
-  transition: opacity 0.35s ease-out;
-}
-
-.footer__up:hover,
-.footer__up:focus {
-  opacity: 1;
 }
 
 .contacts__description {

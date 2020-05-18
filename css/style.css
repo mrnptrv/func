@@ -1,5 +1,6 @@
 @import "general/fonts.css";
 @import "general/variables.css";
+@import "general/animations.css";
 @import "general/scaffolding.css";
 
 @import "blocks/header.css";
