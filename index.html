@@ -957,7 +957,10 @@
     const form = document.querySelector('.popup__form');
     Pageclip.form(form, {
       onSubmit: function (event) {
-        setTimeout(closeForm, 3000, popupApply);
+        setTimeout(() => {
+          document.querySelector('.pageclip-form__success').style.display = 'none';
+          closeForm(popupApply);
+        }, 3000);
       },
       successTemplate: '<span>Спасибо! Мы свяжемся с вами.</span>'
     });
