@@ -171,13 +171,14 @@ body {
   text-align: left;
   text-decoration: none;
   background-color: var(--feature-color);
+  outline: 0;
 }
 
 .button span {
   position: relative;
   left: 50%;
   display: inline-block;
-  transition: all 0.35s ease-out;
+  transition: all 0.2s ease-out;
   transform: translateX(-50%);
 }
 
@@ -188,6 +189,7 @@ body {
 }
 
 .button svg {
+  stroke: #ffffff;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -195,8 +197,8 @@ body {
   height: 16px;
   margin: auto 0;
   opacity: 0;
-  transform: translateX(-12px);
-  transition: all 0.35s ease-out;
+  transform: translateX(-32px);
+  transition: all 0.2s ease-out;
 }
 
 .button:hover svg,
@@ -210,13 +212,17 @@ body {
   background-color: rgba(51, 51, 51, 0.04);
 }
 
+.button--secondary svg {
+  stroke: #333333;
+}
+
 .circle-button {
   width: 64px;
   height: 64px;
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   outline: 0;
-  transition: border-color 0.35s ease-out;
+  transition: border-color 0.2s ease-out;
 }
 
 .circle-button:hover,
@@ -247,6 +253,20 @@ body {
 
 .slider-control svg {
   display: inline-block;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333333;
+  z-index: 30;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 
 /* responsive */

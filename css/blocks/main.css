@@ -422,6 +422,10 @@
   opacity: 1;
 }
 
+.organize__control:disabled {
+  opacity: 1;
+}
+
 .organize__control svg {
   opacity: 0.5;
   transition: opacity 0.2s ease-out;
@@ -430,6 +434,10 @@
 .organize__control:hover svg,
 .organize__control:focus svg {
   opacity: 1;
+}
+
+.organize__control:disabled svg {
+  opacity: 0.1;
 }
 
 .organize__info {
@@ -490,34 +498,7 @@
 }
 
 .prices__toggler {
-  display: flex;
-  margin-top: 56px;
-  border: 1px solid #ebebeb;
-}
-
-.prices__label {
-  width: 50%;
-  padding: 11px 12px;
-  font: inherit;
-  font-size: 14px;
-  line-height: 24px;
-  text-align: center;
-  background-color: rgb(51, 51, 51, 0.04);
-  border-right: 1px solid #ebebeb;
-  cursor: pointer;
-  transition: all 0.2s ease-in;
-}
-
-.prices__label:last-of-type {
-  border-right: 0;
-}
-
-.prices__input:checked + .prices__label {
-  background-color: #ffffff;
-}
-
-.prices__input:not(:checked) + .prices__label:hover {
-  background-color: rgb(51, 51, 51, 0.02);
+  margin-top: 42px;
 }
 
 .prices__amount {
@@ -528,7 +509,7 @@
 }
 
 .prices__toggler + .prices__amount {
-  margin-top: 26px;
+  margin-top: 28px;
   font-weight: 600;
   font-size: 34px;
 }
@@ -536,6 +517,42 @@
 .prices__button {
   width: 100%;
   margin-top: 36px;
+}
+
+/* MAIN -> toggler */
+
+.toggler {
+  display: flex;
+  border: 1px solid #ebebeb;
+}
+
+.toggler__label {
+  width: 50%;
+  padding: 11px 12px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  background-color: #ffffff;
+  border-right: 1px solid #ebebeb;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.toggler__label:last-of-type {
+  border-right: 0;
+}
+
+.toggler__input:checked + .toggler__label {
+  background-color: rgb(51, 51, 51, 0.04);
+}
+
+.toggler__input:not(:checked) + .toggler__label {
+  color: rgba(51, 51, 51, 0.6);
+}
+
+.toggler__input:not(:checked) + .toggler__label:hover {
+  color: #333333;
 }
 
 /* MAIN -> speech */
@@ -1108,6 +1125,10 @@
   .amenities__item:nth-child(11),
   .amenities__item:nth-child(12) {
     display: none;
+  }
+
+  .amenities--full .amenities__item {
+    display: flex;
   }
 
   .amenities__show-more,
