@@ -210,16 +210,16 @@ function init() {
       }
     });
 
-    // myMap.controls.add(zoomControl);
+    myMap.controls.add(zoomControl);
 
-    myMap.controls.add('zoomControl', {
-      size: 'small',
-      float: 'none',
-      position: {
-        bottom: '88px',
-        right: '30px'
-      }
-    });
+    // myMap.controls.add('zoomControl', {
+    //   size: 'small',
+    //   float: 'none',
+    //   position: {
+    //     bottom: '88px',
+    //     right: '30px'
+    //   }
+    // });
 
     myMap.controls.get('routeButtonControl').routePanel.state.set('to', 'Ижевск, проезд Дерябина, 3/4');
 
@@ -241,13 +241,13 @@ window.addEventListener('DOMContentLoaded', () => {
 // Хэндлим мобильное меню
 
 document.querySelector('.nav__burger').addEventListener('click', (event) => {
-  document.querySelector('.nav__container').classList.toggle('nav__container--open-menu');
+  document.querySelector('.nav').classList.toggle('nav--open-menu');
 });
 
 document.querySelectorAll('.nav__item').forEach((item) => {
   item.addEventListener('click', () => {
     console.log('click menu');
-    document.querySelector('.nav__container').classList.remove('nav__container--open-menu');
+    document.querySelector('.nav').classList.remove('nav--open-menu');
   });
 });
 
@@ -322,6 +322,7 @@ const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 const openForm = form => {
   document.body.classList.add('no-scroll');
   form.classList.add('popup--shown');
+  // phoneField.value = '+7 (';
 };
 
 const closeForm = form => {
@@ -351,4 +352,11 @@ window.addEventListener('scroll', () => {
   } else {
     topBar.classList.remove('nav--sticky');
   }
+});
+
+// Валидируем форму
+
+document.querySelector('#apply-email').addEventListener('input', () => {
+  const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  console.log(emailRegEx.test(document.querySelector('#apply-email').value));
 });

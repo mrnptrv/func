@@ -245,7 +245,7 @@
               <a class="nav__link" href="#intro">О нас</a>
             </li>
             <li class="nav__item">
-              <a class="nav__link" href="#rooms">Пространства</a>
+              <a class="nav__link" href="#func-rooms">Пространства</a>
             </li>
             <li class="nav__item">
               <a class="nav__link" href="#prices">Тарифы</a>
@@ -344,7 +344,7 @@
           </div>
         </section>
 
-        <section class="section overlayed rooms" id="rooms" role="region">
+        <section class="section overlayed rooms" id="func-rooms" role="region">
           <div class="rooms__content">
             <h2 class="rooms__headline headline">fun<i>(</i>c<i>)</i> — многофункциональное пространство, где продумана каждая мелочь</h2>
             <p class="rooms__text text">Мы уделили особое внимание мелочам, которые помогают войти в состояние потока, эффективно решать возникающие задачи и достигать поставленные цели.</p>
@@ -493,7 +493,9 @@
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
                     <img class="events__pic" src="img/event-1.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">Большой frontend meetup</figcaption>
+                    <figcaption class="events__caption">
+                      <span>Большой frontend meetup</span>
+                    </figcaption>
                   </figure>
                   <div class="events__content">
                     <span class="events__tag">Образование</span>
@@ -503,7 +505,9 @@
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
                     <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">Бесплатный мастер-класс: Цифровой&nbsp;сторителлинг</figcaption>
+                    <figcaption class="events__caption">
+                      <span>Бесплатный мастер-класс: Цифровой&nbsp;сторителлинг</span>
+                    </figcaption>
                   </figure>
                   <div class="events__content">
                     <span class="events__tag">Образование</span>
@@ -513,7 +517,9 @@
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
                     <img class="events__pic" src="img/event-3.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">Func New Year’s Party 2019</figcaption>
+                    <figcaption class="events__caption">
+                      <span>Func New Year’s Party 2019</span>
+                    </figcaption>
                   </figure>
                   <div class="events__content">
                     <span class="events__tag">Вечеринка</span>
@@ -523,7 +529,9 @@
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
                     <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">Как мы изолировались 2020</figcaption>
+                    <figcaption class="events__caption">
+                      <span>Как мы изолировались 2020: карантин, коронавирус, удалёнка и всё такое прочее</span>
+                    </figcaption>
                   </figure>
                   <div class="events__content">
                     <span class="events__tag">Рандом</span>
@@ -877,7 +885,7 @@
 
     <div class="popup">
       <div class="popup__backdrop"></div>
-      <form class="popup__form pageclip-form" action="https://send.pageclip.co/E565AuSpLuJHGqrprZcudauWBv5nWByT" method="post">
+      <form class="popup__form pageclip-form" id="apply-form" action="https://send.pageclip.co/lIOU7euBRxRAWiYxGv05fe5Ow3pHu2Gw" method="post">
         <p class="popup__top">
           <svg class="popup__logo" width="80" height="22">
             <use xlink:href="#logo"></use>
@@ -903,7 +911,7 @@
               <label class="popup__label" for="apply-name">Фамилия, имя и отчество</label>
             </p>
             <p class="popup__group">
-              <input class="popup__input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;">
+              <input class="popup__input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;" maxlength="18">
               <label class="popup__label" for="apply-phone">Мобильный телефон</label>
             </p>
             <p class="popup__group">
@@ -954,7 +962,7 @@
     <!-- Закрываем форму после успешной отправки данных -->
 
     <script>
-    const form = document.querySelector('.popup__form');
+    const form = document.querySelector('#apply-form');
     Pageclip.form(form, {
       onSubmit: function (event) {
         setTimeout(() => {
