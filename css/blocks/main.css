@@ -512,11 +512,11 @@
   line-height: 1em;
 }
 
-.prices__text {
+.prices__note {
   margin: 22px 0;
 }
 
-.prices__note {
+.prices__accent {
   margin-top: 30px;
   font-weight: 800;
   font-size: 22px;
@@ -788,7 +788,7 @@
 
   .guide__pic {
     width: 40%;
-    margin-right: 44px;
+    margin-right: 24px;
     object-fit: cover;
   }
 
@@ -916,6 +916,19 @@
     margin-right: 44px;
   }
 
+  .guide__wrapper {
+    flex-direction: column;
+  }
+
+  .guide__pic {
+    width: 520px;
+    margin: 0 auto var(--basic-gap);
+  }
+
+  .guide__button {
+    margin-top: var(--basic-gap);
+  }
+
   .feedback__track {
     overflow: hidden;
   }
@@ -996,19 +1009,6 @@
     position: absolute;
     top: 40px;
     left: var(--basic-gap);
-  }
-
-  .guide__wrapper {
-    flex-direction: column;
-  }
-
-  .guide__pic {
-    width: 520px;
-    margin: 0 auto var(--basic-gap);
-  }
-
-  .guide__button {
-    margin-top: var(--basic-gap);
   }
 }
 

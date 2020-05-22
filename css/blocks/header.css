@@ -462,6 +462,16 @@
   }
 }
 
+@media (max-width: 767px) {
+  .page-header {
+    background-image: url('../../img/func-hall.jpg');
+  }
+
+  .page-header__movie {
+    display: none;
+  }
+}
+
 @media (max-width: 666px) {
   .page-header {
     min-height: -webkit-fill-available;
