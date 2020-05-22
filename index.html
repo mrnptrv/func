@@ -234,7 +234,7 @@
           </svg>
           <ul class="nav__menu list">
             <li class="nav__item nav__item--button">
-              <button class="nav__button button apply-button unbutton" type="button">
+              <button class="nav__button button apply-button unbutton" type="button" data-goal="try">
                 <span>Запишись на экскурсию</span>
                 <svg width="20" height="16">
                   <use xlink:href="img/sprite.svg#long-arrow-right"></use>
@@ -269,7 +269,7 @@
           <div class="slider__container container">
             <b class="slider__headline headline">Круглосуточный коворкинг для <span>ИТ-сообщества</span> Ижевска</b>
             <p class="slider__text text">Открой для себя рабочее пространство современного формата. Здесь легко сосредоточиться на работе, провести переговоры, найти единомышленников и расслабиться.</p>
-            <button class="slider__button button apply-button unbutton" type="button">
+            <button class="slider__button button apply-button unbutton" type="button" data-goal="try">
               <span>Запишись на экскурсию</span>
               <svg width="20" height="16">
                 <use xlink:href="img/sprite.svg#long-arrow-right"></use>
@@ -487,79 +487,6 @@
         <section class="section overlayed events" id="events" role="region">
           <h2 class="events__headline headline">fun<i>(</i>c<i>)</i> — это не просто набор услуг, а свои люди и атмосфера развития</h2>
           <p class="events__text text">Мы создали коворкинг как центр притяжения ИТ-тусовки, а также дизайнеров, маркетологов, верстальщиков, копирайтеров и людей, работающих с цифровыми технологиями. В нашем коворкинге вы будете среди «своих».</p>
-          <div class="events__slider glide">
-            <div class="events__track" data-glide-el="track">
-              <ul class="events__slides-list list">
-                <li class="events__slide">
-                  <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-1.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">
-                      <span>Большой frontend meetup</span>
-                    </figcaption>
-                  </figure>
-                  <div class="events__content">
-                    <span class="events__tag">Образование</span>
-                    <span class="events__tag events__tag--pics">24</span>
-                  </div>
-                </li>
-                <li class="events__slide">
-                  <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">
-                      <span>Бесплатный мастер-класс: Цифровой&nbsp;сторителлинг</span>
-                    </figcaption>
-                  </figure>
-                  <div class="events__content">
-                    <span class="events__tag">Образование</span>
-                    <span class="events__tag events__tag--pics">16</span>
-                  </div>
-                </li>
-                <li class="events__slide">
-                  <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-3.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">
-                      <span>Func New Year’s Party 2019</span>
-                    </figcaption>
-                  </figure>
-                  <div class="events__content">
-                    <span class="events__tag">Вечеринка</span>
-                    <span class="events__tag events__tag--pics">32</span>
-                  </div>
-                </li>
-                <li class="events__slide">
-                  <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
-                    <figcaption class="events__caption">
-                      <span>Как мы изолировались 2020: карантин, коронавирус, удалёнка и всё такое прочее</span>
-                    </figcaption>
-                  </figure>
-                  <div class="events__content">
-                    <span class="events__tag">Рандом</span>
-                    <span class="events__tag events__tag--pics">2</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="events__footer slider-footer">
-              <p class="slider-footer__counter">
-                <span class="slider-footer__index" id="events-slider-index">1</span>/<span id="events-slider-total">5</span>
-              </p>
-              <p class="slider-footer__controls" data-glide-el="controls">
-                <button class="slider-footer__arrow slider-control slider-control--left unbutton" data-glide-dir="<">
-                  <span class="visually-hidden">Листать назад</span>
-                  <svg width="16" height="16">
-                    <use xlink:href="img/sprite.svg#arrow-left"></use>
-                  </svg>
-                </button>
-                <button class="slider-footer__arrow slider-control slider-control--right unbutton" data-glide-dir=">">
-                  <svg width="16" height="16">
-                    <use xlink:href="img/sprite.svg#arrow-right"></use>
-                  </svg>
-                  <span class="visually-hidden">Листать вперёд</span>
-                </button>
-              </p>
-            </div>
-          </div>
         </section>
 
         <section class="section organize">
@@ -642,42 +569,26 @@
             <li class="prices__item">
               <b class="prices__name">«Горячий» стол</b>
               <p class="prices__description text">любое свободное рабочее место в общем пространстве</p>
-              <div class="prices__toggler toggler">
-                <input class="toggler__input visually-hidden" id="hot-table-toggler-day" type="radio" name="hot-table">
-                <label class="toggler__label" for="hot-table-toggler-day">День</label>
-                <input class="toggler__input visually-hidden" id="hot-table-toggler-month" type="radio" name="hot-table" checked>
-                <label class="toggler__label" for="hot-table-toggler-month">Месяц</label>
-              </div>
-              <b class="prices__amount">500&#8381;</b>
-              <button class="prices__button button apply-button unbutton" type="button">
-                <span>Оставить заявку</span>
-                <svg width="20" height="16">
-                  <use xlink:href="img/sprite.svg#long-arrow-right"></use>
-                </svg>
-              </button>
+              <p class="prices__amount">
+                <b>500&#8381;</b> / день
+              </p>
+              <p class="prices__text text">или</p>
+              <p class="prices__amount">7&nbsp;500&#8381; / месяц</p>
             </li>
             <li class="prices__item">
               <b class="prices__name">«Свой» стол</b>
               <p class="prices__description text">закрепленное рабочее место в&nbsp;общем пространстве</p>
-              <div class="prices__toggler toggler">
-                <input class="toggler__input visually-hidden" id="personal-table-toggler-month" type="radio" name="personal-table" checked>
-                <label class="toggler__label" for="personal-table-toggler-month">Месяц</label>
-                <input class="toggler__input visually-hidden" id="personal-table-toggler-quarter" type="radio" name="personal-table">
-                <label class="toggler__label" for="personal-table-toggler-quarter">Квартал</label>
-              </div>
-              <b class="prices__amount">500&#8381;</b>
-              <button class="prices__button button apply-button unbutton" type="button">
-                <span>Оставить заявку</span>
-                <svg width="20" height="16">
-                  <use xlink:href="img/sprite.svg#long-arrow-right"></use>
-                </svg>
-              </button>
+              <p class="prices__amount">
+                <b>8&nbsp;500&#8381;</b> / месяц
+              </p>
+              <p class="prices__text text">или</p>
+              <p class="prices__amount">24&nbsp;000&#8381; / квартал</p>
             </li>
             <li class="prices__item">
               <b class="prices__name">«Свой» офис</b>
               <p class="prices__description text">для команды, организации или нескольких человек</p>
-              <b class="prices__amount">договорная цена</b>
-              <button class="prices__button button apply-button unbutton" type="button">
+              <b class="prices__note">договорная цена</b>
+              <button class="prices__button button apply-button unbutton" type="button" data-goal="apply">
                 <span>Оставить заявку</span>
                 <svg width="20" height="16">
                   <use xlink:href="img/sprite.svg#long-arrow-right"></use>
@@ -724,7 +635,7 @@
                   Твори и работай в любое время суток, участвуй в&nbsp;мероприятиях
                 </li>
               </ol>
-              <button class="guide__button button apply-button unbutton" type="button">
+              <button class="guide__button button apply-button unbutton" type="button" data-goal="apply">
                 <span>Оставить заявку</span>
                 <svg width="20" height="16">
                   <use xlink:href="img/sprite.svg#long-arrow-right"></use>
@@ -744,47 +655,49 @@
               <ul class="feedback__list list">
                 <li class="feedback__item">
                   <div class="feedback__header">
-                    <img class="feedback__pic" src="img/feedback-1.jpg" width="64" height="64" alt="">
+                    <img class="feedback__pic" src="img/icon-dude-placeholder.svg" width="64" height="64" alt="">
                     <p class="feedback__name text">
-                      <i>Иван Мартьянов</i>
+                      <i>Никита Перцев</i>
                       Senior Software Engineer, Freelancer
+                    </p>
+                  </div>
+                  <p class="feedback__text">Мне нравится находиться в лаунж-зоне &mdash; это такой хаб, в котором ощущается жизнь. Это похоже на какое-то заведение, но с приватным допуском только для крутых ребят из ИТ.</p>
+                  <p class="feedback__text">Если люди вокруг круче, это значит, что я могу учиться у них.</p>
+                  <p class="feedback__text">Я хочу возвращаться в коворкинг. Конечно, можно удалённо работать с Бали, но здесь я общаюсь с крутыми людьми, а это меня развивает и вдохновляет.</p>
+                </li>
+                <li class="feedback__item">
+                  <div class="feedback__header">
+                    <img class="feedback__pic" src="img/icon-dude-placeholder.svg" width="64" height="64" alt="">
+                    <p class="feedback__name text">
+                      <i>Мартьян Иванов</i>
+                      Senior Software Engineer, Freelancer
+                    </p>
+                  </div>
+                  <p class="feedback__text">В коворкинге fun(c) я полностью поглощён работой, а в свободное время общаюсь с коллегами по цеху.</p>
+                  <p class="feedback__text">Мы играем в пинг-понг в игровом зале или просто разговариваем на кухне за кофе. Планирую отправиться в тренажёрку в ближайшее время.</p>
+                  <p class="feedback__text">Здесь есть всё, чтобы комфортно работать и развиваться.</p>
+                </li>
+                <li class="feedback__item">
+                  <div class="feedback__header">
+                    <img class="feedback__pic" src="img/icon-dude-placeholder.svg" width="64" height="64" alt="">
+                    <p class="feedback__name text">
+                      <i>Сергей Копанев</i>
+                      Основатель Moqod
                     </p>
                   </div>
                   <p class="feedback__text">Понравилась обстановка, атмосфера и наличие инфраструктуры в одном здании: небольшой спортзал, нормальные конференц-румы, отличный опен-спейс, выделенные рабочие места и большая открытая площадка для проведения мероприятий.</p>
                 </li>
                 <li class="feedback__item">
                   <div class="feedback__header">
-                    <img class="feedback__pic" src="img/feedback-1.jpg" width="64" height="64" alt="">
+                    <img class="feedback__pic" src="img/feedback-kirill-nikitin.png" width="64" height="64" alt="">
                     <p class="feedback__name text">
-                      <i>Мартьян Иванов</i>
-                      Senior Software Engineer, Freelancer
+                      <i>Кирилл Никитин</i>
+                      Продакт-дизайнер Piano
                     </p>
                   </div>
-                  <p class="feedback__text">В коворкинге fun(c) я полностью поглощен работой, а в свободное время общаюсь с коллегами по цеху.</p>
-                  <p class="feedback__text">Мы играем в пинг-понг в игровом зале или просто разговариваем на кухне за кофе. Планирую отправиться в тренажёрку в ближайшее время.</p>
-                  <a class="feedback__link unbutton" href="#">Читать дальше</a>
-                </li>
-                <li class="feedback__item">
-                  <div class="feedback__header">
-                    <img class="feedback__pic" src="img/feedback-1.jpg" width="64" height="64" alt="">
-                    <p class="feedback__name text">
-                      <i>Иван Мартьянов</i>
-                      Senior Software Engineer, Freelancer
-                    </p>
-                  </div>
-                  <p class="feedback__text">Понравилась обстановка, атмосфера и наличие инфраструктуры в одном здании: небольшой спортзал, нормальные конференц-румы, отличный опен-спейс, выделенные рабочие места и большая открытая площадка для проведения мероприятий.</p>
-                </li>
-                <li class="feedback__item">
-                  <div class="feedback__header">
-                    <img class="feedback__pic" src="img/feedback-1.jpg" width="64" height="64" alt="">
-                    <p class="feedback__name text">
-                      <i>Мартьян Иванов</i>
-                      Senior Software Engineer, Freelancer
-                    </p>
-                  </div>
-                  <p class="feedback__text">В коворкинге fun(c) я полностью поглощен работой, а в свободное время общаюсь с коллегами по цеху.</p>
-                  <p class="feedback__text">Мы играем в пинг-понг в игровом зале или просто разговариваем на кухне за кофе. Планирую отправиться в тренажёрку в ближайшее время.</p>
-                  <a class="feedback__link unbutton" href="#">Читать дальше</a>
+                  <p class="feedback__text">Нравится быстрая обработка предложений от резидентов коворкинга.</p>
+                  <p class="feedback__text">Я как дизайнер могу сказать, что сразу сделать хорошо невозможно. Всегда нужно выкатывать версии, тестировать их, а потом исходя из потребности людей менять продукт.</p>
+                  <p class="feedback__text">В этом плане в fun(c) отзывчивые ребята работают. Учтиво относятся к пожеланиям и стараются сделать максимально комфортную среду для людей.</p>
                 </li>
               </ul>
             </div>
@@ -869,9 +782,6 @@
             <li class="footer__item">
               <a class="footer__link" href="#">Договор оферты</a>
             </li>
-            <li class="footer__item">
-              <a class="footer__link" href="#">Реквизиты</a>
-            </li>
           </ul>
           <button class="footer__up circle-button unbutton" type="button">
             <span class="visually-hidden">Прокрутить страницу вверх</span>
@@ -900,37 +810,17 @@
         <div class="popup__content">
           <h2 class="popup__headline">Отправить заявку</h2>
           <div class="popup__wrapper">
-            <div class="popup__toggler toggler">
-              <input class="toggler__input visually-hidden" id="apply-toggler-team" type="radio" name="apply-tariff" value="Команда" checked>
-              <label class="toggler__label" for="apply-toggler-team">Команда</label>
-              <input class="toggler__input visually-hidden" id="apply-toggler-person" type="radio" name="apply-tariff" value="Один человек">
-              <label class="toggler__label" for="apply-toggler-person">Один человек</label>
-            </div>
             <p class="popup__group">
-              <input class="popup__input" id="apply-name" name="apply-name" type="text" placeholder="&nbsp;">
-              <label class="popup__label" for="apply-name">Фамилия, имя и отчество</label>
+              <input class="popup__input" id="apply-name" name="apply-name" type="text" placeholder="&nbsp;" required>
+              <label class="popup__label" for="apply-name">Имя</label>
             </p>
             <p class="popup__group">
-              <input class="popup__input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;" maxlength="18">
-              <label class="popup__label" for="apply-phone">Мобильный телефон</label>
-            </p>
-            <p class="popup__group">
-              <select class="popup__input popup__input--select" id="apply-sphere" name="apply-sphere">
-                <option value="-">&mdash;</option>
-                <option value="Разработка">Разработка</option>
-                <option value="Дизайн и маркетинг">Дизайн и маркетинг</option>
-                <option value="Менеджмент">Менеджмент</option>
-                <option value="Другое">Другое</option>
-              </select>
-              <label class="popup__label" for="apply-sphere">Вид деятельности</label>
-            </p>
-            <p class="popup__group">
-              <input class="popup__input" id="apply-email" name="apply-email" type="email" placeholder="&nbsp;">
-              <label class="popup__label" for="apply-email">Электронная почта</label>
+              <input class="popup__input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;" maxlength="18" required>
+              <label class="popup__label" for="apply-phone">Номер телефона</label>
             </p>
             <p class="popup__group popup__group--message">
-              <textarea class="popup__input popup__input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;"></textarea>
-              <label class="popup__label" for="apply-email">Текст сообщения</label>
+              <textarea class="popup__input popup__input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;" required></textarea>
+              <label class="popup__label" for="apply-email">Расскажите о себе<span>, чем занимаетесь и сколько вас человек</span></label>
             </p>
             <p class="popup__actions">
               <button class="popup__button button button--secondary unbutton" id="apply-cancel" type="button">
@@ -939,7 +829,7 @@
                   <use xlink:href="img/sprite.svg#long-arrow-right"></use>
                 </svg>
               </button>
-              <button class="popup__button pageclip-form__submit button unbutton" type="submit">
+              <button class="popup__button pageclip-form__submit button unbutton" id="apply-submit" type="submit" disabled>
                 <span>Отправить</span>
                 <svg width="20" height="16">
                   <use xlink:href="img/sprite.svg#long-arrow-right"></use>
@@ -947,7 +837,7 @@
               </button>
             </p>
             <p class="popup__footer">
-              <input class="popup__checkmark visually-hidden" id="apply-accept-terms" name="apply-accept-terms" type="checkbox" checked>
+              <input class="popup__checkmark visually-hidden" id="apply-accept-terms" name="apply-accept-terms" type="checkbox" required>
               <label class="popup__checkmark-label" for="apply-accept-terms">Я принимаю <a href="#">условия обработки персональных&nbsp;данных</a></label>
             </p>
           </div>
@@ -960,7 +850,6 @@
     <script src="https://s.pageclip.co/v1/pageclip.js" charset="utf-8"></script>
 
     <!-- Закрываем форму после успешной отправки данных -->
-
     <script>
     const form = document.querySelector('#apply-form');
     Pageclip.form(form, {
@@ -970,8 +859,17 @@
           closeForm(popupApply);
         }, 5000);
       },
-      successTemplate: '<span>Спасибо! <br>Совсем скоро мы свяжемся с вами.</span>'
+      successTemplate: '<span>Спасибо! <br>Совсем скоро мы свяжемся с тобой.</span>'
     });
+    </script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1811782-12"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-1811782-12');
     </script>
 
   </body>

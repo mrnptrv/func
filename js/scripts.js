@@ -52,52 +52,6 @@ roomsSlider.on(['mount.after', 'run'], () => {
 
 roomsSlider.mount();
 
-// Слайдер в разделе "События"
-
-const eventsSlider = new Glide('.events__slider', {
-  type: 'slider',
-  rewind: false,
-  perView: 2,
-  bound: true,
-  peek: {
-    before: 0,
-    after: 120
-  },
-  gap: 24,
-  breakpoints: {
-    959: {
-      peek: 0
-    },
-    767: {
-      perView: 1,
-      peek: {
-        before: 0,
-        after: 120
-      }
-    },
-    519: {
-      perView: 1,
-      peek: 0,
-      gap: 0
-    }
-  }
-});
-
-eventsSlider.on(['mount.after', 'run'], () => {
-  let index = eventsSlider.index;
-  const slider = document.querySelector('.events__slider');
-  const slides = document.querySelectorAll('.events__slide');
-  const leftArrow = slider.querySelector('.slider-control--left');
-  const rightArrow = slider.querySelector('.slider-control--right');
-
-  document.querySelector('#events-slider-index').innerHTML = index + 1;
-  document.querySelector('#events-slider-total').innerHTML = slides.length;
-
-  assignDisabledArrowButton(eventsSlider, slides.length, leftArrow, rightArrow);
-});
-
-eventsSlider.mount();
-
 // Слайдер в разделе "ИТ-тусовки"
 
 const organizeSlider = new Glide('.organize__slider', {
@@ -277,7 +231,6 @@ document.querySelector('.nav__burger').addEventListener('click', (event) => {
 
 document.querySelectorAll('.nav__item').forEach((item) => {
   item.addEventListener('click', () => {
-    console.log('click menu');
     document.querySelector('.nav').classList.remove('nav--open-menu');
   });
 });
@@ -347,23 +300,45 @@ const backdrop = document.querySelector('.popup__backdrop');
 const popupApply = document.querySelector('.popup');
 const popupApplyClose = document.querySelector('#apply-close');
 const popupApplyCancel = document.querySelector('#apply-cancel');
+const popupApplySubmit = document.querySelector('#apply-submit');
+const popupApplyName = document.querySelector('#apply-name');
+const popupApplyPhone = document.querySelector('#apply-phone');
+const popupApplyTerms = document.querySelector('#apply-accept-terms')
 
 const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 
 const openForm = form => {
   document.body.classList.add('no-scroll');
+  document.querySelector('html').classList.add('no-scroll');
   form.classList.add('popup--shown');
-  phoneField.value = '+7 (';
+
+  popupApplyName.focus();
+  popupApplyPhone.value = '+7 (';
+
+  popupApplyTerms.addEventListener('change', () => {
+    if (popupApplyTerms.checked) {
+      popupApplySubmit.disabled = false;
+    } else {
+      popupApplySubmit.disabled = true;
+    }
+  });
 };
 
 const closeForm = form => {
   document.body.classList.remove('no-scroll');
+  document.querySelector('html').classList.remove('no-scroll');
   form.classList.remove('popup--shown');
 };
 
 document.querySelectorAll('.apply-button').forEach((item) => {
   item.addEventListener('click', () => {
     openForm(popupApply);
+
+    if (item.dataset.goal === 'try') {
+      document.querySelector('.popup__headline').innerText = 'Запишись на экскурсию';
+    } else {
+      document.querySelector('.popup__headline').innerText = 'Оставь заявку';
+    }
 
     applyFormCloseElements.forEach((item) => {
       item.addEventListener('click', () => {
@@ -387,46 +362,43 @@ window.addEventListener('scroll', () => {
 
 // Украшаем номер телефона в форме
 
-const phoneField = document.querySelector('#apply-phone');
-
-phoneField.addEventListener('input', (event) => {
-  let phoneFieldInput = [];
-  let formattedPhoneFieldInput = '+';
-  console.log(phoneField.value.length);
+popupApplyPhone.addEventListener('input', (event) => {
+  let popupApplyPhoneInput = [];
+  let formattedPopupApplyPhoneInput = '+';
 
   if (event.inputType !== 'deleteContentBackward') {
-    phoneFieldInput = phoneField.value.replace(/[^0-9]/g, '').split('');
+    popupApplyPhoneInput = popupApplyPhone.value.replace(/[^0-9]/g, '').split('');
 
-    if (phoneField.value.length > 2) {
-      phoneFieldInput.splice(1, 0, ' (');
+    if (popupApplyPhone.value.length > 2) {
+      popupApplyPhoneInput.splice(1, 0, ' (');
     }
-    if (phoneField.value.length > 6) {
-      phoneFieldInput.splice(5, 0, ') ');
+    if (popupApplyPhone.value.length > 6) {
+      popupApplyPhoneInput.splice(5, 0, ') ');
     }
-    if (phoneField.value.length > 11) {
-      phoneFieldInput.splice(9, 0, '-');
+    if (popupApplyPhone.value.length > 11) {
+      popupApplyPhoneInput.splice(9, 0, '-');
     }
-    if (phoneField.value.length > 14) {
-      phoneFieldInput.splice(12, 0, '-');
+    if (popupApplyPhone.value.length > 14) {
+      popupApplyPhoneInput.splice(12, 0, '-');
     }
 
-    phoneFieldInput.forEach((item) => {
-      formattedPhoneFieldInput += item;
+    popupApplyPhoneInput.forEach((item) => {
+      formattedPopupApplyPhoneInput += item;
     });
 
-    phoneField.value = formattedPhoneFieldInput;
+    popupApplyPhone.value = formattedPopupApplyPhoneInput;
   } else {
-    if (phoneField.value.length === 16) {
-      phoneField.value = phoneField.value.substring(0, 15);
+    if (popupApplyPhone.value.length === 16) {
+      popupApplyPhone.value = popupApplyPhone.value.substring(0, 15);
     }
-    if (phoneField.value.length === 13) {
-      phoneField.value = phoneField.value.substring(0, 12);
+    if (popupApplyPhone.value.length === 13) {
+      popupApplyPhone.value = popupApplyPhone.value.substring(0, 12);
     }
-    if (phoneField.value.length === 9) {
-      phoneField.value = phoneField.value.substring(0, 7);
+    if (popupApplyPhone.value.length === 9) {
+      popupApplyPhone.value = popupApplyPhone.value.substring(0, 7);
     }
-    if (phoneField.value.length === 4) {
-      phoneField.value = phoneField.value.substring(0, 2);
+    if (popupApplyPhone.value.length === 4) {
+      popupApplyPhone.value = popupApplyPhone.value.substring(0, 2);
     }
   }
 });

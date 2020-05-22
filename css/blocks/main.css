@@ -228,7 +228,6 @@
 /* MAIN -> events */
 
 .events {
-  padding-bottom: 0;
   z-index: 2;
 }
 
@@ -244,17 +243,6 @@
   position: relative;
   overflow: visible;
 }
-
-/* .events__track::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 100%;
-  bottom: 0;
-  width: 100vw;
-  background-color: #ffffff;
-  z-index: 1;
-} */
 
 .events__slides-list {
   display: flex;
@@ -374,7 +362,7 @@
   bottom: 0;
   left: 33%;
   width: 100vw;
-  height: 1950px;
+  height: 1350px;
   background-color: #f0f2f5;
 }
 
@@ -493,6 +481,7 @@
 
 .prices__item {
   align-self: start;
+  height: 100%;
   padding: 44px 36px 36px;
   background-color: #ffffff;
   box-shadow: 0 4px 10px 0 rgba(51, 51, 51, 0.03);
@@ -505,21 +494,33 @@
   line-height: 34px;
 }
 
-.prices__toggler {
-  margin-top: 42px;
+.prices__description {
+  margin-bottom: 30px;
 }
 
 .prices__amount {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.prices__amount b {
+  display: inline;
+  vertical-align: baseline;
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1em;
+}
+
+.prices__text {
+  margin: 22px 0;
+}
+
+.prices__note {
   margin-top: 30px;
   font-weight: 800;
   font-size: 22px;
   line-height: 34px;
-}
-
-.prices__toggler + .prices__amount {
-  margin-top: 28px;
-  font-weight: 600;
-  font-size: 34px;
 }
 
 .prices__button {
@@ -665,6 +666,7 @@
 
 .feedback__list {
   display: flex;
+  align-items: flex-start;
 }
 
 .feedback__item {

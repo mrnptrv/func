@@ -172,6 +172,14 @@ body {
   text-decoration: none;
   background-color: var(--feature-color);
   outline: 0;
+  opacity: 1;
+  transition: all 0.2s ease-out;
+}
+
+.button:disabled {
+  opacity: 0.2;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 .button span {
@@ -180,6 +188,12 @@ body {
   display: inline-block;
   transition: all 0.2s ease-out;
   transform: translateX(-50%);
+}
+
+.button:disabled {
+  opacity: 0.2;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 .button:hover span,
