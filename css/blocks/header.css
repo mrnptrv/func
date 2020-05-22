@@ -110,13 +110,12 @@
   letter-spacing: 0.02em;
   color: #ffffff;
   text-decoration: none;
-  opacity: 0.5;
+  opacity: 1;
   transition: opacity 0.2s ease-out;
 }
 
-.nav__link:hover,
 .nav__link:focus {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 .nav__link:active {

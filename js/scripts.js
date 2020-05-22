@@ -164,9 +164,23 @@ function init() {
     const myMap = new ymaps.Map('map', {
         center: [56.844870, 53.182412],
         zoom: 16,
-        controls: ['routeButtonControl'],
+        controls: [],
         type: 'yandex#satellite'
     }),
+
+    FuncIconContentLayout = ymaps.templateLayoutFactory.createClass(
+        '<button class="unbutton">$[properties.iconContent]</button>'
+    ),
+
+    funcPlacemark = new ymaps.Placemark(myMap.getCenter(), {
+        hintContent: 'Коворкинг Fun(c)'
+    }, {
+        iconLayout: 'default#image',
+        iconImageHref: 'img/icon-map-pin.svg',
+        iconImageSize: [30, 41],
+        iconImageOffset: [-15, -39]
+    }),
+
     ZoomLayout = ymaps.templateLayoutFactory.createClass('<p class="map__buttons">' +
         '<button class="map__button map__button--plus circle-button unbutton" type="button" id="zoom-in">+</button>' +
         '<button class="map__button map__button--minus circle-button unbutton" type="button" id="zoom-out">&dash;</button>' +
@@ -178,24 +192,24 @@ function init() {
             this.zoomInCallback = ymaps.util.bind(this.zoomIn, this);
             this.zoomOutCallback = ymaps.util.bind(this.zoomOut, this);
 
-            $('#zoom-in').bind('click', this.zoomInCallback);
-            $('#zoom-out').bind('click', this.zoomOutCallback);
+            document.querySelector('#zoom-in').addEventListener('click', this.zoomInCallback);
+            document.querySelector('#zoom-out').addEventListener('click', this.zoomOutCallback);
         },
 
         clear: function () {
-            $('#zoom-in').unbind('click', this.zoomInCallback);
-            $('#zoom-out').unbind('click', this.zoomOutCallback);
+            document.querySelector('#zoom-in').removeEventListener('click', this.zoomInCallback);
+            document.querySelector('#zoom-out').removeEventListener('click', this.zoomOutCallback);
 
             ZoomLayout.superclass.clear.call(this);
         },
 
         zoomIn: function () {
-            var map = this.getData().control.getMap();
+            const map = this.getData().control.getMap();
             map.setZoom(map.getZoom() + 1, {checkZoomRange: true});
         },
 
         zoomOut: function () {
-            var map = this.getData().control.getMap();
+            const map = this.getData().control.getMap();
             map.setZoom(map.getZoom() - 1, {checkZoomRange: true});
         }
     }),
@@ -204,7 +218,7 @@ function init() {
       options: {
         layout: ZoomLayout,
         position: {
-          bottom: '88px',
+          bottom: '58px',
           right: '30px'
         }
       }
@@ -212,20 +226,18 @@ function init() {
 
     myMap.controls.add(zoomControl);
 
-    // myMap.controls.add('zoomControl', {
-    //   size: 'small',
-    //   float: 'none',
-    //   position: {
-    //     bottom: '88px',
-    //     right: '30px'
-    //   }
-    // });
+    myMap.controls.add('routeButtonControl', {
+      position: {
+        top: '58px',
+        left: '30px'
+      }
+    });
 
     myMap.controls.get('routeButtonControl').routePanel.state.set('to', 'Ижевск, проезд Дерябина, 3/4');
 
     var placemark = new ymaps.Placemark([56.844870, 53.182412]);
 
-    myMap.geoObjects.add(placemark);
+    myMap.geoObjects.add(funcPlacemark);
     myMap.behaviors.disable('scrollZoom');
 }
 
@@ -236,6 +248,25 @@ function init() {
 window.addEventListener('DOMContentLoaded', () => {
   const date = new Date();
   document.querySelector('#current-year').innerText = date.getFullYear();
+});
+
+// Добавляем ховер эффект на меню
+
+const navLinks = document.querySelectorAll('.nav__link');
+
+navLinks.forEach((item) => {
+  item.addEventListener('mouseover', () => {
+    navLinks.forEach((item) => {
+      item.style.opacity = '0.5';
+    });
+    item.style.opacity = '1';
+  });
+
+  item.addEventListener('mouseout', () => {
+    navLinks.forEach((item) => {
+      item.style.opacity = '1';
+    });
+  });
 });
 
 // Хэндлим мобильное меню
@@ -322,7 +353,7 @@ const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 const openForm = form => {
   document.body.classList.add('no-scroll');
   form.classList.add('popup--shown');
-  // phoneField.value = '+7 (';
+  phoneField.value = '+7 (';
 };
 
 const closeForm = form => {
@@ -354,9 +385,48 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Валидируем форму
+// Украшаем номер телефона в форме
 
-document.querySelector('#apply-email').addEventListener('input', () => {
-  const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  console.log(emailRegEx.test(document.querySelector('#apply-email').value));
+const phoneField = document.querySelector('#apply-phone');
+
+phoneField.addEventListener('input', (event) => {
+  let phoneFieldInput = [];
+  let formattedPhoneFieldInput = '+';
+  console.log(phoneField.value.length);
+
+  if (event.inputType !== 'deleteContentBackward') {
+    phoneFieldInput = phoneField.value.replace(/[^0-9]/g, '').split('');
+
+    if (phoneField.value.length > 2) {
+      phoneFieldInput.splice(1, 0, ' (');
+    }
+    if (phoneField.value.length > 6) {
+      phoneFieldInput.splice(5, 0, ') ');
+    }
+    if (phoneField.value.length > 11) {
+      phoneFieldInput.splice(9, 0, '-');
+    }
+    if (phoneField.value.length > 14) {
+      phoneFieldInput.splice(12, 0, '-');
+    }
+
+    phoneFieldInput.forEach((item) => {
+      formattedPhoneFieldInput += item;
+    });
+
+    phoneField.value = formattedPhoneFieldInput;
+  } else {
+    if (phoneField.value.length === 16) {
+      phoneField.value = phoneField.value.substring(0, 15);
+    }
+    if (phoneField.value.length === 13) {
+      phoneField.value = phoneField.value.substring(0, 12);
+    }
+    if (phoneField.value.length === 9) {
+      phoneField.value = phoneField.value.substring(0, 7);
+    }
+    if (phoneField.value.length === 4) {
+      phoneField.value = phoneField.value.substring(0, 2);
+    }
+  }
 });
