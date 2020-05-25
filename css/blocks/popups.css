@@ -36,12 +36,14 @@
 }
 
 .popup__top {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 64px;
   padding: 12px var(--basic-gap);
   border-bottom: 1px solid rgba(51, 51, 51, 0.06);
+  z-index: 2;
 }
 
 .popup__logo {
@@ -258,4 +260,10 @@
   .popup__button:last-of-type {
     margin-bottom: 0;
   }
+}
+
+/* pageclip */
+
+.pageclip-form__success {
+  background-color: #ffffff;
 }
