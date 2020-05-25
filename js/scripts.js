@@ -296,6 +296,7 @@ const popupApplyTerms = document.querySelector('#apply-accept-terms');
 const userAgent = navigator.userAgent;
 const iOS = /iPad|iPhone|iPod/.test(userAgent);
 const iOS11 = /OS 11_0|OS 11_1|OS 11_2/.test(userAgent);
+const android = /Android/.test(userAgent);
 
 const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 
@@ -308,16 +309,17 @@ const openForm = form => {
     document.body.classList.add('no-scroll-ios');
   }
 
-  popupApply.querySelectorAll('.popup__input').forEach((item) => {
-    item.addEventListener('focus', () => {
-      setTimeout(() => {
-        item.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }, 200);
+  if (android) {
+    popupApply.querySelectorAll('.popup__input').forEach((item) => {
+      item.addEventListener('focus', () => {
+        setTimeout(() => {
+          item.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }, 200);
+      });
     });
-  });
-
+  }
 
   popupApplyName.focus();
   popupApplyPhone.value = '+7 (';
