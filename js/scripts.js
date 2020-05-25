@@ -223,24 +223,12 @@ navLinks.forEach((item) => {
   });
 });
 
-// Хэндлим мобильное меню
-
-document.querySelector('.nav__burger').addEventListener('click', (event) => {
-  document.querySelector('.nav').classList.toggle('nav--open-menu');
-});
-
-document.querySelectorAll('.nav__item').forEach((item) => {
-  item.addEventListener('click', () => {
-    document.querySelector('.nav').classList.remove('nav--open-menu');
-  });
-});
-
 // Назначаем кнопки для скроллирования
 
 document.querySelector('.contacts__down').addEventListener('click', () => {
   document.querySelector('.intro').scrollIntoView({
     behavior: 'smooth'
-  })
+  });
 });
 
 document.querySelector('.footer__up').addEventListener('click', () => {
@@ -358,6 +346,34 @@ window.addEventListener('scroll', () => {
   } else {
     topBar.classList.remove('nav--sticky');
   }
+});
+
+// Хэндлим мобильное меню
+
+document.querySelector('.nav__burger').addEventListener('click', (event) => {
+  topBar.classList.toggle('nav--open-menu');
+});
+
+document.querySelectorAll('.nav__item').forEach((item) => {
+  item.addEventListener('click', () => {
+    topBar.classList.remove('nav--open-menu');
+  });
+});
+
+// Скроллим к секции по клику в меню
+
+navLinks.forEach((item) => {
+  item.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const sectionId = item.getAttribute('href');
+    const scrollAmount = document.querySelector(sectionId).offsetTop - topBar.offsetHeight;
+    
+    window.scrollTo({
+      top: scrollAmount,
+      behavior: 'smooth'
+    });
+  });
 });
 
 // Украшаем номер телефона в форме
