@@ -310,7 +310,6 @@ const openForm = form => {
 
   popupApply.querySelectorAll('.popup__input').forEach((item) => {
     item.addEventListener('focus', () => {
-      console.log('focus');
       setTimeout(() => {
         item.scrollIntoView({
           behavior: 'smooth'
