@@ -291,7 +291,11 @@ const popupApplyCancel = document.querySelector('#apply-cancel');
 const popupApplySubmit = document.querySelector('#apply-submit');
 const popupApplyName = document.querySelector('#apply-name');
 const popupApplyPhone = document.querySelector('#apply-phone');
-const popupApplyTerms = document.querySelector('#apply-accept-terms')
+const popupApplyTerms = document.querySelector('#apply-accept-terms');
+
+const userAgent = navigator.userAgent;
+const iOS = /iPad|iPhone|iPod/.test(userAgent);
+const iOS11 = /OS 11_0|OS 11_1|OS 11_2/.test(userAgent);
 
 const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 
@@ -299,6 +303,22 @@ const openForm = form => {
   document.body.classList.add('no-scroll');
   document.querySelector('html').classList.add('no-scroll');
   form.classList.add('popup--shown');
+
+  if (iOS && iOS11) {
+    document.body.classList.add('no-scroll-ios');
+  }
+
+  popupApply.querySelectorAll('.popup__input').forEach((item) => {
+    item.addEventListener('focus', () => {
+      console.log('focus');
+      setTimeout(() => {
+        item.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }, 200);
+    });
+  });
+
 
   popupApplyName.focus();
   popupApplyPhone.value = '+7 (';
@@ -314,6 +334,7 @@ const openForm = form => {
 
 const closeForm = form => {
   document.body.classList.remove('no-scroll');
+  document.body.classList.remove('no-scroll-ios');
   document.querySelector('html').classList.remove('no-scroll');
   form.classList.remove('popup--shown');
 };
@@ -368,7 +389,7 @@ navLinks.forEach((item) => {
 
     const sectionId = item.getAttribute('href');
     const scrollAmount = document.querySelector(sectionId).offsetTop - topBar.offsetHeight;
-    
+
     window.scrollTo({
       top: scrollAmount,
       behavior: 'smooth'

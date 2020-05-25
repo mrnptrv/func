@@ -81,6 +81,11 @@ blockquote {
   margin: 0;
 }
 
+input,
+textarea {
+  -webkit-appearance: none;
+}
+
 input[type="text"],
 input[type="tel"],
 textarea {
@@ -288,6 +293,11 @@ body {
 
 .no-scroll {
   overflow: hidden;
+}
+
+.no-scroll-ios {
+  position: fixed;
+  width: 100%;
 }
 
 /* responsive */
