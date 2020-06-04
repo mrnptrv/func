@@ -216,7 +216,7 @@ body {
 }
 
 .button svg {
-  stroke: #ffffff;
+  fill: #ffffff;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -240,7 +240,7 @@ body {
 }
 
 .button--secondary svg {
-  stroke: #333333;
+  fill: #333333;
 }
 
 .circle-button {
