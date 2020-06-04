@@ -202,6 +202,7 @@
   min-height: 0;
   padding: 28px 24px;
   background-color: #ffffff;
+  transition: opacity 0.25s ease-out;
 }
 
 .amenities__item::before {
@@ -212,7 +213,7 @@
   width: 100%;
   height: 100%;
   box-shadow: 0 4px 10px 0 rgba(51, 51, 51, 0.03);
-  transition: box-shadow 0.35s ease-in;
+  transition: box-shadow 0.25s ease-out;
 }
 
 .amenities__item--highlighted::before {

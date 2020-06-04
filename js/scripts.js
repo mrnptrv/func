@@ -247,6 +247,7 @@ const amenities = document.querySelectorAll('.amenities__item');
 categories.forEach((item) => {
   item.addEventListener('mouseover', (event) => {
     const filteredAmenities = Array.from(amenities).filter(item => item.dataset.category.includes(event.target.dataset.id));
+    const restAmenities = Array.from(amenities).filter(item => !(item.dataset.category.includes(event.target.dataset.id)));
 
     categories.forEach((item) => {
       item.style.opacity = '0.5';
@@ -255,6 +256,7 @@ categories.forEach((item) => {
     item.style.opacity = '1';
 
     filteredAmenities.map(item => item.classList.add('amenities__item--highlighted'));
+    restAmenities.map(item => item.style.opacity = '0.7');
 
     event.target.addEventListener('mouseout', () => {
       categories.forEach((item) => {
@@ -262,6 +264,7 @@ categories.forEach((item) => {
       });
 
       filteredAmenities.map(item => item.classList.remove('amenities__item--highlighted'));
+      restAmenities.map(item => item.style.opacity = '1');
     });
   });
 });
