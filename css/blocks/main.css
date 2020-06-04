@@ -846,16 +846,20 @@
     flex-direction: row;
     align-items: flex-start;
     padding: 0;
+    background-color: rgba(255, 255, 255, 0);
     border: 0;
   }
 
+  .amenities__item::before {
+    display: none;
+  }
+
   .amenities__pic {
-    margin-bottom: 0;
     margin-right: 20px;
   }
 
   .amenities__text {
-    margin-top: 0;
+    margin-top: -4px;
   }
 
   .events__slider .events__track {
