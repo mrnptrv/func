@@ -246,6 +246,7 @@ const amenities = document.querySelectorAll('.amenities__item');
 
 categories.forEach((item) => {
   item.addEventListener('mouseover', (event) => {
+
     const filteredAmenities = Array.from(amenities).filter(item => item.dataset.category.includes(event.target.dataset.id));
     const restAmenities = Array.from(amenities).filter(item => !(item.dataset.category.includes(event.target.dataset.id)));
 
