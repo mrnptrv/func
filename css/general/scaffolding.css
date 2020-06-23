@@ -276,6 +276,7 @@ body {
 
 .slider-control:disabled {
   opacity: 0.1;
+  cursor: default;
 }
 
 .slider-control svg {

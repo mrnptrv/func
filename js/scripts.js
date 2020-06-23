@@ -56,7 +56,7 @@ roomsSlider.mount();
 
 const eventsSlider = new Glide('.events__slider', {
   type: 'slider',
-  rewind: false,
+  rewind: true,
   perView: 2,
   bound: true,
   peek: {
@@ -87,13 +87,9 @@ eventsSlider.on(['mount.after', 'run'], () => {
   let index = eventsSlider.index;
   const slider = document.querySelector('.events__slider');
   const slides = document.querySelectorAll('.events__slide');
-  const leftArrow = slider.querySelector('.slider-control--left');
-  const rightArrow = slider.querySelector('.slider-control--right');
 
   document.querySelector('#events-slider-index').innerHTML = index + 1;
   document.querySelector('#events-slider-total').innerHTML = slides.length;
-
-  assignDisabledArrowButton(eventsSlider, slides.length, leftArrow, rightArrow);
 });
 
 eventsSlider.mount();
@@ -101,11 +97,13 @@ eventsSlider.mount();
 // Всплывающий слайдер в разделе "События"
 
 document.querySelectorAll('.events__slide').forEach((item, index) => {
-  item.addEventListener('click', (event) => {
-    const eventCaption = item.querySelector('.events__caption span').innerText;
-    const eventPics = document.querySelector('#popup-slider-event-' + (index + 1)).content;
-    const popupSlider = document.querySelector('.popup-slider');
+  const eventCaption = item.querySelector('.events__caption span').innerText;
+  const eventPics = document.querySelector('#popup-slider-event-' + (index + 1)).content;
+  const popupSlider = document.querySelector('.popup-slider');
 
+  item.querySelector('.events__tag--pics').innerText = eventPics.children.length;
+
+  item.addEventListener('click', (event) => {
     const closePopupSlider = () => {
       popupSlider.classList.remove('popup-slider--shown');
       document.querySelector('.popup-slider__list').innerHTML = '';
@@ -139,10 +137,20 @@ document.querySelectorAll('.events__slide').forEach((item, index) => {
       let index = eventsPopupSlider.index;
       const slider = document.querySelector('.popup-slider__wrapper');
       const slides = document.querySelectorAll('.popup-slider__pic');
-      const cloneSlides = slider.querySelectorAll('.glide__slide--clone');
+      const arrows = slider.querySelectorAll('.slider-control');
 
       document.querySelector('#popup-slider-index').innerHTML = index + 1;
-      document.querySelector('#popup-slider-total').innerHTML = slides.length - cloneSlides.length;
+      document.querySelector('#popup-slider-total').innerHTML = slides.length;
+
+      if (slides.length === 1) {
+        arrows.forEach((item) => {
+          item.disabled = true;
+        });
+      } else {
+        arrows.forEach((item) => {
+          item.disabled = false;
+        });
+      }
     });
 
     eventsPopupSlider.mount();

@@ -532,7 +532,7 @@
               <ul class="events__slides-list list">
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-1.jpg" width="496" height="396" alt="">
+                    <img class="events__pic" src="img/work/events-work-1.jpg" width="496" height="396" alt="">
                     <figcaption class="events__caption">
                       <span>Рабочая атмосфера</span>
                     </figcaption>
@@ -544,7 +544,7 @@
                 </li>
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
+                    <img class="events__pic" src="img/meetings/events-meetings-1.jpg" width="496" height="396" alt="">
                     <figcaption class="events__caption">
                       <span>Общение и переговоры</span>
                     </figcaption>
@@ -556,7 +556,7 @@
                 </li>
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-3.jpg" width="496" height="396" alt="">
+                    <img class="events__pic" src="img/parties/events-parties-4.jpg" width="496" height="396" alt="">
                     <figcaption class="events__caption">
                       <span>Тусовки и ивенты</span>
                     </figcaption>
@@ -568,14 +568,14 @@
                 </li>
                 <li class="events__slide">
                   <figure class="events__pic-wrapper">
-                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
+                    <img class="events__pic" src="img/func-hall.jpg" width="496" height="396" alt="">
                     <figcaption class="events__caption">
-                      <span>Как мы изолировались 2020: карантин, коронавирус, удалёнка и всё такое прочее</span>
+                      <span>Кафетерий</span>
                     </figcaption>
                   </figure>
                   <div class="events__content">
-                    <span class="events__tag">Кафетерий</span>
-                    <span class="events__tag events__tag--pics">2</span>
+                    <span class="events__tag">Отдых</span>
+                    <span class="events__tag events__tag--pics">1</span>
                   </div>
                 </li>
               </ul>
@@ -1008,6 +1008,8 @@
       </div>
     </div>
 
+    <!-- Контент для всплывающих слайдеров в разделе "События" -->
+
     <template id="popup-slider-event-1">
       <img class="popup-slider__pic" src="img/work/events-work-1.jpg" width="1120" height="640" alt="">
       <img class="popup-slider__pic" src="img/work/events-work-2.jpg" width="1120" height="640" alt="">
@@ -1038,7 +1040,9 @@
     </template>
 
     <template id="popup-slider-event-4">
-      <img class="popup-slider__pic" src="img/parties/events-parties-1.jpg" width="1120" height="640" alt="">
+      <video class="popup-slider__pic" width="1120" height="640" preload="metadata" autoplay muted loop>
+        <source src="movies/func-hall-360.mp4" type="video/mp4">
+      </video>
     </template>
 
     <script src="https://unpkg.com/@glidejs/glide"></script>
