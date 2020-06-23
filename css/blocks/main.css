@@ -242,6 +242,7 @@
 /* MAIN -> events */
 
 .events {
+  padding-bottom: 0;
   z-index: 2;
 }
 
@@ -271,6 +272,12 @@
   height: 396px;
   margin-right: 24px;
   background-color: #333333;
+  transition: box-shadow 0.2s ease-out;
+  cursor: pointer;
+}
+
+.events__slide:hover {
+  box-shadow: 0px 15px 40px rgba(15, 15, 21, 0.1);
 }
 
 .events__content {
@@ -624,6 +631,7 @@
 .guide__pic {
   flex-shrink: 0;
   width: 520px;
+  max-width: 100%;
   margin-right: 104px;
 }
 

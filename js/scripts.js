@@ -52,6 +52,107 @@ roomsSlider.on(['mount.after', 'run'], () => {
 
 roomsSlider.mount();
 
+// Слайдер в разделе "События"
+
+const eventsSlider = new Glide('.events__slider', {
+  type: 'slider',
+  rewind: false,
+  perView: 2,
+  bound: true,
+  peek: {
+    before: 0,
+    after: 120
+  },
+  gap: 24,
+  breakpoints: {
+    959: {
+      peek: 0
+    },
+    767: {
+      perView: 1,
+      peek: {
+        before: 0,
+        after: 120
+      }
+    },
+    519: {
+      perView: 1,
+      peek: 0,
+      gap: 0
+    }
+  }
+});
+
+eventsSlider.on(['mount.after', 'run'], () => {
+  let index = eventsSlider.index;
+  const slider = document.querySelector('.events__slider');
+  const slides = document.querySelectorAll('.events__slide');
+  const leftArrow = slider.querySelector('.slider-control--left');
+  const rightArrow = slider.querySelector('.slider-control--right');
+
+  document.querySelector('#events-slider-index').innerHTML = index + 1;
+  document.querySelector('#events-slider-total').innerHTML = slides.length;
+
+  assignDisabledArrowButton(eventsSlider, slides.length, leftArrow, rightArrow);
+});
+
+eventsSlider.mount();
+
+// Всплывающий слайдер в разделе "События"
+
+document.querySelectorAll('.events__slide').forEach((item, index) => {
+  item.addEventListener('click', (event) => {
+    const eventCaption = item.querySelector('.events__caption span').innerText;
+    const eventPics = document.querySelector('#popup-slider-event-' + (index + 1)).content;
+    const popupSlider = document.querySelector('.popup-slider');
+
+    const closePopupSlider = () => {
+      popupSlider.classList.remove('popup-slider--shown');
+      document.querySelector('.popup-slider__list').innerHTML = '';
+      document.body.classList.remove('no-scroll');
+    };
+
+    popupSlider.classList.add('popup-slider--shown');
+    document.querySelector('.popup-slider__headline').innerText = eventCaption;
+    document.querySelector('.popup-slider__list').appendChild(eventPics.cloneNode(true));
+    document.body.classList.add('no-scroll');
+
+    const eventsPopupSlider = new Glide('.popup-slider__wrapper', {
+      type: 'slider',
+      rewind: true,
+      perView: 1,
+      bound: true,
+      peek: {
+        before: 0,
+        after: 125
+      },
+      gap: 24,
+      breakpoints: {
+        959: {
+          peek: 0,
+          gap: 0
+        }
+      }
+    });
+
+    eventsPopupSlider.on(['mount.after', 'run'], () => {
+      let index = eventsPopupSlider.index;
+      const slider = document.querySelector('.popup-slider__wrapper');
+      const slides = document.querySelectorAll('.popup-slider__pic');
+      const cloneSlides = slider.querySelectorAll('.glide__slide--clone');
+
+      document.querySelector('#popup-slider-index').innerHTML = index + 1;
+      document.querySelector('#popup-slider-total').innerHTML = slides.length - cloneSlides.length;
+    });
+
+    eventsPopupSlider.mount();
+
+    document.querySelector('.popup-slider__close').addEventListener('click', () => {
+      closePopupSlider();
+    });
+  });
+});
+
 // Слайдер в разделе "ИТ-тусовки"
 
 const organizeSlider = new Glide('.organize__slider', {

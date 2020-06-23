@@ -27,7 +27,7 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <title>Fun(c) &mdash; современный коворкинг в Ижевске</title>
-	
+
 	<!-- Facebook Pixel Code -->
 	<script>
 	  !function(f,b,e,v,n,t,s)
@@ -243,7 +243,7 @@
             fill="#F06724"/>
         </symbol>
         <symbol id="x" viewBox="0 0 16 16" fill="none">
-          <path d="M2.5 2.5L13.5 13.5M13.5 2.5L2.5 13.5" stroke="#333333" stroke-width="2"/>
+          <path d="M2.5 2.5L13.5 13.5M13.5 2.5L2.5 13.5" stroke-width="2"/>
         </symbol>
         <symbol id="yummies" viewBox="0 0 23 20" fill="none">
           <rect x="1" y="18" width="18" height="2" fill="#F06724"/>
@@ -527,6 +527,79 @@
         <section class="section overlayed events" id="events" role="region">
           <h2 class="events__headline headline">fun<i>(</i>c<i>)</i> — это не просто набор услуг, а свои люди и атмосфера развития</h2>
           <p class="events__text text">Мы создали коворкинг как центр притяжения ИТ-тусовки, а также дизайнеров, маркетологов, верстальщиков, копирайтеров и людей, работающих с цифровыми технологиями. В нашем коворкинге вы будете среди «своих».</p>
+          <div class="events__slider glide">
+            <div class="events__track" data-glide-el="track">
+              <ul class="events__slides-list list">
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-1.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">
+                      <span>Рабочая атмосфера</span>
+                    </figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Работа</span>
+                    <span class="events__tag events__tag--pics">7</span>
+                  </div>
+                </li>
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">
+                      <span>Общение и переговоры</span>
+                    </figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Работа</span>
+                    <span class="events__tag events__tag--pics">7</span>
+                  </div>
+                </li>
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-3.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">
+                      <span>Тусовки и ивенты</span>
+                    </figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Вечеринки</span>
+                    <span class="events__tag events__tag--pics">6</span>
+                  </div>
+                </li>
+                <li class="events__slide">
+                  <figure class="events__pic-wrapper">
+                    <img class="events__pic" src="img/event-2.jpg" width="496" height="396" alt="">
+                    <figcaption class="events__caption">
+                      <span>Как мы изолировались 2020: карантин, коронавирус, удалёнка и всё такое прочее</span>
+                    </figcaption>
+                  </figure>
+                  <div class="events__content">
+                    <span class="events__tag">Кафетерий</span>
+                    <span class="events__tag events__tag--pics">2</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="events__footer slider-footer">
+              <p class="slider-footer__counter">
+                <span class="slider-footer__index" id="events-slider-index">1</span>/<span id="events-slider-total">5</span>
+              </p>
+              <p class="slider-footer__controls" data-glide-el="controls">
+                <button class="slider-footer__arrow slider-control slider-control--left unbutton" data-glide-dir="<">
+                  <span class="visually-hidden">Листать назад</span>
+                  <svg width="16" height="16">
+                    <use xlink:href="#arrow-left"></use>
+                  </svg>
+                </button>
+                <button class="slider-footer__arrow slider-control slider-control--right unbutton" data-glide-dir=">">
+                  <svg width="16" height="16">
+                    <use xlink:href="#arrow-right"></use>
+                  </svg>
+                  <span class="visually-hidden">Листать вперёд</span>
+                </button>
+              </p>
+            </div>
+          </div>
         </section>
 
         <section class="section organize">
@@ -895,6 +968,78 @@
         </div>
       </form>
     </div>
+
+    <div class="popup-slider">
+      <div class="popup-slider__container container">
+        <div class="popup-slider__top">
+          <h2 class="popup-slider__headline">Большой frontend meetup</h2>
+          <button class="popup-slider__close unbutton" id="slider-close" type="button">
+            <span class="visually-hidden">Закрыть слайдер</span>
+            <svg width="16" height="16">
+              <use xlink:href="#x"></use>
+            </svg>
+          </button>
+        </div>
+        <div class="popup-slider__wrapper glide">
+          <div class="popup-slider__track" data-glide-el="track">
+            <div class="popup-slider__list list">
+            </div>
+          </div>
+          <div class="popup-slider__footer slider-footer">
+            <p class="slider-footer__counter">
+              <span class="slider-footer__index" id="popup-slider-index">1</span>/<span id="popup-slider-total">5</span>
+            </p>
+            <p class="slider-footer__controls" data-glide-el="controls">
+              <button class="slider-footer__arrow slider-control slider-control--left unbutton" data-glide-dir="<">
+                <span class="visually-hidden">Листать назад</span>
+                <svg width="16" height="16">
+                  <use xlink:href="#arrow-left"></use>
+                </svg>
+              </button>
+              <button class="slider-footer__arrow slider-control slider-control--right unbutton" data-glide-dir=">">
+                <svg width="16" height="16">
+                  <use xlink:href="#arrow-right"></use>
+                </svg>
+                <span class="visually-hidden">Листать вперёд</span>
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <template id="popup-slider-event-1">
+      <img class="popup-slider__pic" src="img/work/events-work-1.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/work/events-work-2.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/work/events-work-3.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/work/events-work-4.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/work/events-work-5.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/work/events-work-6.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/work/events-work-7.jpg" width="1120" height="640" alt="">
+    </template>
+
+    <template id="popup-slider-event-2">
+      <img class="popup-slider__pic" src="img/meetings/events-meetings-1.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/meetings/events-meetings-2.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/meetings/events-meetings-3.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/meetings/events-meetings-4.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/meetings/events-meetings-5.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/meetings/events-meetings-6.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/meetings/events-meetings-7.jpg" width="1120" height="640" alt="">
+    </template>
+
+    <template id="popup-slider-event-3">
+      <img class="popup-slider__pic" src="img/parties/events-parties-1.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/parties/events-parties-2.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/parties/events-parties-3.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/parties/events-parties-4.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/parties/events-parties-5.jpg" width="1120" height="640" alt="">
+      <img class="popup-slider__pic" src="img/parties/events-parties-6.jpg" width="1120" height="640" alt="">
+    </template>
+
+    <template id="popup-slider-event-4">
+      <img class="popup-slider__pic" src="img/parties/events-parties-1.jpg" width="1120" height="640" alt="">
+    </template>
 
     <script src="https://unpkg.com/@glidejs/glide"></script>
     <script src="js/scripts.js"></script>
