@@ -326,7 +326,6 @@
 }
 
 .popup-slider__wrapper {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
@@ -363,6 +362,10 @@
   .popup-slider__headline {
     font-size: 16px;
     line-height: 26px;
+  }
+
+  .popup-slider__wrapper {
+    flex-grow: 1;
   }
 
   .popup-slider__track {
