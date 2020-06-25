@@ -108,6 +108,13 @@ document.querySelectorAll('.events__slide').forEach((item, index) => {
       popupSlider.classList.remove('popup-slider--shown');
       document.querySelector('.popup-slider__list').innerHTML = '';
       document.body.classList.remove('no-scroll');
+      document.removeEventListener('keyup', closePopupSliderOnEscape);
+    };
+
+    const closePopupSliderOnEscape = event => {
+      if (event.keyCode === 27) {
+        closePopupSlider();
+      }
     };
 
     popupSlider.classList.add('popup-slider--shown');
@@ -158,6 +165,8 @@ document.querySelectorAll('.events__slide').forEach((item, index) => {
     document.querySelector('.popup-slider__close').addEventListener('click', () => {
       closePopupSlider();
     });
+
+    document.addEventListener('keyup', closePopupSliderOnEscape);
   });
 });
 
@@ -451,6 +460,13 @@ const closeForm = form => {
   document.body.classList.remove('no-scroll-ios');
   document.querySelector('html').classList.remove('no-scroll');
   form.classList.remove('popup--shown');
+  document.removeEventListener('keyup', closeFormOnEscape);
+};
+
+const closeFormOnEscape = event => {
+  if (event.keyCode === 27) {
+    closeForm(popupApply);
+  }
 };
 
 document.querySelectorAll('.apply-button').forEach((item) => {
@@ -468,6 +484,8 @@ document.querySelectorAll('.apply-button').forEach((item) => {
         closeForm(popupApply);
       });
     });
+
+    document.addEventListener('keyup', closeFormOnEscape);
   });
 });
 
