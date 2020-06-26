@@ -338,6 +338,14 @@
   width: 1120px;
   height: 640px;
   object-fit: cover;
+  background-color: rebeccapurple;
+}
+
+video.popup-slider__pic {
+  background-image: url('../../img/func-hall.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .popup-slider .slider-footer__counter {
@@ -404,5 +412,9 @@
   .popup-slider__pic {
     height: 320px;
     max-height: 100%;
+  }
+
+  video.popup-slider__pic source {
+    display: none;
   }
 }
