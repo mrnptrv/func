@@ -473,10 +473,16 @@ document.querySelectorAll('.apply-button').forEach((item) => {
   item.addEventListener('click', () => {
     openForm(popupApply);
 
+	document.querySelector('#apply-goal').value = 'general';
+    document.querySelector('.popup__subtitle').innerText = ' ';
     if (item.dataset.goal === 'try') {
       document.querySelector('.popup__headline').innerText = 'Запишись на экскурсию';
+    } else if (item.dataset.goal === 'demo') {
+      document.querySelector('.popup__headline').innerText = 'Запишись на демо-день';
+	  document.querySelector('.popup__subtitle').innerText = 'стоимость демо-дня 100 руб';
+	  document.querySelector('#apply-goal').value = 'demo';
     } else {
-      document.querySelector('.popup__headline').innerText = 'Оставь заявку';
+      document.querySelector('.popup__headline').innerText =  'Оставь заявку';
     }
 
     applyFormCloseElements.forEach((item) => {
