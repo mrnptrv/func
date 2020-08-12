@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="fonts/inter-variable.woff2" as="font">
+    <link rel="stylesheet" href="https://s.pageclip.co/v1/pageclip.css" media="screen">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=e6088de5-1948-4cf8-a851-7d091ae279ce&lang=ru_RU" type="text/javascript"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="datepicker/datepicker.css">
+    <script src="datepicker/datepicker.js"></script>
+    <title>Fun(c) &mdash; современный коворкинг в Ижевске</title>
+  </head>
+
+  <body class="inner">
+
+    <header class="page-header">
+      <nav class="page-header__nav nav nav--sticky" role="navigation">
+        <div class="nav__container container">
+          <img class="nav__logo" src="img/logo.svg" width="104" height="29" alt="Func">
+          <ul class="nav__menu list">
+            <li class="nav__item nav__item--button">
+              <button class="nav__button button apply-button unbutton" type="button" data-goal="try">
+                <span>Запишись на экскурсию</span>
+                <svg width="20" height="16">
+                  <use xlink:href="#long-arrow-right"></use>
+                </svg>
+              </button>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#intro">О нас</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#func-rooms">Пространства</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#prices">Тарифы</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#events">События</a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="#contacts">Контакты</a>
+            </li>
+          </ul>
+          <button class="nav__burger unbutton" type="button">
+            <span class="visually-hidden">Открыть меню</span>
+            <span class="nav__line"></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="page-main" role="main">
+      <div class="page-main__container container">
+
+        <section class="top">
+          <h1 class="top__headline headline">Аренда переговорных комнат</h1>
+          <p class="top__text text">Переговорные комнаты арендуются и оплачиваются за час нерезидентами коворкинга. Резиденты же fun(c) имеют безлимитный доступ ко всем переговоркам. Поэтому иногда выгоднее купить день в коворкинге за 500 руб и сесть в переговорку. День в коворкинге, кроме переговорок, включает бесплатный кофе/снеки, пользование кафетерием, не фиксированное рабочее место, спортзал, душевые.</p>
+          <div class="top__filters">
+            <p class="top__group group">
+              <input class="top__input top__input--select input input--select" id="filter-date" type="text" autocomplete="off">
+              <label class="top__label label" for="filter-date">Дата</label>
+            </p>
+            <p class="top__group group">
+              <select class="top__input top__input--select input input--select" id="filter-people">
+                <option value="all">Все переговорки</option>
+                <option value="6-">До 6 человек</option>
+                <option value="10-">До 10 человек</option>
+                <option value="10+">От 10 человек</option>
+              </select>
+              <label class="top__label label" for="filter-people">Количество людей</label>
+            </p>
+          </div>
+        </section>
+
+        <article class="space" role="article">
+          <div class="space__info">
+            <div class="space__slider"></div>
+            <div class="space__description">
+              <h2 class="space__headline headline">Metallica</h2>
+            </div>
+          </div>
+          <ul class="space__list list">
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="08">08:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="09">09:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="10" disabled>10:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="11">11:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="12">12:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="13">13:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="14">14:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="15">15:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="16">16:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="17">17:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="18">18:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="19">19:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="20">20:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="21">21:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="22">22:00</button>
+            </li>
+            <li class="space__item">
+              <button class="space__time-option unbutton" data-time-value="23">23:00</button>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </main>
+
+    <div class="popup popup--shown">
+      <div class="popup__backdrop"></div>
+      <form class="popup__form pageclip-form" id="apply-form" action="https://send.pageclip.co/lIOU7euBRxRAWiYxGv05fe5Ow3pHu2Gw" method="post">
+        <div class="popup__top">
+          <h2 class="popup__headline">Бронирование</h2>
+          <button class="popup__close unbutton" id="apply-close" type="button">
+            <span class="visually-hidden">Закрыть модальное окно</span>
+            <svg viewBox="0 0 16 16" width="16" height="16">
+              <path d="M2.5 2.5L13.5 13.5M13.5 2.5L2.5 13.5" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+        <div class="popup__info">
+          <div class="popup__summary">
+            <img class="popup__pic" src="img/rooms/rooms-metallica-1.jpg" width="65" height="44" alt="">
+            <div class="popup__description">
+              <p class="popup__accent">Metallica</p>
+              <p class="popup__text">11 Сентября, 2020, 09:00</p>
+            </div>
+            <div class="popup__price">
+              <p class="popup__text">К оплате:</p>
+              <p class="popup__accent">400₽</p>
+            </div>
+          </div>
+          <div class="popup__selects">
+            <p class="popup__group group">
+              <input class="popup__input top__input--select input input--select" id="popup-date" type="text" autocomplete="off">
+              <label class="popup__label label" for="popup-date">Дата</label>
+            </p>
+            <p class="popup__group group">
+              <select class="popup__input popup__input--select input input--select" id="popup-time">
+                <option value="09">09:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15" disabled>15:00</option>
+                <option value="16" disabled>16:00</option>
+              </select>
+              <label class="popup__label label" for="popup-start-time">Начало аренды</label>
+            </p>
+            <p class="popup__group group">
+              <input class="popup__input input" id="popup-hours" type="number" value="1">
+              <label class="popup__label label" for="popup-hours">Количество часов</label>
+            </p>
+          </div>
+        </div>
+        <div class="popup__content">
+          <h2 class="popup__headline">Контактные данные</h2>
+          <div class="popup__wrapper">
+            <p class="popup__group group">
+              <input class="popup__input input" id="apply-name" name="apply-name" type="text" placeholder="&nbsp;" required>
+              <label class="popup__label label" for="apply-name">Имя</label>
+            </p>
+            <p class="popup__group group">
+              <input class="popup__input input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;" maxlength="18" required>
+              <label class="popup__label label" for="apply-phone">Номер телефона</label>
+            </p>
+            <p class="popup__group popup__group--message group group--message">
+              <textarea class="popup__input input input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;" required></textarea>
+              <label class="popup__label label" for="apply-email">Текст сообщения</label>
+            </p>
+            <p class="popup__footer">
+              <input class="popup__checkmark visually-hidden" id="apply-accept-terms" name="apply-accept-terms" type="checkbox" required>
+              <label class="popup__checkmark-label" for="apply-accept-terms">Я принимаю <a href="docs/personal-data-terms.pdf" title="Обработка персональных данных (PDF)" target="_blank">условия обработки персональных&nbsp;данных</a></label>
+            </p>
+            <p class="popup__actions">
+              <button class="popup__button button button--secondary unbutton" id="apply-cancel" type="button">
+                <span>Отмена</span>
+                <svg width="20" height="16">
+                  <use xlink:href="#long-arrow-right"></use>
+                </svg>
+              </button>
+              <button class="popup__button pageclip-form__submit button unbutton" id="apply-submit" type="submit" disabled>
+                <span>Отправить</span>
+                <svg width="20" height="16">
+                  <use xlink:href="#long-arrow-right"></use>
+                </svg>
+              </button>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script>
+    pickmeup('#filter-date', {
+      position: 'bottom',
+    	format: 'd B, Y',
+      hide_on_select: true,
+      locale: 'ru'
+    });
+
+    pickmeup('#popup-date', {
+      position: 'bottom',
+    	format: 'd B, Y',
+      hide_on_select: true,
+      locale: 'ru'
+    });
+    </script>
+
+  </body>
+</html>

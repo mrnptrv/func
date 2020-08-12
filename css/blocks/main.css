@@ -4,6 +4,11 @@
   background-color: #f9f9f9;
 }
 
+.inner .page-main {
+  padding-top: 88px;
+  background-color: #ffffff;
+}
+
 /* MAIN -> intro */
 
 .intro__headline {

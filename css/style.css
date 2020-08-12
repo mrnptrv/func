@@ -6,4 +6,6 @@
 @import "blocks/header.css";
 @import "blocks/main.css";
 @import "blocks/footer.css";
+@import "blocks/top.css";
+@import "blocks/space.css";
 @import "blocks/popups.css";
