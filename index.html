@@ -1057,10 +1057,10 @@
     const checkThankYouMessage = () => {
       if (document.querySelector('.pageclip-form__success')) {
         window.location.hash = 'spasibo';
-        clearInterval(checkEachSecond);
+        clearInterval(checkEveryMoment);
       }
     };
-    const checkEachSecond = setInterval(checkThankYouMessage, 1000);
+    const checkEveryMoment = setInterval(checkThankYouMessage, 100);
 
     Pageclip.form(form, {
       onSubmit: function (event) {
