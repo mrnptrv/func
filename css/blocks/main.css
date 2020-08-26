@@ -5,7 +5,7 @@
 }
 
 .inner .page-main {
-  padding-top: 88px;
+  padding: 88px 0;
   background-color: #ffffff;
 }
 
@@ -67,17 +67,6 @@
   position: relative;
   overflow: visible;
 }
-
-/* .rooms__track::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 100%;
-  bottom: 0;
-  width: 100vw;
-  background-color: #ffffff;
-  z-index: 1;
-} */
 
 .rooms__slides-list {
   display: flex;
@@ -834,6 +823,10 @@
 }
 
 @media (max-width: 959px) {
+  .inner .page-main {
+    padding: 64px 0;
+  }
+
   .intro__headline {
     max-width: 490px;
   }
@@ -1049,6 +1042,10 @@
 }
 
 @media (max-width: 666px) {
+  .inner .page-main {
+    padding: 64px 0 0;
+  }
+
   .intro__content {
     flex-direction: column;
   }

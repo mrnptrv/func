@@ -5,10 +5,32 @@
 .top__filters {
   display: flex;
   flex-wrap: wrap;
+  margin-top: 56px;
 }
 
 .top__group {
   width: 392px;
-  max-width: 100%;
+  max-width: calc((100% - var(--basic-gap)) / 2);
   margin-right: var(--basic-gap);
+}
+
+.top__group:last-of-type {
+  margin: 0;
+}
+
+/* responsive */
+
+@media (max-width: 666px) {
+  .top {
+    padding: 32px 0;
+  }
+
+  .top__filters {
+    margin-top: 32px;
+  }
+
+  .top__group {
+    max-width: 100%;
+    margin: 0 0 16px;
+  }
 }

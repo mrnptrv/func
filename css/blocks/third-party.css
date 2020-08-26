@@ -1,0 +1,172 @@
+/* PAGECLIP */
+
+.pageclip-form__success {
+  background-color: #ffffff;
+}
+
+/* PICKMEUP */
+
+.pickmeup {
+  margin-top: 16px;
+  font-family: inherit;
+  color: inherit;
+  background-color: #ffffff;
+  border: 1px solid rgba(51, 51, 51, 0.06);
+  border-radius: 0;
+  box-shadow: 0 25px 40px 0 rgba(15, 15, 21, 0.1);
+  z-index: 32;
+}
+
+.pickmeup .pmu-instance {
+  width: 288px;
+  max-width: 100%;
+  height: auto;
+  padding: 0;
+}
+
+.pickmeup .pmu-instance nav {
+  justify-content: space-between;
+  padding: 16px 16px;
+  line-height: 1em;
+}
+
+.pickmeup .pmu-instance nav,
+.pickmeup .pmu-instance .pmu-button {
+  color: inherit;
+}
+
+.pickmeup .pmu-days .pmu-button,
+.pickmeup .pmu-months .pmu-button {
+  border-radius: 50%;
+  transition: all 0.2s ease-in;
+}
+
+.pickmeup .pmu-instance .pmu-not-in-month {
+  opacity: 0.4;
+}
+
+.pickmeup .pmu-days .date-in-past {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.pickmeup .pmu-instance .pmu-today {
+  color: var(--feature-color);
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.pickmeup .pmu-days .pmu-button:hover,
+.pickmeup .pmu-months .pmu-button:hover,
+.pickmeup .pmu-instance .pmu-selected {
+  color: #ffffff;
+  background: var(--feature-color);
+  opacity: 1;
+}
+
+.pickmeup .pmu-instance nav:not(.pmu-day-of-week) {
+  border-bottom: 1px solid rgba(51, 51, 51, 0.06);
+}
+
+.pickmeup .pmu-instance nav .pmu-month {
+  width: auto;
+  margin: 0 12px;
+  opacity: 0.4;
+  transition: opacity 0.2s ease-in;
+}
+
+.pickmeup .pmu-instance nav .pmu-month:hover {
+  color: inherit;
+  opacity: 1;
+}
+
+.pickmeup .pmu-instance nav .pmu-prev,
+.pickmeup .pmu-instance nav .pmu-next {
+  display: block;
+  width: 16px;
+  height: 16px;
+  font-size: 0;
+  background-repeat: no-repeat;
+  background-size: 16px auto;
+  opacity: 0.2;
+  transition: opacity 0.2s ease-in;
+}
+
+.pickmeup .pmu-instance nav .pmu-prev:hover,
+.pickmeup .pmu-instance nav .pmu-next:hover {
+  opacity: 1;
+}
+
+.pickmeup .pmu-instance nav .pmu-prev,
+.pickmeup .pmu-instance nav .pmu-prev:hover {
+  background-image: url("../../img/icon-angle-arrow-right--gray.svg");
+  background-position: center;
+  transform: rotate(180deg);
+}
+
+.pickmeup .pmu-instance nav .pmu-next,
+.pickmeup .pmu-instance nav .pmu-next:hover {
+  background-image: url("../../img/icon-angle-arrow-right--gray.svg");
+  background-position: center;
+}
+
+.pickmeup .pmu-day-of-week,
+.pickmeup .pmu-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-column-gap: 16px;
+}
+
+.pickmeup .pmu-instance .pmu-day-of-week {
+  padding: 11px 12px 0;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  letter-spacing: 0.06em;
+  color: inherit;
+  text-transform: uppercase;
+}
+
+.pickmeup .pmu-instance .pmu-days {
+  margin-bottom: -4px;
+  padding: 0 12px;
+}
+
+.pickmeup .pmu-instance .pmu-day-of-week *,
+.pickmeup .pmu-instance .pmu-days * {
+  width: 24px;
+  margin-bottom: 16px;
+  padding: 0 2px;
+}
+
+.pickmeup .pmu-instance .pmu-days * {
+  font-size: 12px;
+  line-height: 24px;
+}
+
+.pickmeup .pmu-months,
+.pickmeup .pmu-years {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 12px 12px 0;
+}
+
+.pickmeup .pmu-months .pmu-button,
+.pickmeup .pmu-years .pmu-button {
+  justify-self: center;
+  height: auto;
+  margin-bottom: 12px;
+  font-size: 11px;
+  line-height: 14px;
+  text-transform: uppercase;
+  border-radius: 50%;
+}
+
+.pickmeup .pmu-months .pmu-button {
+  width: 44px;
+  padding: 15px 0;
+}
+
+.pickmeup .pmu-years .pmu-button {
+  width: 54px;
+  padding: 20px 0;
+}
