@@ -1054,6 +1054,14 @@
     <!-- Закрываем форму после успешной отправки данных -->
     <script>
     const form = document.querySelector('#apply-form');
+    const checkThankYouMessage = () => {
+      if (document.querySelector('.pageclip-form__success')) {
+        window.location.hash = 'spasibo';
+        clearInterval(checkEachSecond);
+      }
+    };
+    const checkEachSecond = setInterval(checkThankYouMessage, 1000);
+
     Pageclip.form(form, {
       onSubmit: function (event) {
         if (document.querySelector('.pageclip-form__success')) {
