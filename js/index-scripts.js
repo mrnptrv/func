@@ -427,6 +427,8 @@ const openForm = form => {
   document.querySelector('html').classList.add('no-scroll');
   form.classList.add('popup--shown');
 
+  window.location.hash = 'zapolnenie-formy';
+
   if (iOS && iOS11) {
     document.body.classList.add('no-scroll-ios');
   }
@@ -461,6 +463,7 @@ const closeForm = form => {
   document.querySelector('html').classList.remove('no-scroll');
   form.classList.remove('popup--shown');
   document.removeEventListener('keyup', closeFormOnEscape);
+  window.location.hash = '';
 };
 
 const closeFormOnEscape = event => {
