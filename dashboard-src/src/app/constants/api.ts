@@ -1,11 +1,31 @@
 import * as Cookies from "js-cookie";
-import {AuthAPIApi} from "../../api";
+import {AssetsApi, AuthAPIApi, BookingApi} from "../../api";
+
+const BASE_URL = "http://localhost/api"
 
 export const authApi = () => {
     let accessToken = getAccessToken()
 
     return new AuthAPIApi({
-        basePath: "http://localhost/api",
+        basePath: BASE_URL,
+        accessToken: accessToken
+    })
+}
+
+export const assetsApi = () => {
+    let accessToken = getAccessToken()
+
+    return new AssetsApi({
+        basePath: BASE_URL,
+        accessToken: accessToken
+    })
+}
+
+export const bookingApi = () => {
+    let accessToken = getAccessToken()
+
+    return new BookingApi({
+        basePath: BASE_URL,
         accessToken: accessToken
     })
 }

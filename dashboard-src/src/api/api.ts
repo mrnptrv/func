@@ -27,10 +27,22 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface Asset {
     /**
      * 
+     * @type {number}
+     * @memberof Asset
+     */
+    capacity: number;
+    /**
+     * 
      * @type {string}
      * @memberof Asset
      */
     description: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Asset
+     */
+    imageUrls: Array<string>;
     /**
      * 
      * @type {string}
@@ -168,10 +180,22 @@ export interface BookingRequest {
 export interface CreateAssetRequest {
     /**
      * 
+     * @type {number}
+     * @memberof CreateAssetRequest
+     */
+    capacity?: number;
+    /**
+     * 
      * @type {string}
      * @memberof CreateAssetRequest
      */
     description?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateAssetRequest
+     */
+    imageUrls?: Array<string>;
     /**
      * 
      * @type {string}
@@ -288,10 +312,22 @@ export interface RegisterRequest {
 export interface UpdateAssetRequest {
     /**
      * 
+     * @type {number}
+     * @memberof UpdateAssetRequest
+     */
+    capacity?: number;
+    /**
+     * 
      * @type {string}
      * @memberof UpdateAssetRequest
      */
     description?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UpdateAssetRequest
+     */
+    imageUrls?: Array<string>;
     /**
      * 
      * @type {string}
