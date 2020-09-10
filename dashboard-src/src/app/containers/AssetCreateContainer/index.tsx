@@ -7,7 +7,7 @@ import {assetsApi} from "app/constants/api";
 import {Asset, WorkTimeRange} from "../../../api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 
-const WORK_HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+const WORK_HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 class AssetCreateData {
     @observable error = ""
@@ -65,12 +65,19 @@ export class AssetCreateContainer extends React.Component<any, any> {
         this.data.asset.workTimeRanges.push({
             start: "00:00",
             end: "00:00",
-            price: "0.00"
+            price: "0.00",
+            isWeekend: false
         })
     }
 
     addImageUrl = () => {
         this.data.asset.imageUrls.push("")
+    }
+
+    private setWeekend(wtr: WorkTimeRange, isWeekend: boolean) {
+        return () => {
+            wtr.isWeekend = isWeekend
+        }
     }
 
     private setStartWorkTime(wtr: WorkTimeRange, h: number) {
@@ -106,7 +113,6 @@ export class AssetCreateContainer extends React.Component<any, any> {
 
                 <h4>New Asset</h4>
 
-                {/*<Form style={style.assetForm}>*/}
                 <Form>
                     <Form.Group>
                         <Form.Control
@@ -145,6 +151,18 @@ export class AssetCreateContainer extends React.Component<any, any> {
 
                         {this.data.asset.workTimeRanges.map(wtr =>
                             <InputGroup className="mb-3">
+                                <DropdownButton
+                                    as={InputGroup.Prepend}
+                                    variant="outline-secondary"
+                                    title={wtr.isWeekend ? "weekend " : "workday "}
+                                >
+                                    <Dropdown.Item onClick={this.setWeekend(wtr, false)}>
+                                        workday
+                                    </Dropdown.Item>
+                                    <Dropdown.Item onClick={this.setWeekend(wtr, true)}>
+                                        weekend
+                                    </Dropdown.Item>
+                                </DropdownButton>
                                 <DropdownButton
                                     as={InputGroup.Prepend}
                                     variant="outline-secondary"

@@ -83,7 +83,7 @@ const userAgent = navigator.userAgent;
 const iOS = /iPad|iPhone|iPod/.test(userAgent);
 const iOS11 = /OS 11_0|OS 11_1|OS 11_2/.test(userAgent);
 const android = /Android/.test(userAgent);
-
+in
 const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 
 const openForm = (form) => {

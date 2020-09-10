@@ -1,0 +1,4 @@
+runtime: python
+handlers:
+  - url: /
+    static_dir: ./

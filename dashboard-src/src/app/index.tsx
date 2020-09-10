@@ -14,11 +14,9 @@ export const App = hot(({history}) => {
     let api = authApi()
 
     api.getUsingGET1().then(() => {
-        // console.log('@@@ index.tsx -> access token valid -> 16');
         // history.push("/dashboard/list")
     }).catch(() => {
         history.push("/dashboard/login")
-        console.log('@@@ index.tsx -> access token invalid -> 18');
     })
 
     return (

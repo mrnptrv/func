@@ -32,7 +32,9 @@ export class AssetListContainer extends React.Component<any, any> {
         super(props, context);
 
         this.data.isLoading = true
-        assetsApi().listUsingGET().then((response) => {
+        assetsApi().assetsListUsingPOST({
+            capacityFilter: "all"
+        }).then((response) => {
             this.data.assets = response.data
             this.data.isLoading = false
         }).catch(error => {
