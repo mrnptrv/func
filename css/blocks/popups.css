@@ -344,6 +344,7 @@
 .popup-slider__pic {
   width: 1120px;
   height: 640px;
+  max-height: calc(100vh - 260px);
   object-fit: cover;
   background-color: rebeccapurple;
 }
@@ -389,6 +390,7 @@ video.popup-slider__pic {
 
   .popup-slider__pic {
     height: 500px;
+    max-height: calc(100vh - 140px);
   }
 }
 
@@ -418,7 +420,7 @@ video.popup-slider__pic {
 
   .popup-slider__pic {
     height: 320px;
-    max-height: 100%;
+    max-height: calc(100vh - 96px);
   }
 
   video.popup-slider__pic source {
