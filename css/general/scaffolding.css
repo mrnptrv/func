@@ -341,7 +341,8 @@ body {
   padding-right: 56px;
 }
 
-.input--select ~ svg {
+.input--select ~ svg,
+.react-datepicker-wrapper ~ svg {
   position: absolute;
   top: 0;
   right: 20px;
@@ -349,10 +350,7 @@ body {
   margin: auto 0;
   opacity: 0.4;
   transition: opacity 0.2s ease-in;
-}
-
-.input--select:focus ~ svg {
-  opacity: 1;
+  pointer-events: none;
 }
 
 .input--message {
@@ -383,7 +381,8 @@ body {
 
 .input:focus ~ .label,
 .input:not(:placeholder-shown) ~ .label,
-.input--select ~ .label {
+.input--select ~ .label,
+.react-datepicker-wrapper ~ .label {
   color: rgba(51, 51, 51, 0.6);
   transform: scale(0.9) translateY(-12px);
 }

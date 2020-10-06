@@ -87,8 +87,8 @@ export class AssetListContainer extends React.Component<any, any> {
                                     this.load();
                                 }}/>
                             <label className="top__label label" htmlFor="filter-date">Дата</label>
-                            <svg width="16" height="16" fill="none">
-                                <use xlinkHref="/#angle-arrow-down"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M4.5 6.5L8 10L11.5 6.5" stroke="#333333" stroke-width="2"/>
                             </svg>
                         </div>
                         <div className="top__group group">
@@ -102,8 +102,8 @@ export class AssetListContainer extends React.Component<any, any> {
                                 <option value="10+">От 10 человек</option>
                             </select>
                             <label className="top__label label" htmlFor="filter-people">Количество людей</label>
-                            <svg width="16" height="16" fill="none">
-                                <use xlinkHref="/#angle-arrow-down"/>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M4.5 6.5L8 10L11.5 6.5" stroke="#333333" stroke-width="2"/>
                             </svg>
                         </div>
                     </div>

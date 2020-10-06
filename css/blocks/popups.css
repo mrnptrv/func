@@ -492,3 +492,15 @@ video.popup-slider__pic {
     text-align: left;
   }
 }
+
+/* react modal modification */
+
+.ReactModal__Overlay {
+  background-color: #333333 !important;
+  z-index: 4;
+}
+
+.ReactModal__Content {
+  background-color: rgba(255, 255, 255, 0) !important;
+  border: 0 !important;
+}
