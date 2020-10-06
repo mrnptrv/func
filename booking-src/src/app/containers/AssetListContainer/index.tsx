@@ -7,6 +7,13 @@ import ReactDatePicker from "react-datepicker";
 import {AssetItem} from "app/components/AssetItem";
 import {bookingApi} from "../../../../../dashboard-src/src/app/constants";
 import * as moment from 'moment';
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import ru from "date-fns/locale/ru";
+
+registerLocale('ru', ru)
+setDefaultLocale("ru")
+
+
 
 class AssetListData {
     @observable bookingDate: Date = new Date()
@@ -79,6 +86,7 @@ export class AssetListContainer extends React.Component<any, any> {
                     <div className="top__filters">
                         <div className="top__group group">
                             <ReactDatePicker
+                                dateFormat="dd MMMM yyyy"
                                 className="top__input top__input--select input input--select"
                                 placeholderText="Дата"
                                 selected={this.data.bookingDate}

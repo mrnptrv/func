@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import ReactDatePicker from "react-datepicker";
 import {bookingApi} from "app/constants";
 import * as moment from "moment";
+import {numberFormat} from "app/constants/numberFormat";
 
 class AssetItemData {
     @observable carouselValue = 0
@@ -32,6 +33,8 @@ class AssetItemData {
     @observable bookingAgreementCheck = false
     @observable bookingButtonDisabled = true
     @observable bookingPrice = 0
+    @observable bookingHidePrice = false;
+    @observable bookingHideBooking = false;
 }
 
 interface AssetItemProps {
@@ -129,6 +132,14 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
 
         this.data.bookingPrice = prices.length == 0 ? 0 :
             prices.reduce((prevPrice, currentPrice) => prevPrice + currentPrice)
+    }
+
+    private toggleHidePrice = () => {
+        this.data.bookingHidePrice = !this.data.bookingHidePrice
+    }
+
+    private toggleHideBooking = () => {
+        this.data.bookingHideBooking = !this.data.bookingHideBooking
     }
 
     private openBookModal = (hour) => {
@@ -375,8 +386,12 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                             {this.data.asset.name}
                         </h2>
                         <p className="space__text">{this.data.asset.description}</p>
-                        <div className="space__accordion space__accordion--price">
-                            <button className="space__button unbutton">Стоимость</button>
+                        <div
+                            className={"space__accordion space__accordion--price " + (this.data.bookingHidePrice ? "space__accordion--closed " : "")}>
+                            <button className="space__button unbutton"
+                                    onClick={this.toggleHidePrice}
+                            >Стоимость
+                            </button>
                             <table className="space__table space__accordion-content">
                                 <tbody>
                                 {this.data.asset.workTimeRanges
@@ -384,7 +399,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                     .map((wtr, index) =>
                                         <tr key={index} className="space__row">
                                             <td className="space__cell">Будни {wtr.start} &ndash; {wtr.end}</td>
-                                            <td className="space__cell space__cell--price">{wtr.price}₽/час</td>
+                                            <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
                                         </tr>
                                     )
                                 }
@@ -393,7 +408,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                     .map((wtr, index) =>
                                         <tr key={index + 1000} className="space__row">
                                             <td className="space__cell">Выходные {wtr.start} &ndash; {wtr.end}</td>
-                                            <td className="space__cell space__cell--price">{wtr.price}₽/час</td>
+                                            <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
                                         </tr>
                                     )
                                 }
@@ -402,8 +417,10 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                         </div>
                     </div>
                 </div>
-                <div className="space__accordion">
-                    <button className="space__button space__button--booking unbutton">Бронирование</button>
+                <div className={"space__accordion " + (this.data.bookingHideBooking ? "space__accordion--closed " : "")}>
+                    <button className="space__button space__button--booking unbutton"
+                            onClick={this.toggleHideBooking}
+                    >Бронирование</button>
                     <div className="space__list space__accordion-content">
                         {this.data.workTimeHours.map(h =>
                             <button key={h.hour}
@@ -459,6 +476,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                 <div className="popup__selects">
                                     <div className="popup__group group">
                                         <ReactDatePicker
+                                            dateFormat="dd/MM/yyyy"
                                             className="top__input top__input--select input input--select"
                                             placeholderText="Дата"
                                             selected={this.data.bookingDate}
@@ -588,4 +606,5 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             </article>
         );
     }
+
 }
