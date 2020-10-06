@@ -126,6 +126,7 @@
   line-height: 22px;
   letter-spacing: 0.01em;
   opacity: 0.8;
+  white-space: nowrap;
 }
 
 .space__cell--price {
