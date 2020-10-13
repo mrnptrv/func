@@ -4,30 +4,27 @@ import {AssetsApi, AuthAPIApi, BookingApi} from "../../api";
 const BASE_URL = "/api"
 
 export const authApi = () => {
-    let accessToken = getAccessToken()
-
-    return new AuthAPIApi({
-        basePath: BASE_URL,
-        accessToken: accessToken
-    })
+    return new AuthAPIApi(getConfiguration())
 }
 
 export const assetsApi = () => {
-    let accessToken = getAccessToken()
-
-    return new AssetsApi({
-        basePath: BASE_URL,
-        accessToken: accessToken
-    })
+    return new AssetsApi(getConfiguration())
 }
 
 export const bookingApi = () => {
-    let accessToken = getAccessToken()
+    return new BookingApi(getConfiguration())
+}
 
-    return new BookingApi({
+const getConfiguration = () => {
+    return {
         basePath: BASE_URL,
-        accessToken: accessToken
-    })
+        accessToken: getAccessToken(),
+        baseOptions: {
+            headers: {
+                "Accept-Language": "en_US"
+            }
+        }
+    }
 }
 
 const getAccessToken = () => {

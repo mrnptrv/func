@@ -271,6 +271,13 @@
   color: var(--feature-color);
 }
 
+.popup__errors {
+  padding: 20px;
+  font: inherit;
+  color: #ffffff;
+  background: var(--secondary-feature-color) ;
+}
+
 /* responsive */
 
 @media (max-width: 519px) {

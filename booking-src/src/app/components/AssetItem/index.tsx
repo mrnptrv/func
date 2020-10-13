@@ -35,6 +35,8 @@ class AssetItemData {
     @observable bookingPrice = 0
     @observable bookingHidePrice = false;
     @observable bookingHideBooking = false;
+    @observable error = ""
+    @observable fieldErrors: Array<String> = new Array<String>()
 }
 
 interface AssetItemProps {
@@ -126,6 +128,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
     private calculatePrice = () => {
         let startHour = this.data.bookingHour
         let endHour = this.data.bookingHour + this.data.bookingHourAmount
+
         let prices = this.data.bookingWorkTimeHours
             .filter(wtr => wtr.hour >= startHour && wtr.hour < endHour)
             .map(wtr => wtr.price);
@@ -167,7 +170,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             description: this.data.bookingDescription,
             start: start,
             end: end
-        }).then((r) => {
+        }).then(() => {
             this.closeModal()
             bookingApi().findBookedAssetsUsingPOST({
                 date: (moment(this.data.date)).format("yyyy-MM-DD"),
@@ -178,8 +181,16 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             }).catch(e => {
                 console.error(e.response.data);
             })
-        }).catch((e) => {
-            console.error(e.response.data);
+        }).catch((error) => {
+            if (error && error.response && error.response.data && error.response.data.message) {
+                this.data.error = error.response.data.message
+            }
+
+            if (error && error.response && error.response.data.errors) {
+                this.data.fieldErrors = error.response.data.errors.map(e => e.messages).flat()
+            }
+
+            console.error(error.response.data);
         })
     }
 
@@ -206,8 +217,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
 
     private getEndHour() {
         let endHour = this.data.bookingHour + this.data.bookingHourAmount
-        let end = (endHour < 10 ? ("0" + endHour) : "" + endHour) + ":00";
-        return end;
+        return (endHour < 10 ? ("0" + endHour) : "" + endHour) + ":00";
     }
 
     private getStartHour() {
@@ -263,18 +273,27 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             this.data.bookingHourAmount = 1
         }
 
-        let maxHour = 0;
         if (this.data.bookingWorkTimeHours.length > 0) {
-            maxHour = this.data.bookingWorkTimeHours[0].hour
+            let maxHour = this.data.bookingWorkTimeHours[0].hour
 
-            this.data.bookingWorkTimeHours.forEach((wth) => {
+            for (let i = 0; i < this.data.bookingWorkTimeHours.length; i++) {
+                let wth = this.data.bookingWorkTimeHours[i]
+
+                if (wth.hour < this.data.bookingHour) {
+                    continue
+                }
+
+                if (wth.booked) {
+                    break
+                }
+
                 if (wth.hour > maxHour) {
                     maxHour = wth.hour
                 }
-            })
+            }
 
-            if (maxHour <= (this.data.bookingHour + this.data.bookingHourAmount)) {
-                this.data.bookingHourAmount = maxHour - this.data.bookingHour + 1;
+            if (maxHour < (this.data.bookingHour + this.data.bookingHourAmount)) {
+                this.data.bookingHourAmount = maxHour - this.data.bookingHour + 1
             }
         }
 
@@ -295,25 +314,25 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
 
 
-        let formatedValue = "+" + newValue.slice(0, 1)
+        let formattedValue = "+" + newValue.slice(0, 1)
 
         if (newValue.length > 1) {
-            formatedValue += " (" + newValue.slice(1, 4)
+            formattedValue += " (" + newValue.slice(1, 4)
         }
 
         if (newValue.length > 4) {
-            formatedValue += ") " + newValue.slice(4, 7)
+            formattedValue += ") " + newValue.slice(4, 7)
         }
 
         if (newValue.length > 7) {
-            formatedValue += "-" + newValue.slice(7, 9)
+            formattedValue += "-" + newValue.slice(7, 9)
         }
 
         if (newValue.length > 9) {
-            formatedValue += "-" + newValue.slice(9, 11)
+            formattedValue += "-" + newValue.slice(9, 11)
         }
 
-        this.data.bookingPhone = formatedValue
+        this.data.bookingPhone = formattedValue
 
         this.enableBookingButton()
     }
@@ -577,6 +596,15 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                         title="Обработка персональных данных (PDF)" target="_blank">условия
                                                 обработки персональных&nbsp;данных</a></label>
                                     </div>
+                                    {this.data.error &&
+                                    <div className="popup__footer popup__errors">
+                                        {this.data.error}
+                                        {this.data.fieldErrors.length > 0 &&
+                                        (<ul>{this.data.fieldErrors.map(e => <li>{e}</li>)}</ul>)
+                                        }
+
+                                    </div>
+                                    }
                                     <div className="popup__actions">
                                         <button className="popup__button button button--secondary unbutton"
                                                 id="apply-cancel" type="button"

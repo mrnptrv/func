@@ -153,6 +153,12 @@ export interface Booking {
      * @type {string}
      * @memberof Booking
      */
+    price: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Booking
+     */
     pubId: string;
     /**
      * 
@@ -572,7 +578,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             if (assetListRequest === null || assetListRequest === undefined) {
                 throw new RequiredError('assetListRequest','Required parameter assetListRequest was null or undefined when calling assetsListUsingPOST.');
             }
-            const localVarPath = `/assets/assetsList`;
+            const localVarPath = `/api/assets/assetsList`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -620,7 +626,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             if (createRequest === null || createRequest === undefined) {
                 throw new RequiredError('createRequest','Required parameter createRequest was null or undefined when calling createUsingPOST.');
             }
-            const localVarPath = `/assets/create`;
+            const localVarPath = `/api/assets/create`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -668,7 +674,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             if (deleteRequest === null || deleteRequest === undefined) {
                 throw new RequiredError('deleteRequest','Required parameter deleteRequest was null or undefined when calling deleteUsingPOST.');
             }
-            const localVarPath = `/assets/delete`;
+            const localVarPath = `/api/assets/delete`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -716,8 +722,47 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             if (pubId === null || pubId === undefined) {
                 throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling getUsingGET.');
             }
-            const localVarPath = `/assets/get/{pubId}`
+            const localVarPath = `/api/assets/get/{pubId}`
                 .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary test
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testUsingGET: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/assets/test`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -761,7 +806,7 @@ export const AssetsApiAxiosParamCreator = function (configuration?: Configuratio
             if (updateRequest === null || updateRequest === undefined) {
                 throw new RequiredError('updateRequest','Required parameter updateRequest was null or undefined when calling updateUsingPOST.');
             }
-            const localVarPath = `/assets/update`;
+            const localVarPath = `/api/assets/update`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -864,6 +909,19 @@ export const AssetsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary test
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testUsingGET(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await AssetsApiAxiosParamCreator(configuration).testUsingGET(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary update asset
          * @param {UpdateAssetRequest} updateRequest updateRequest
          * @param {*} [options] Override http request option.
@@ -924,6 +982,15 @@ export const AssetsApiFactory = function (configuration?: Configuration, basePat
          */
         getUsingGET(pubId: string, options?: any): AxiosPromise<Asset> {
             return AssetsApiFp(configuration).getUsingGET(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary test
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testUsingGET(options?: any): AxiosPromise<string> {
+            return AssetsApiFp(configuration).testUsingGET(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -995,6 +1062,17 @@ export class AssetsApi extends BaseAPI {
 
     /**
      * 
+     * @summary test
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AssetsApi
+     */
+    public testUsingGET(options?: any) {
+        return AssetsApiFp(this.configuration).testUsingGET(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary update asset
      * @param {UpdateAssetRequest} updateRequest updateRequest
      * @param {*} [options] Override http request option.
@@ -1021,7 +1099,7 @@ export const AuthAPIApiAxiosParamCreator = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         getUsingGET1: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/auth/get`;
+            const localVarPath = `/api/auth/get`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -1065,7 +1143,7 @@ export const AuthAPIApiAxiosParamCreator = function (configuration?: Configurati
             if (loginRequest === null || loginRequest === undefined) {
                 throw new RequiredError('loginRequest','Required parameter loginRequest was null or undefined when calling loginUsingPOST.');
             }
-            const localVarPath = `/auth/login`;
+            const localVarPath = `/api/auth/login`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -1113,7 +1191,7 @@ export const AuthAPIApiAxiosParamCreator = function (configuration?: Configurati
             if (registerRequest === null || registerRequest === undefined) {
                 throw new RequiredError('registerRequest','Required parameter registerRequest was null or undefined when calling registerUsingPOST.');
             }
-            const localVarPath = `/auth/register`;
+            const localVarPath = `/api/auth/register`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -1303,7 +1381,7 @@ export const BookingApiAxiosParamCreator = function (configuration?: Configurati
             if (pubId === null || pubId === undefined) {
                 throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling approveUsingPOST.');
             }
-            const localVarPath = `/booking/approve/{pubId}`
+            const localVarPath = `/api/booking/approve/{pubId}`
                 .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -1348,7 +1426,7 @@ export const BookingApiAxiosParamCreator = function (configuration?: Configurati
             if (bookingRequest === null || bookingRequest === undefined) {
                 throw new RequiredError('bookingRequest','Required parameter bookingRequest was null or undefined when calling bookUsingPOST.');
             }
-            const localVarPath = `/booking/book`;
+            const localVarPath = `/api/booking/book`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -1396,7 +1474,7 @@ export const BookingApiAxiosParamCreator = function (configuration?: Configurati
             if (pubId === null || pubId === undefined) {
                 throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling declineUsingPOST.');
             }
-            const localVarPath = `/booking/decline/{pubId}`
+            const localVarPath = `/api/booking/decline/{pubId}`
                 .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -1441,7 +1519,7 @@ export const BookingApiAxiosParamCreator = function (configuration?: Configurati
             if (request === null || request === undefined) {
                 throw new RequiredError('request','Required parameter request was null or undefined when calling findBookedAssetsUsingPOST.');
             }
-            const localVarPath = `/booking/booked`;
+            const localVarPath = `/api/booking/booked`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -1489,7 +1567,7 @@ export const BookingApiAxiosParamCreator = function (configuration?: Configurati
             if (listRequest === null || listRequest === undefined) {
                 throw new RequiredError('listRequest','Required parameter listRequest was null or undefined when calling listUsingPOST.');
             }
-            const localVarPath = `/booking/list`;
+            const localVarPath = `/api/booking/list`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {

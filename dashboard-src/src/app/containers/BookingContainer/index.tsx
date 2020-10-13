@@ -96,7 +96,7 @@ export class BookingContainer extends React.Component<any, any> {
                 <td className="text-nowrap">{booking.userData.phone}</td>
                 <td className="text-nowrap">{booking.status}</td>
                 <td className="text-nowrap">{booking.date} {booking.start}-{booking.end}</td>
-                <td className="text-nowrap text-right">90р</td>
+                <td className="text-nowrap text-right">{booking.price}р</td>
                 <td>{booking.description}</td>
                 <td className="text-right">
                     <DropdownButton title="&bull;&bull;&bull;" variant="outline-secondary">
