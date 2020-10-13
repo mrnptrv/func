@@ -1245,6 +1245,7 @@ export const AuthAPIApiFp = function(configuration?: Configuration) {
         async getUsingGET1(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
             const localVarAxiosArgs = await AuthAPIApiAxiosParamCreator(configuration).getUsingGET1(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
