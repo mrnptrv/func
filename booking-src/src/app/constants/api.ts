@@ -1,7 +1,7 @@
 import * as Cookies from "js-cookie";
 import {AssetsApi, AuthAPIApi, BookingApi} from "../../api";
 
-const BASE_URL = "/api"
+const BASE_URL = "/"
 
 export const authApi = () => {
     return new AuthAPIApi(getConfiguration())
