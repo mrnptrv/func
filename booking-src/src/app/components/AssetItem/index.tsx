@@ -148,6 +148,8 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
     private openBookModal = (hour) => {
         return () => {
             this.data.isOpenBookingModal = true
+            this.data.error =""
+            this.data.fieldErrors = new Array<String>()
             this.data.bookingHour = hour
             this.data.bookingHourAmount = 1
             this.data.bookingName = ""
@@ -161,6 +163,9 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
     private bookAsset = () => {
         let start = this.getStartHour();
         let end = this.getEndHour();
+
+        this.data.error =""
+        this.data.fieldErrors = new Array<String>()
 
         bookingApi().bookUsingPOST({
             assetId: this.data.asset.pubId,

@@ -15,6 +15,9 @@ export const App = hot(({history}) => {
 
     api.getUsingGET1().then(() => {
         // history.push("/dashboard/list")
+        if (history.location.pathname == "/dashboard/") {
+            history.push("/dashboard/list")
+        }
     }).catch(() => {
         history.push("/dashboard/login")
     })
