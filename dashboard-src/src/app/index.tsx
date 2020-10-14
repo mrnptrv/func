@@ -15,7 +15,7 @@ export const App = hot(({history}) => {
 
     api.getUsingGET1().then(() => {
         // history.push("/dashboard/list")
-        if (history.location.pathname == "/dashboard/") {
+        if (history.location.pathname == "/dashboard/index.html"|| history.location.pathname == "/dashboard/") {
             history.push("/dashboard/list")
         }
     }).catch(() => {
@@ -31,6 +31,7 @@ export const App = hot(({history}) => {
                 <Route path="/dashboard/list" component={AssetListContainer}/>
                 <Route path="/dashboard/asset/:id" exact component={AssetEditContainer}/>
                 <Route path="/dashboard/create-asset" exact component={AssetCreateContainer}/>
+                <Route >Not Found</Route>
             </Switch>
         </Router>
     );
