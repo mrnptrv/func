@@ -15,7 +15,9 @@ export const App = hot(({history}) => {
 
     api.getUsingGET1().then(() => {
         // history.push("/dashboard/list")
-        if (history.location.pathname == "/dashboard/index.html"|| history.location.pathname == "/dashboard/") {
+        console.log('@@@ index.tsx -> after get -> 18', history.location.pathname);
+
+        if (history.location.pathname == "/dashboard/index.html" || history.location.pathname == "/dashboard/") {
             history.push("/dashboard/list")
         }
     }).catch(() => {

@@ -113,7 +113,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                 let workTimeRangesPr1 = workTimeRanges.filter(wtr => {
                     let startHour: number = this.getHour(wtr.start)
                     let endHour = this.getHour(wtr.end)
-                    return startHour <= h && h <= endHour
+                    return startHour <= h && h < endHour
                 });
 
                 wth.price = workTimeRangesPr1.length == 0 ? 0 : +workTimeRangesPr1[0].price
@@ -362,101 +362,110 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         return (
             <article className="space" role="article">
                 <div className="space__info">
-                    <div className="space__slider glide" id="space-slider-1">
-                        <div className="space__track glide__track" data-glide-el="track">
-                            <Carousel
-                                value={this.data.carouselValue}
-                                onChange={v => this.data.carouselValue = v}
-                                infinite={true}
-                            >
-                                {this.data.asset.imageUrls.map((s, index) =>
-                                    <img className="space__pic" key={index} src={s} width={808}
-                                         height={464} alt=""/>
-                                )}
-                            </Carousel>
-                        </div>
-                        <div className="space__footer slider-footer">
-                            <div className="space__counter slider-footer__counter">
-                                <span className="slider-footer__index">{this.data.carouselValue + 1}</span>/<span
-                                className="slider-footer__total">{this.data.asset.imageUrls.length}</span>
-                            </div>
-                            <div className="space__controls slider-footer__controls" data-glide-el="controls">
-                                <button
-                                    className="space__control slider-footer__arrow slider-control slider-control--left circle-button unbutton"
-                                    data-glide-dir="<"
-                                    onClick={this.carouselPrev}
+
+                    {this.data.asset.imageUrls.length > 0 ?
+                        <div className="space__slider glide" id="space-slider-1">
+                            <div className="space__track glide__track" data-glide-el="track">
+                                <Carousel
+                                    value={this.data.carouselValue}
+                                    onChange={v => this.data.carouselValue = v}
+                                    infinite={true}
                                 >
-                                    <span className="visually-hidden">Листать назад</span>
-                                    <svg width="16" height="16">
-                                        <use xlinkHref="#arrow-left"/>
-                                    </svg>
-                                </button>
-                                <button
-                                    className="space__control slider-footer__arrow slider-control slider-control--right circle-button unbutton"
-                                    data-glide-dir=">"
-                                    onClick={this.carouselNext}
-                                >
-                                    <svg width="16" height="16">
-                                        <use xlinkHref="#arrow-right"/>
-                                    </svg>
-                                    <span className="visually-hidden">Листать вперёд</span>
-                                </button>
+                                    {this.data.asset.imageUrls.map((s, index) =>
+                                        <img className="space__pic" key={index} src={s} width={808}
+                                             height={464} alt=""/>
+                                    )}
+                                </Carousel>
+                            </div>
+                            <div className="space__footer slider-footer">
+                                <div className="space__counter slider-footer__counter">
+                                    <span className="slider-footer__index">{this.data.carouselValue + 1}</span>/<span
+                                    className="slider-footer__total">{this.data.asset.imageUrls.length}</span>
+                                </div>
+                                <div className="space__controls slider-footer__controls" data-glide-el="controls">
+                                    <button
+                                        className="space__control slider-footer__arrow slider-control slider-control--left circle-button unbutton"
+                                        data-glide-dir="<"
+                                        onClick={this.carouselPrev}
+                                    >
+                                        <span className="visually-hidden">Листать назад</span>
+                                        <svg width="16" height="16">
+                                            <use xlinkHref="#arrow-left"/>
+                                        </svg>
+                                    </button>
+                                    <button
+                                        className="space__control slider-footer__arrow slider-control slider-control--right circle-button unbutton"
+                                        data-glide-dir=">"
+                                        onClick={this.carouselNext}
+                                    >
+                                        <svg width="16" height="16">
+                                            <use xlinkHref="#arrow-right"/>
+                                        </svg>
+                                        <span className="visually-hidden">Листать вперёд</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        : <div/>}
                     <div className="space__description">
                         <h2 className="space__headline headline">
                             <span>Переговорная</span>
                             {this.data.asset.name}
                         </h2>
                         <p className="space__text">{this.data.asset.description}</p>
-                        <div
-                            className={"space__accordion space__accordion--price " + (this.data.bookingHidePrice ? "space__accordion--closed " : "")}>
-                            <button className="space__button unbutton"
-                                    onClick={this.toggleHidePrice}
-                            >Стоимость
-                            </button>
-                            <table className="space__table space__accordion-content">
-                                <tbody>
-                                {this.data.asset.workTimeRanges
-                                    .filter(wtr => !wtr.isWeekend)
-                                    .map((wtr, index) =>
-                                        <tr key={index} className="space__row">
-                                            <td className="space__cell">Будни {wtr.start} &ndash; {wtr.end}</td>
-                                            <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
-                                        </tr>
-                                    )
-                                }
-                                {this.data.asset.workTimeRanges
-                                    .filter(wtr => wtr.isWeekend)
-                                    .map((wtr, index) =>
-                                        <tr key={index + 1000} className="space__row">
-                                            <td className="space__cell">Выходные {wtr.start} &ndash; {wtr.end}</td>
-                                            <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
-                                        </tr>
-                                    )
-                                }
-                                </tbody>
-                            </table>
+                        {this.data.asset.workTimeRanges.length > 0 ?
+                            <div
+                                className={"space__accordion space__accordion--price " + (this.data.bookingHidePrice ? "space__accordion--closed " : "")}>
+                                <button className="space__button unbutton"
+                                        onClick={this.toggleHidePrice}
+                                >Стоимость
+                                </button>
+                                <table className="space__table space__accordion-content">
+                                    <tbody>
+                                    {this.data.asset.workTimeRanges
+                                        .filter(wtr => !wtr.isWeekend)
+                                        .map((wtr, index) =>
+                                            <tr key={index} className="space__row">
+                                                <td className="space__cell">Будни {wtr.start} &ndash; {wtr.end}</td>
+                                                <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
+                                            </tr>
+                                        )
+                                    }
+                                    {this.data.asset.workTimeRanges
+                                        .filter(wtr => wtr.isWeekend)
+                                        .map((wtr, index) =>
+                                            <tr key={index + 1000} className="space__row">
+                                                <td className="space__cell">Выходные {wtr.start} &ndash; {wtr.end}</td>
+                                                <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
+                                            </tr>
+                                        )
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                            : <div/>}
+                    </div>
+                </div>
+                {this.data.workTimeHours.length > 0 ?
+                    <div
+                        className={"space__accordion " + (this.data.bookingHideBooking ? "space__accordion--closed " : "")}>
+                        <button className="space__button space__button--booking unbutton"
+                                onClick={this.toggleHideBooking}
+                        >Бронирование
+                        </button>
+                        <div className="space__list space__accordion-content">
+                            {this.data.workTimeHours.map(h =>
+                                <button key={h.hour}
+                                        className="space__time-option apply-button unbutton"
+                                        onClick={this.openBookModal(h.hour)}
+                                        disabled={h.booked}
+                                >
+                                    {h.hour < 10 ? "0" + h.hour : h.hour}:00
+                                </button>
+                            )}
                         </div>
                     </div>
-                </div>
-                <div className={"space__accordion " + (this.data.bookingHideBooking ? "space__accordion--closed " : "")}>
-                    <button className="space__button space__button--booking unbutton"
-                            onClick={this.toggleHideBooking}
-                    >Бронирование</button>
-                    <div className="space__list space__accordion-content">
-                        {this.data.workTimeHours.map(h =>
-                            <button key={h.hour}
-                                    className="space__time-option apply-button unbutton"
-                                    onClick={this.openBookModal(h.hour)}
-                                    disabled={h.booked}
-                            >
-                                {h.hour < 10 ? "0" + h.hour : h.hour}:00
-                            </button>
-                        )}
-                    </div>
-                </div>
+                    : <div/>}
                 <Modal
                     isOpen={this.data.isOpenBookingModal}
                     onRequestClose={() => this.data.isOpenBookingModal = false}

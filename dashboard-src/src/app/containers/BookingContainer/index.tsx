@@ -2,7 +2,7 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
-import {Dropdown, DropdownButton, Spinner, Table} from "react-bootstrap";
+import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {bookingApi} from "app/constants/api";
 import {Booking} from "../../../api";
 
@@ -11,6 +11,7 @@ class BookingData {
     @observable error = ""
     @observable booking: Array<Booking> = new Array<Booking>();
     @observable statusFilter = "PENDING";
+    @observable isShowErrorModal = false;
 }
 
 @observer
@@ -52,10 +53,14 @@ export class BookingContainer extends React.Component<any, any> {
                         return b
                     }
                 })
+
+                this.load()
             }).catch(error => {
                 if (error && error.response && error.response.data.message) {
                     this.data.error = error.response.data.message
                     console.error(this.data.error);
+
+                    this.showErrorDialog()
                 }
             })
         }
@@ -63,6 +68,7 @@ export class BookingContainer extends React.Component<any, any> {
 
     private decline(booking) {
         return () => {
+            console.log('@@@ index.tsx -> booking decline -> 71', booking.pubId);
             bookingApi().declineUsingPOST(booking.pubId).then((r) => {
                 this.data.booking = this.data.booking.map(b => {
                     if (b.pubId === booking.pubId) {
@@ -71,10 +77,13 @@ export class BookingContainer extends React.Component<any, any> {
                         return b
                     }
                 })
+
+                this.load()
             }).catch(error => {
                 if (error && error.response && error.response.data.message) {
                     this.data.error = error.response.data.message
                     console.error(this.data.error);
+                    this.showErrorDialog()
                 }
             })
         }
@@ -85,6 +94,14 @@ export class BookingContainer extends React.Component<any, any> {
             this.data.statusFilter = status
             this.load()
         }
+    }
+
+    private hideErrorDialog = () => {
+        this.data.isShowErrorModal = false;
+    }
+
+    private showErrorDialog = () => {
+        this.data.isShowErrorModal = true;
     }
 
     render() {
@@ -100,18 +117,22 @@ export class BookingContainer extends React.Component<any, any> {
                 <td>{booking.description}</td>
                 <td className="text-right">
                     <DropdownButton title="&bull;&bull;&bull;" variant="outline-secondary">
-                        {booking.status !== 'BOOKED' &&
+                        {booking.status !== 'BOOKED' ?
                         <Dropdown.Item
                             onClick={this.approve(booking)}
                         >
                             Approve
                         </Dropdown.Item>
+                            :<span/>
                         }
-                        {booking.status !== 'DECLINED' &&
+                        {booking.status !== 'DECLINED' ?
                         <Dropdown.Item
                             onClick={this.decline(booking)}
                         >
-                            Decline</Dropdown.Item>
+                            Decline
+                        </Dropdown.Item>
+
+                            :<span/>
                         }
                     </DropdownButton>
                 </td>
@@ -155,6 +176,20 @@ export class BookingContainer extends React.Component<any, any> {
                     }
                     </tbody>
                 </Table>
+
+                <Modal show={this.data.isShowErrorModal} onHide={this.hideErrorDialog}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Error</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p>{this.data.error}</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.hideErrorDialog}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     }

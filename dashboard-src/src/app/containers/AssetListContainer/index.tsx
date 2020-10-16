@@ -2,7 +2,7 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
-import {Button, Dropdown, DropdownButton, Spinner, Table} from "react-bootstrap";
+import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {assetsApi} from "app/constants/api";
 import {Asset} from "../../../api";
 
@@ -10,12 +10,14 @@ class AssetListData {
     @observable isLoading = true
     @observable error = ""
     @observable assets: Array<Asset> = new Array<Asset>()
+    @observable isShowDeletionDialog = false;
+    @observable deletionAsset: Asset = null;
 
     @action
     deleteAsset(asset) {
         assetsApi().deleteUsingPOST({
             pubId: asset.pubId
-        }).then((res) => {
+        }).then(() => {
             this.assets = this.assets.filter(a => a.pubId != asset.pubId)
         }).catch(error => {
             console.log(error);
@@ -46,10 +48,21 @@ export class AssetListContainer extends React.Component<any, any> {
         })
     }
 
-    deleteAsset = (asset) => {
+    deleteAsset = () => {
+        this.data.deleteAsset(this.data.deletionAsset)
+        this.data.isShowDeletionDialog = false;
+    }
+
+    openDeletionDialog = (asset) => {
         return () => {
-            this.data.deleteAsset(asset)
+            this.data.deletionAsset = asset;
+            this.data.isShowDeletionDialog = true
         }
+    }
+
+    hideDeletionDialog = () => {
+        this.data.isShowDeletionDialog = false
+        this.data.deletionAsset = null;
     }
 
     editAsset = (asset) => {
@@ -71,7 +84,7 @@ export class AssetListContainer extends React.Component<any, any> {
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.editAsset(asset)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.deleteAsset(asset)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(asset)}>Delete</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -102,6 +115,20 @@ export class AssetListContainer extends React.Component<any, any> {
                     }
                     </tbody>
                 </Table>
+                <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Delete asset</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p>All booking will delete with asset. Are you sure to delete?.</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
+                        <Button variant="primary" onClick={this.deleteAsset}>Yes</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     }
