@@ -29,7 +29,6 @@ class AssetListData {
 export class AssetListContainer extends React.Component<any, any> {
     private data = new AssetListData()
 
-
     constructor(props: any, context: any) {
         super(props, context);
 
@@ -121,7 +120,10 @@ export class AssetListContainer extends React.Component<any, any> {
                     </Modal.Header>
 
                     <Modal.Body>
-                        <p>All booking will delete with asset. Are you sure to delete?.</p>
+                        <p>
+                           All bookings will delete with the asset.
+                           Are you sure to want to delete it with all bookings?
+                        </p>
                     </Modal.Body>
 
                     <Modal.Footer>
