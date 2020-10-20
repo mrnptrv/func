@@ -1049,32 +1049,8 @@
 
     <script src="https://unpkg.com/@glidejs/glide"></script>
     <script src="js/index-scripts.js"></script>
+    <script src="/js/popup.js"></script>
     <script src="https://s.pageclip.co/v1/pageclip.js" charset="utf-8"></script>
-
-    <!-- Закрываем форму после успешной отправки данных -->
-    <script>
-    const form = document.querySelector('#apply-form');
-    const checkThankYouMessage = () => {
-      if (document.querySelector('.pageclip-form__success')) {
-        window.location.hash = 'spasibo';
-        clearInterval(checkEveryMoment);
-      }
-    };
-    const checkEveryMoment = setInterval(checkThankYouMessage, 100);
-
-    Pageclip.form(form, {
-      onSubmit: function (event) {
-        if (document.querySelector('.pageclip-form__success')) {
-          window.location.hash = 'spasibo';
-        }
-        setTimeout(() => {
-          document.querySelector('.pageclip-form__success').style.display = 'none';
-          closeForm(popupApply);
-        }, 5000);
-      },
-      successTemplate: '<span>Спасибо! <br>Совсем скоро мы свяжемся с тобой.</span>'
-    });
-    </script>
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1811782-12"></script>

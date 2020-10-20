@@ -225,7 +225,61 @@
     </div>
   </footer>
 
+  <div class="popup">
+    <div class="popup__backdrop"></div>
+    <form class="popup__form pageclip-form" id="apply-form" action="https://send.pageclip.co/lIOU7euBRxRAWiYxGv05fe5Ow3pHu2Gw" method="post">
+      <p class="popup__top">
+        <svg class="popup__logo" width="80" height="22">
+          <use xlink:href="#logo"></use>
+        </svg>
+        <button class="popup__close unbutton" id="apply-close" type="button">
+          <span class="visually-hidden">Закрыть модальное окно</span>
+          <svg width="16" height="16">
+            <use xlink:href="#x"></use>
+          </svg>
+        </button>
+      </p>
+      <div class="popup__content">
+        <h2 class="popup__headline">Отправить заявку</h2>
+        <h3 class="popup__subtitle"></h3>
+        <div class="popup__wrapper">
+          <input id="apply-goal" name="apply-goal" type="hidden" value="general">
+          <p class="popup__group group">
+            <input class="popup__input input" id="apply-name" name="apply-name" type="text" placeholder="&nbsp;" required>
+            <label class="popup__label label" for="apply-name">Имя</label>
+          </p>
+          <p class="popup__group group">
+            <input class="popup__input input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;" maxlength="18" required>
+            <label class="popup__label label" for="apply-phone">Номер телефона</label>
+          </p>
+          <p class="popup__group popup__group--message group group--message">
+            <textarea class="popup__input popup__input--message input input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;" required></textarea>
+            <label class="popup__label label" for="apply-email">Расскажите о себе<span>, чем занимаетесь и сколько вас человек</span></label>
+          </p>
+          <p class="popup__actions">
+            <button class="popup__button button button--secondary unbutton" id="apply-cancel" type="button">
+              <span>Отмена</span>
+              <svg width="20" height="16">
+                <use xlink:href="#long-arrow-right"></use>
+              </svg>
+            </button>
+            <button class="popup__button pageclip-form__submit button unbutton" id="apply-submit" type="submit" disabled>
+              <span>Отправить</span>
+              <svg width="20" height="16">
+                <use xlink:href="#long-arrow-right"></use>
+              </svg>
+            </button>
+          </p>
+          <p class="popup__footer">
+            <input class="popup__checkmark visually-hidden" id="apply-accept-terms" name="apply-accept-terms" type="checkbox" required>
+            <label class="popup__checkmark-label" for="apply-accept-terms">Я принимаю <a href="docs/personal-data-terms.pdf" title="Обработка персональных данных (PDF)" target="_blank">условия обработки персональных&nbsp;данных</a></label>
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
   <script src="/js/booking-scripts.js"></script>
+  <script src="/js/popup.js"></script>
 
   </body>
 </html>
