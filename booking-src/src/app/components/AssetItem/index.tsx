@@ -37,6 +37,7 @@ class AssetItemData {
     @observable bookingHideBooking = false;
     @observable error = ""
     @observable fieldErrors: Array<String> = new Array<String>()
+    @observable isBooking = false
 }
 
 interface AssetItemProps {
@@ -166,6 +167,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
 
         this.data.error =""
         this.data.fieldErrors = new Array<String>()
+        this.data.isBooking = true
 
         bookingApi().bookUsingPOST({
             assetId: this.data.asset.pubId,
@@ -176,6 +178,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             start: start,
             end: end
         }).then(() => {
+            this.data.isBooking = false
             this.closeModal()
             bookingApi().findBookedAssetsUsingPOST({
                 date: (moment(this.data.date)).format("yyyy-MM-DD"),
@@ -187,6 +190,8 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                 console.error(e.response.data);
             })
         }).catch((error) => {
+            this.data.isBooking = false
+
             if (error && error.response && error.response.data && error.response.data.message) {
                 this.data.error = error.response.data.message
             }
@@ -633,7 +638,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                         </button>
                                         <button className="popup__button pageclip-form__submit button unbutton"
                                                 id="apply-submit"
-                                                disabled={this.data.bookingButtonDisabled}
+                                                disabled={this.data.bookingButtonDisabled || this.data.isBooking}
                                                 onClick={this.bookAsset}
                                         >
                                             <span>Отправить</span>
