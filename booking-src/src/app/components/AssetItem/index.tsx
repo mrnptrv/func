@@ -158,6 +158,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             this.data.bookingDescription = ""
             this.data.bookingAgreementCheck = false
             this.calculatePrice()
+            this.enableBookingButton()
         }
     }
 
