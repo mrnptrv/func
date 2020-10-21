@@ -488,7 +488,10 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                             </div>
                             <div className="popup__info">
                                 <div className="popup__summary">
-                                    <img className="popup__pic" src="/img/rooms/rooms-metallica-1.jpg"
+                                    <img className="popup__pic" src={
+                                        this.data.asset.imageUrls.length > 0 ?
+                                            this.data.asset.imageUrls[0] : null
+                                    }
                                          width={65}
                                          height={44}
                                          alt=""/>
@@ -599,13 +602,12 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                     </div>
                                     <div className="popup__footer">
                                         <input className="popup__checkmark visually-hidden"
-                                               id="apply-accept-terms"
-                                               name="apply-accept-terms"
+                                               id="apply-accept-terms-2"
                                                type="checkbox" required
                                                checked={this.data.bookingAgreementCheck}
                                                onClick={this.setBookingAgreementCheck}
                                         />
-                                        <label className="popup__checkmark-label" htmlFor="apply-accept-terms">Я
+                                        <label className="popup__checkmark-label" htmlFor="apply-accept-terms-2">Я
                                             принимаю <a href="/docs/personal-data-terms.pdf"
                                                         title="Обработка персональных данных (PDF)" target="_blank">условия
                                                 обработки персональных&nbsp;данных</a></label>
