@@ -38,6 +38,7 @@ class AssetItemData {
     @observable error = ""
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isBooking = false
+    @observable isSuccessfullyBooked = false
 }
 
 interface AssetItemProps {
@@ -157,6 +158,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             this.data.bookingPhone = "+7 ("
             this.data.bookingDescription = ""
             this.data.bookingAgreementCheck = false
+            this.data.isSuccessfullyBooked = false
             this.calculatePrice()
             this.enableBookingButton()
         }
@@ -180,7 +182,8 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             end: end
         }).then(() => {
             this.data.isBooking = false
-            this.closeModal()
+            this.data.isSuccessfullyBooked = true
+
             bookingApi().findBookedAssetsUsingPOST({
                 date: (moment(this.data.date)).format("yyyy-MM-DD"),
                 assetId: this.data.asset.pubId
@@ -492,164 +495,174 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                     </svg>
                                 </button>
                             </div>
-                            <div className="popup__info">
-                                <div className="popup__summary">
-                                    <img className="popup__pic" src={
-                                        this.data.asset.imageUrls.length > 0 ?
-                                            this.data.asset.imageUrls[0] : null
-                                    }
-                                         width={65}
-                                         height={44}
-                                         alt=""/>
-                                    <div className="popup__description">
-                                        <p className="popup__accent">{this.data.asset.name}</p>
-                                        <p className="popup__text">
+                            {this.data.isSuccessfullyBooked ? <div className="popup__content successfully-booked" >
+                                    <div>Спасибо! <br/>Совсем скоро мы свяжемся с тобой.</div>
+                                </div>
+                                : <>
+                                    <div className="popup__info">
+                                        <div className="popup__summary">
+                                            <img className="popup__pic" src={
+                                                this.data.asset.imageUrls.length > 0 ?
+                                                    this.data.asset.imageUrls[0] : null
+                                            }
+                                                 width={65}
+                                                 height={44}
+                                                 alt=""/>
+                                            <div className="popup__description">
+                                                <p className="popup__accent">{this.data.asset.name}</p>
+                                                <p className="popup__text">
                                             <span
                                                 id="popup-selected-date">{(moment(this.data.bookingDate)).format("DD MMMM YYYY")}</span>,
-                                            <span
-                                                id="popup-selected-time"> {this.getStartHour()} - {this.getEndHour()}</span>
-                                        </p>
-                                    </div>
-                                    <div className="popup__price">
-                                        <p className="popup__text">К оплате:</p>
-                                        <p className="popup__accent">{this.data.bookingPrice}₽</p>
-                                    </div>
-                                </div>
-                                <div className="popup__selects">
-                                    <div className="popup__group group">
-                                        <ReactDatePicker
-                                            dateFormat="dd/MM/yyyy"
-                                            className="top__input top__input--select input input--select"
-                                            placeholderText="Дата"
-                                            selected={this.data.bookingDate}
-                                            onChange={this.setBookingDate}/>
+                                                    <span
+                                                        id="popup-selected-time"> {this.getStartHour()} - {this.getEndHour()}</span>
+                                                </p>
+                                            </div>
+                                            <div className="popup__price">
+                                                <p className="popup__text">К оплате:</p>
+                                                <p className="popup__accent">{this.data.bookingPrice}₽</p>
+                                            </div>
+                                        </div>
+                                        <div className="popup__selects">
+                                            <div className="popup__group group">
+                                                <ReactDatePicker
+                                                    dateFormat="dd/MM/yyyy"
+                                                    className="top__input top__input--select input input--select"
+                                                    placeholderText="Дата"
+                                                    selected={this.data.bookingDate}
+                                                    onChange={this.setBookingDate}/>
 
-                                        <label className="popup__label label" htmlFor="popup-date">Дата</label>
-                                        <svg width="16" height="16" fill="none">
-                                            <use xlinkHref="#angle-arrow-down"/>
-                                        </svg>
+                                                <label className="popup__label label" htmlFor="popup-date">Дата</label>
+                                                <svg width="16" height="16" fill="none">
+                                                    <use xlinkHref="#angle-arrow-down"/>
+                                                </svg>
+                                            </div>
+                                            <div className="popup__group group">
+                                                <select
+                                                    className="popup__input popup__input--select input input--select"
+                                                    id="popup-time"
+                                                    value={this.data.bookingHour}
+                                                    onChange={this.setBookingHour}
+                                                >
+                                                    {this.data.bookingWorkTimeHours.map(wtr =>
+                                                        (wtr.booked ?
+                                                                <option disabled key={wtr.hour}
+                                                                        value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
+                                                                :
+                                                                <option
+                                                                    key={wtr.hour}
+                                                                    value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
+                                                        )
+                                                    )}
+                                                </select>
+                                                <label className="popup__label label" htmlFor="popup-time">Начало
+                                                    аренды</label>
+                                                <svg width="16" height="16" fill="none">
+                                                    <use xlinkHref="#angle-arrow-down"/>
+                                                </svg>
+                                            </div>
+                                            <div className="popup__group group">
+                                                <button className="popup__juk popup__juk--minus unbutton"
+                                                        type="button"
+                                                        onClick={this.decreaseBookingHourAmount}
+                                                >&ndash;</button>
+                                                <input className="popup__input popup__input--number input input--number"
+                                                       id="popup-hours"
+                                                       type="number"
+                                                       min="1"
+                                                       value={this.data.bookingHourAmount}
+                                                       onChange={this.setBookingHourAmount}
+                                                />
+                                                <button className="popup__juk popup__juk--plus unbutton"
+                                                        onClick={this.increaseBookingHourAmount}
+                                                        type="button">+
+                                                </button>
+                                                <label className="popup__label label" htmlFor="popup-hours">Количество
+                                                    часов</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="popup__group group">
-                                        <select className="popup__input popup__input--select input input--select"
-                                                id="popup-time"
-                                                value={this.data.bookingHour}
-                                                onChange={this.setBookingHour}
-                                        >
-                                            {this.data.bookingWorkTimeHours.map(wtr =>
-                                                (wtr.booked ?
-                                                        <option disabled key={wtr.hour}
-                                                                value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
-                                                        :
-                                                        <option
-                                                            key={wtr.hour}
-                                                            value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
-                                                )
-                                            )}
-                                        </select>
-                                        <label className="popup__label label" htmlFor="popup-time">Начало аренды</label>
-                                        <svg width="16" height="16" fill="none">
-                                            <use xlinkHref="#angle-arrow-down"/>
-                                        </svg>
-                                    </div>
-                                    <div className="popup__group group">
-                                        <button className="popup__juk popup__juk--minus unbutton"
-                                                type="button"
-                                                onClick={this.decreaseBookingHourAmount}
-                                        >&ndash;</button>
-                                        <input className="popup__input popup__input--number input input--number"
-                                               id="popup-hours"
-                                               type="number"
-                                               min="1"
-                                               value={this.data.bookingHourAmount}
-                                               onChange={this.setBookingHourAmount}
-                                        />
-                                        <button className="popup__juk popup__juk--plus unbutton"
-                                                onClick={this.increaseBookingHourAmount}
-                                                type="button">+
-                                        </button>
-                                        <label className="popup__label label" htmlFor="popup-hours">Количество
-                                            часов</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="popup__content">
-                                <h2 className="popup__headline">Контактные данные</h2>
-                                <div className="popup__wrapper">
-                                    <div className="popup__group group">
-                                        <input className="popup__input input"
-                                               type="text" placeholder="&nbsp;"
-                                               value={this.data.bookingName}
-                                               onChange={this.setBookingName}
-                                               required/>
-                                        <label className="popup__label label" htmlFor="apply-name">Имя</label>
-                                    </div>
-                                    <div className="popup__group group">
-                                        <input className="popup__input input"
-                                               type="text" placeholder="&nbsp;" maxLength={18} required
-                                               value={this.data.bookingPhone}
-                                               onChange={this.setBookingPhone}
-                                        />
-                                        <label className="popup__label label" htmlFor="apply-phone">Номер
-                                            телефона</label>
-                                    </div>
-                                    <div className="popup__group popup__group--message group group--message">
-                                        <textarea className="popup__input input input--message"
-                                                  id="apply-message"
-                                                  name="apply-message"
-                                                  rows={7}
-                                                  cols={20}
-                                                  maxLength={340}
-                                                  placeholder="&nbsp;"
-                                                  value={this.data.bookingDescription}
-                                                  onChange={this.setBookingDescription}
-                                        />
-                                        <label className="popup__label label" htmlFor="apply-email">Текст
-                                            сообщения</label>
-                                    </div>
-                                    <div className="popup__footer">
-                                        <input className="popup__checkmark visually-hidden"
-                                               id="apply-accept-terms-2"
-                                               type="checkbox" required
-                                               checked={this.data.bookingAgreementCheck}
-                                               onClick={this.setBookingAgreementCheck}
-                                        />
-                                        <label className="popup__checkmark-label" htmlFor="apply-accept-terms-2">Я
-                                            принимаю <a href="/docs/personal-data-terms.pdf"
-                                                        title="Обработка персональных данных (PDF)" target="_blank">условия
-                                                обработки персональных&nbsp;данных</a></label>
-                                    </div>
-                                    {this.data.error &&
-                                    <div className="popup__footer popup__errors">
-                                        {this.data.error}
-                                        {this.data.fieldErrors.length > 0 &&
-                                        (<ul>{this.data.fieldErrors.map(e => <li>{e}</li>)}</ul>)
-                                        }
+                                    <div className="popup__content">
+                                        <h2 className="popup__headline">Контактные данные</h2>
+                                        <div className="popup__wrapper">
+                                            <div className="popup__group group">
+                                                <input className="popup__input input"
+                                                       type="text" placeholder="&nbsp;"
+                                                       value={this.data.bookingName}
+                                                       onChange={this.setBookingName}
+                                                       required/>
+                                                <label className="popup__label label" htmlFor="apply-name">Имя</label>
+                                            </div>
+                                            <div className="popup__group group">
+                                                <input className="popup__input input"
+                                                       type="text" placeholder="&nbsp;" maxLength={18} required
+                                                       value={this.data.bookingPhone}
+                                                       onChange={this.setBookingPhone}
+                                                />
+                                                <label className="popup__label label" htmlFor="apply-phone">Номер
+                                                    телефона</label>
+                                            </div>
+                                            <div className="popup__group popup__group--message group group--message">
+                                <textarea className="popup__input input input--message"
+                                          id="apply-message"
+                                          name="apply-message"
+                                          rows={7}
+                                          cols={20}
+                                          maxLength={340}
+                                          placeholder="&nbsp;"
+                                          value={this.data.bookingDescription}
+                                          onChange={this.setBookingDescription}
+                                />
+                                                <label className="popup__label label" htmlFor="apply-email">Текст
+                                                    сообщения</label>
+                                            </div>
+                                            <div className="popup__footer">
+                                                <input className="popup__checkmark visually-hidden"
+                                                       id="apply-accept-terms-2"
+                                                       type="checkbox" required
+                                                       checked={this.data.bookingAgreementCheck}
+                                                       onClick={this.setBookingAgreementCheck}
+                                                />
+                                                <label className="popup__checkmark-label"
+                                                       htmlFor="apply-accept-terms-2">Я
+                                                    принимаю <a href="/docs/personal-data-terms.pdf"
+                                                                title="Обработка персональных данных (PDF)"
+                                                                target="_blank">условия
+                                                        обработки персональных&nbsp;данных</a></label>
+                                            </div>
+                                            {this.data.error &&
+                                            <div className="popup__footer popup__errors">
+                                                {this.data.error}
+                                                {this.data.fieldErrors.length > 0 &&
+                                                (<ul>{this.data.fieldErrors.map(e => <li>{e}</li>)}</ul>)
+                                                }
 
+                                            </div>
+                                            }
+                                            <div className="popup__actions">
+                                                <button className="popup__button button button--secondary unbutton"
+                                                        id="apply-cancel" type="button"
+                                                        onClick={this.closeModal}
+                                                >
+                                                    <span>Отмена</span>
+                                                    <svg width="20" height="16">
+                                                        <use xlinkHref="#long-arrow-right"/>
+                                                    </svg>
+                                                </button>
+                                                <button className="popup__button pageclip-form__submit button unbutton"
+                                                        id="apply-submit"
+                                                        disabled={this.data.bookingButtonDisabled || this.data.isBooking}
+                                                        onClick={this.bookAsset}
+                                                >
+                                                    <span>Отправить</span>
+                                                    <svg width="20" height="16">
+                                                        <use xlinkHref="#long-arrow-right"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    }
-                                    <div className="popup__actions">
-                                        <button className="popup__button button button--secondary unbutton"
-                                                id="apply-cancel" type="button"
-                                                onClick={this.closeModal}
-                                        >
-                                            <span>Отмена</span>
-                                            <svg width="20" height="16">
-                                                <use xlinkHref="#long-arrow-right"/>
-                                            </svg>
-                                        </button>
-                                        <button className="popup__button pageclip-form__submit button unbutton"
-                                                id="apply-submit"
-                                                disabled={this.data.bookingButtonDisabled || this.data.isBooking}
-                                                onClick={this.bookAsset}
-                                        >
-                                            <span>Отправить</span>
-                                            <svg width="20" height="16">
-                                                <use xlinkHref="#long-arrow-right"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                                </>
+                            }
                         </div>
                     </div>
                 </Modal>

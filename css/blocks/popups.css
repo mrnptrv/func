@@ -123,6 +123,14 @@
   margin: 0;
 }
 
+.popup__content.successfully-booked{
+  justify-content: center;
+  font-size: 1.2rem;
+  line-height: 2;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
 .popup__content {
   padding: 20px var(--basic-gap) var(--basic-gap);
 }
