@@ -18,6 +18,10 @@
   margin: 0;
 }
 
+.top__group:hover svg {
+  opacity: 1;
+}
+
 /* responsive */
 
 @media (max-width: 666px) {

@@ -435,8 +435,16 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                         .filter(wtr => !wtr.isWeekend)
                                         .map((wtr, index) =>
                                             <tr key={index} className="space__row">
-                                                <td className="space__cell">Будни {wtr.start} &ndash; {wtr.end}</td>
-                                                <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
+                                                <td className="space__cell">Будни</td>
+                                                <td className="space__cell space__cell--price">
+                                                  {numberFormat(wtr.price)}₽/час
+                                                  <div className="space__tooltip">
+                                                    <svg width="16" height="16" fill="#333333">
+                                                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
+                                                    </svg>
+                                                    <p className="space__tooltip-value">Будни {wtr.start} &ndash; {wtr.end}</p>
+                                                  </div>
+                                                </td>
                                             </tr>
                                         )
                                     }
@@ -444,13 +452,27 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                         .filter(wtr => wtr.isWeekend)
                                         .map((wtr, index) =>
                                             <tr key={index + 1000} className="space__row">
-                                                <td className="space__cell">Выходные {wtr.start} &ndash; {wtr.end}</td>
-                                                <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
+                                                <td className="space__cell">Выходные</td>
+                                                <td className="space__cell space__cell--price">
+                                                  {numberFormat(wtr.price)}₽/час
+                                                  <div className="space__tooltip">
+                                                    <svg width="16" height="16" fill="#333333">
+                                                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
+                                                    </svg>
+                                                    <p className="space__tooltip-value">Выходные {wtr.start} &ndash; {wtr.end}</p>
+                                                  </div>
+                                                </td>
                                             </tr>
                                         )
                                     }
                                     </tbody>
                                 </table>
+                                <button className="space__book-button button unbutton" type="button">
+                                  <span>Забронировать</span>
+                                  <svg id="long-arrow-right" width="20" height="20" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.0858 8.99995L12.2929 5.20706L13.7071 3.79285L19.9142 9.99995L13.7071 16.2071L12.2929 14.7928L16.0858 11H0V8.99995H16.0858Z"/>
+                                  </svg>
+                                </button>
                             </div>
                             : <div/>}
                     </div>

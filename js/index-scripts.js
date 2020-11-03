@@ -325,6 +325,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // Добавляем ховер эффект на меню
 
 const navLinks = document.querySelectorAll('.nav__link');
+const anchorLinks = document.querySelectorAll('.nav__link--anchor');
 
 navLinks.forEach((item) => {
   item.addEventListener('mouseover', () => {
@@ -431,7 +432,7 @@ document.querySelectorAll('.nav__item').forEach((item) => {
 
 // Скроллим к секции по клику в меню
 
-navLinks.forEach((item) => {
+anchorLinks.forEach((item) => {
   item.addEventListener('click', (event) => {
     event.preventDefault();
 

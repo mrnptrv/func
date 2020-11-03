@@ -191,6 +191,10 @@
   margin-bottom: 0;
 }
 
+.popup__group:hover svg {
+  opacity: 1;
+}
+
 .popup__juk {
   position: absolute;
   bottom: 4px;

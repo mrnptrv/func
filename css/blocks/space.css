@@ -9,7 +9,6 @@
 
 .space__info {
   display: flex;
-  align-items: flex-start;
 }
 
 .space__slider {
@@ -27,6 +26,8 @@
 
 .space__pic {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .space__footer {
@@ -81,7 +82,7 @@
 }
 
 .space__headline span {
-  display: block;
+  display: none;
   margin-bottom: 24px;
   font-weight: 500;
   font-size: 11px;
@@ -96,9 +97,14 @@
   opacity: 0.8;
 }
 
+.space__accordion--price {
+  padding-top: 30px;
+  border-top: 1px solid rgba(51, 51, 51, 0.1);
+}
+
 .space__button {
   margin-bottom: 32px;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
   line-height: 1em;
   text-align: left;
@@ -114,7 +120,7 @@
 .space__table {
   width: 100%;
   max-width: 380px;
-  margin-bottom: var(--basic-gap);
+  margin-bottom: 36px;
   border: 0;
   border-collapse: collapse;
 }
@@ -130,7 +136,8 @@
 }
 
 .space__cell--price {
-  padding-right: 0;
+  position: relative;
+  padding-right: 36px;
   font-weight: 500;
   opacity: 1;
   text-align: right;
@@ -140,6 +147,48 @@
   padding-bottom: 0;
 }
 
+.space__tooltip {
+  position: absolute;
+  top: 3px;
+  right: 0;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.space__tooltip svg {
+  width: 100%;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in;
+}
+
+.space__tooltip:hover svg {
+  opacity: 1;
+}
+
+.space__tooltip-value {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: calc(100% + 4px);
+  display: none;
+  max-width: 280px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1em;
+  color: #ffffff;
+  background-color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 2;
+}
+
+.space__tooltip:hover .space__tooltip-value {
+  display: block;
+}
+
+.space__book-button {
+  width: 350px;
+}
+
 .space__list {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -147,6 +196,7 @@
   row-gap: var(--basic-gap);
   padding: 40px 40px;
   border-top: 1px solid rgba(51, 51, 51, 0.06);
+  display: none;
 }
 
 .space__time-option {
@@ -252,7 +302,7 @@
   }
 
   .space__description {
-    padding: 0 var(--basic-gap);
+    padding: 0 var(--basic-gap) var(--basic-gap);
   }
 
   .space__headline {
@@ -331,4 +381,15 @@
     padding: 0 0 var(--basic-gap);
     border-top: 0;
   }
+}
+
+/* BrainhubCarousel customizing */
+
+.space__track,
+.BrainhubCarousel__container,
+.BrainhubCarousel,
+.BrainhubCarousel .BrainhubCarousel__trackContainer,
+.BrainhubCarousel .BrainhubCarousel__trackContainer .BrainhubCarousel__track,
+.BrainhubCarouselItem {
+  height: 100%;
 }

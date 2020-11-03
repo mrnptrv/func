@@ -184,6 +184,7 @@ body {
 .button {
   position: relative;
   display: inline-block;
+  max-width: 100%;
   padding: 20px 24px;
   font-family: inherit;
   font-weight: 600;
@@ -290,6 +291,8 @@ body {
 }
 
 .slider-control svg {
+  position: relative;
+  top: 2px;
   display: inline-block;
 }
 
