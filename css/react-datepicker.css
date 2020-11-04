@@ -174,6 +174,9 @@
   font-size: 0.944rem;
 }
 
+.react-datepicker__current-month::first-letter {
+   text-transform: uppercase;
+}
 .react-datepicker__current-month {
   padding: 16px 16px;
   font-weight: 400;

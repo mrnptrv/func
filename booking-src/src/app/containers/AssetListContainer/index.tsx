@@ -7,12 +7,7 @@ import ReactDatePicker from "react-datepicker";
 import {AssetItem} from "app/components/AssetItem";
 import {bookingApi} from "../../../../../dashboard-src/src/app/constants";
 import * as moment from 'moment';
-import { registerLocale, setDefaultLocale } from  "react-datepicker";
-import ru from "date-fns/locale/ru";
-
-registerLocale('ru', ru)
-setDefaultLocale("ru")
-
+import {ru_RU} from "app/constants/locale_ru";
 
 
 class AssetListData {
@@ -86,17 +81,18 @@ export class AssetListContainer extends React.Component<any, any> {
                     <div className="top__filters">
                         <div className="top__group group">
                             <ReactDatePicker
-                                dateFormat="dd MMMM yyyy"
+                                dateFormat="dd MMMM, yyyy"
                                 className="top__input top__input--select input input--select"
                                 placeholderText="Дата"
                                 selected={this.data.bookingDate}
+                                locale={ru_RU}
                                 onChange={(d: Date) => {
                                     this.data.bookingDate = d;
                                     this.load();
                                 }}/>
                             <label className="top__label label" htmlFor="filter-date">Дата</label>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4.5 6.5L8 10L11.5 6.5" stroke="#333333" stroke-width="2"/>
+                                <path d="M4.5 6.5L8 10L11.5 6.5" stroke="#333333" strokeWidth="2"/>
                             </svg>
                         </div>
                         <div className="top__group group">
@@ -111,7 +107,7 @@ export class AssetListContainer extends React.Component<any, any> {
                             </select>
                             <label className="top__label label" htmlFor="filter-people">Количество людей</label>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4.5 6.5L8 10L11.5 6.5" stroke="#333333" stroke-width="2"/>
+                                <path d="M4.5 6.5L8 10L11.5 6.5" stroke="#333333" strokeWidth="2"/>
                             </svg>
                         </div>
                     </div>

@@ -8,6 +8,8 @@ import ReactDatePicker from "react-datepicker";
 import {bookingApi} from "app/constants";
 import * as moment from "moment";
 import {numberFormat} from "app/constants/numberFormat";
+import {ru_RU} from "app/constants/locale_ru";
+import format from "date-fns/format";
 
 class AssetItemData {
     @observable carouselValue = 0
@@ -33,8 +35,6 @@ class AssetItemData {
     @observable bookingAgreementCheck = false
     @observable bookingButtonDisabled = true
     @observable bookingPrice = 0
-    @observable bookingHidePrice = false;
-    @observable bookingHideBooking = false;
     @observable error = ""
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isBooking = false
@@ -62,7 +62,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         super(props, context);
 
         moment.locale("ru")
-
+        
         this.data.asset = this.props.asset
         this.data.date = this.props.bookingDate
         this.data.bookingDate = this.props.bookingDate
@@ -139,20 +139,15 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             prices.reduce((prevPrice, currentPrice) => prevPrice + currentPrice)
     }
 
-    private toggleHidePrice = () => {
-        this.data.bookingHidePrice = !this.data.bookingHidePrice
-    }
-
-    private toggleHideBooking = () => {
-        this.data.bookingHideBooking = !this.data.bookingHideBooking
-    }
-
     private openBookModal = (hour) => {
         return () => {
             this.data.isOpenBookingModal = true
-            this.data.error =""
+            this.data.error = ""
             this.data.fieldErrors = new Array<String>()
-            this.data.bookingHour = hour
+            this.data.bookingHour = hour || this.data.bookingWorkTimeHours
+                .filter(h=>!h.booked)
+                .map(h=>h.hour)
+                .shift()
             this.data.bookingHourAmount = 1
             this.data.bookingName = ""
             this.data.bookingPhone = "+7 ("
@@ -168,7 +163,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         let start = this.getStartHour();
         let end = this.getEndHour();
 
-        this.data.error =""
+        this.data.error = ""
         this.data.fieldErrors = new Array<String>()
         this.data.isBooking = true
 
@@ -362,8 +357,16 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
 
     private setBookingDate = (d: Date) => {
         this.data.bookingDate = d;
-        this.data.bookingWorkTimeHours = this.calculateWorkTimeHours()
-        this.calculatePrice()
+        bookingApi().findBookedAssetsUsingPOST({
+            date: (moment(this.data.bookingDate)).format("yyyy-MM-DD"),
+            assetId: this.data.asset.pubId
+        }).then(r => {
+            let bookedAssets = r.data;
+            this.markWorkTimeHoursBooked(bookedAssets)
+            this.calculatePrice()
+        }).catch(e => {
+            console.error(e.response.data);
+        })
     }
 
     render() {
@@ -424,11 +427,8 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                         <p className="space__text">{this.data.asset.description}</p>
                         {this.data.asset.workTimeRanges.length > 0 ?
                             <div
-                                className={"space__accordion space__accordion--price " + (this.data.bookingHidePrice ? "space__accordion--closed " : "")}>
-                                <button className="space__button unbutton"
-                                        onClick={this.toggleHidePrice}
-                                >Стоимость
-                                </button>
+                                className="space__accordion space__accordion--price ">
+                                <button className="space__button unbutton">Стоимость </button>
                                 <table className="space__table space__accordion-content">
                                     <tbody>
                                     {this.data.asset.workTimeRanges
@@ -437,13 +437,14 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                             <tr key={index} className="space__row">
                                                 <td className="space__cell">Будни</td>
                                                 <td className="space__cell space__cell--price">
-                                                  {numberFormat(wtr.price)}₽/час
-                                                  <div className="space__tooltip">
-                                                    <svg width="16" height="16" fill="#333333">
-                                                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
-                                                    </svg>
-                                                    <p className="space__tooltip-value">Будни {wtr.start} &ndash; {wtr.end}</p>
-                                                  </div>
+                                                    {numberFormat(wtr.price)}₽/час
+                                                    <div className="space__tooltip">
+                                                        <svg width="16" height="16" fill="#333333">
+                                                            <path fillRule="evenodd" clipRule="evenodd"
+                                                                  d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
+                                                        </svg>
+                                                        <p className="space__tooltip-value">Будни {wtr.start} &ndash; {wtr.end}</p>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )
@@ -454,35 +455,37 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                             <tr key={index + 1000} className="space__row">
                                                 <td className="space__cell">Выходные</td>
                                                 <td className="space__cell space__cell--price">
-                                                  {numberFormat(wtr.price)}₽/час
-                                                  <div className="space__tooltip">
-                                                    <svg width="16" height="16" fill="#333333">
-                                                      <path fill-rule="evenodd" clip-rule="evenodd" d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
-                                                    </svg>
-                                                    <p className="space__tooltip-value">Выходные {wtr.start} &ndash; {wtr.end}</p>
-                                                  </div>
+                                                    {numberFormat(wtr.price)}₽/час
+                                                    <div className="space__tooltip">
+                                                        <svg width="16" height="16" fill="#333333">
+                                                            <path fillRule="evenodd" clipRule="evenodd"
+                                                                  d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
+                                                        </svg>
+                                                        <p className="space__tooltip-value">Выходные {wtr.start} &ndash; {wtr.end}</p>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )
                                     }
                                     </tbody>
                                 </table>
-                                <button className="space__book-button button unbutton" type="button">
-                                  <span>Забронировать</span>
-                                  <svg id="long-arrow-right" width="20" height="20" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.0858 8.99995L12.2929 5.20706L13.7071 3.79285L19.9142 9.99995L13.7071 16.2071L12.2929 14.7928L16.0858 11H0V8.99995H16.0858Z"/>
-                                  </svg>
+                                <button className="space__book-button button unbutton"
+                                        type="button"
+                                        onClick={this.openBookModal(0)}
+                                >
+                                    <span>Забронировать</span>
+                                    <svg id="long-arrow-right" width="20" height="20" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" clipRule="evenodd"
+                                              d="M16.0858 8.99995L12.2929 5.20706L13.7071 3.79285L19.9142 9.99995L13.7071 16.2071L12.2929 14.7928L16.0858 11H0V8.99995H16.0858Z"/>
+                                    </svg>
                                 </button>
                             </div>
                             : <div/>}
                     </div>
                 </div>
                 {this.data.workTimeHours.length > 0 ?
-                    <div
-                        className={"space__accordion " + (this.data.bookingHideBooking ? "space__accordion--closed " : "")}>
-                        <button className="space__button space__button--booking unbutton"
-                                onClick={this.toggleHideBooking}
-                        >Бронирование
+                    <div className="space__accordion">
+                        <button className="space__button space__button--booking unbutton">Бронирование
                         </button>
                         <div className="space__list space__accordion-content">
                             {this.data.workTimeHours.map(h =>
@@ -534,7 +537,9 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                 <p className="popup__accent">{this.data.asset.name}</p>
                                                 <p className="popup__text">
                                             <span
-                                                id="popup-selected-date">{(moment(this.data.bookingDate)).format("DD MMMM YYYY")}</span>,
+                                                id="popup-selected-date">
+                                                {format(this.data.bookingDate, "dd MMMM, yyyy", {locale:ru_RU})}
+                                            </span>,
                                                     <span
                                                         id="popup-selected-time"> {this.getStartHour()} - {this.getEndHour()}</span>
                                                 </p>
@@ -550,6 +555,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                     dateFormat="dd/MM/yyyy"
                                                     className="top__input top__input--select input input--select"
                                                     placeholderText="Дата"
+                                                    locale={ru_RU}
                                                     selected={this.data.bookingDate}
                                                     onChange={this.setBookingDate}/>
 
@@ -642,7 +648,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                        id="apply-accept-terms-2"
                                                        type="checkbox" required
                                                        checked={this.data.bookingAgreementCheck}
-                                                       onClick={this.setBookingAgreementCheck}
+                                                       onChange={this.setBookingAgreementCheck}
                                                 />
                                                 <label className="popup__checkmark-label"
                                                        htmlFor="apply-accept-terms-2">Я
