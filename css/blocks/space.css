@@ -196,7 +196,6 @@
   row-gap: var(--basic-gap);
   padding: 40px 40px;
   border-top: 1px solid rgba(51, 51, 51, 0.06);
-  display: none;
 }
 
 .space__time-option {
