@@ -379,15 +379,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                         <span>Переговорная</span>
                         {this.data.asset.name}
                     </h2>
-                    <ul className="space__amenities-list list">
-                      <li className="space__amenity space__amenity--seats">10 посадочных мест</li>
-                      <li className="space__amenity space__amenity--tv">телевизор 4К</li>
-                      <li className="space__amenity space__amenity--speaker">спикерфон</li>
-                      <li className="space__amenity space__amenity--whiteboard">доска/маркеры</li>
-                      <li className="space__amenity space__amenity--internet">wifi/ethernet 500 мегабит</li>
-                      <li className="space__amenity space__amenity--water">вода</li>
-                    </ul>
-                    <p className="space__text">{this.data.asset.description}</p>
+                    <div dangerouslySetInnerHTML={{ __html: this.data.asset.description }}/><p className="space__text">{this.data.asset.description}</p>
                     {this.data.asset.workTimeRanges.length > 0 ?
                         <div
                             className="space__accordion space__accordion--price ">
