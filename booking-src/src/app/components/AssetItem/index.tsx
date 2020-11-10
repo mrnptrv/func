@@ -62,7 +62,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         super(props, context);
 
         moment.locale("ru")
-        
+
         this.data.asset = this.props.asset
         this.data.date = this.props.bookingDate
         this.data.bookingDate = this.props.bookingDate
@@ -374,123 +374,127 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         return (
             <article className="space" role="article">
                 <div className="space__info">
-
-                    {this.data.asset.imageUrls.length > 0 ?
-                        <div className="space__slider glide" id="space-slider-1">
-                            <div className="space__track glide__track" data-glide-el="track">
-                                <Carousel
-                                    value={this.data.carouselValue}
-                                    onChange={v => this.data.carouselValue = v}
-                                    infinite={true}
-                                >
-                                    {this.data.asset.imageUrls.map((s, index) =>
-                                        <img className="space__pic" key={index} src={s} width={808}
-                                             height={464} alt=""/>
-                                    )}
-                                </Carousel>
-                            </div>
-                            <div className="space__footer slider-footer">
-                                <div className="space__counter slider-footer__counter">
-                                    <span className="slider-footer__index">{this.data.carouselValue + 1}</span>/<span
-                                    className="slider-footer__total">{this.data.asset.imageUrls.length}</span>
-                                </div>
-                                <div className="space__controls slider-footer__controls" data-glide-el="controls">
-                                    <button
-                                        className="space__control slider-footer__arrow slider-control slider-control--left circle-button unbutton"
-                                        data-glide-dir="<"
-                                        onClick={this.carouselPrev}
-                                    >
-                                        <span className="visually-hidden">Листать назад</span>
-                                        <svg width="16" height="16">
-                                            <use xlinkHref="#arrow-left"/>
-                                        </svg>
-                                    </button>
-                                    <button
-                                        className="space__control slider-footer__arrow slider-control slider-control--right circle-button unbutton"
-                                        data-glide-dir=">"
-                                        onClick={this.carouselNext}
-                                    >
-                                        <svg width="16" height="16">
-                                            <use xlinkHref="#arrow-right"/>
-                                        </svg>
-                                        <span className="visually-hidden">Листать вперёд</span>
-                                    </button>
-                                </div>
-                            </div>
+                <div className="space__description">
+                    <h2 className="space__headline headline">
+                        <span>Переговорная</span>
+                        {this.data.asset.name}
+                    </h2>
+                    <ul className="space__amenities-list list">
+                      <li className="space__amenity space__amenity--seats">10 посадочных мест</li>
+                      <li className="space__amenity space__amenity--tv">телевизор 4К</li>
+                      <li className="space__amenity space__amenity--speaker">спикерфон</li>
+                      <li className="space__amenity space__amenity--whiteboard">доска/маркеры</li>
+                      <li className="space__amenity space__amenity--internet">wifi/ethernet 500 мегабит</li>
+                      <li className="space__amenity space__amenity--water">вода</li>
+                    </ul>
+                    <p className="space__text">{this.data.asset.description}</p>
+                    {this.data.asset.workTimeRanges.length > 0 ?
+                        <div
+                            className="space__accordion space__accordion--price ">
+                            <button className="space__button unbutton" type="button">Стоимость</button>
+                            <table className="space__table space__accordion-content">
+                                <tbody>
+                                {this.data.asset.workTimeRanges
+                                    .filter(wtr => !wtr.isWeekend)
+                                    .map((wtr, index) =>
+                                        <tr key={index} className="space__row">
+                                            <td className="space__cell">
+                                              Будни
+                                              <span>{wtr.start} &ndash; {wtr.end}</span>
+                                            </td>
+                                            <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
+                                        </tr>
+                                    )
+                                }
+                                {this.data.asset.workTimeRanges
+                                    .filter(wtr => wtr.isWeekend)
+                                    .map((wtr, index) =>
+                                        <tr key={index + 1000} className="space__row">
+                                            <td className="space__cell">
+                                              Выходные
+                                              <span>{wtr.start} &ndash; {wtr.end}</span>
+                                            </td>
+                                            <td className="space__cell space__cell--price">{numberFormat(wtr.price)}₽/час</td>
+                                        </tr>
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                            <button className="space__book-button button unbutton"
+                                    type="button"
+                                    onClick={this.openBookModal(0)}
+                            >
+                                <span>Забронировать</span>
+                                <svg id="long-arrow-right" width="20" height="20" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" clipRule="evenodd"
+                                          d="M16.0858 8.99995L12.2929 5.20706L13.7071 3.79285L19.9142 9.99995L13.7071 16.2071L12.2929 14.7928L16.0858 11H0V8.99995H16.0858Z"/>
+                                </svg>
+                            </button>
                         </div>
                         : <div/>}
-                    <div className="space__description">
-                        <h2 className="space__headline headline">
-                            <span>Переговорная</span>
-                            {this.data.asset.name}
-                        </h2>
-                        <p className="space__text">{this.data.asset.description}</p>
-                        {this.data.asset.workTimeRanges.length > 0 ?
-                            <div
-                                className="space__accordion space__accordion--price ">
-                                <button className="space__button unbutton">Стоимость </button>
-                                <table className="space__table space__accordion-content">
-                                    <tbody>
-                                    {this.data.asset.workTimeRanges
-                                        .filter(wtr => !wtr.isWeekend)
-                                        .map((wtr, index) =>
-                                            <tr key={index} className="space__row">
-                                                <td className="space__cell">Будни</td>
-                                                <td className="space__cell space__cell--price">
-                                                    {numberFormat(wtr.price)}₽/час
-                                                    <div className="space__tooltip">
-                                                        <svg width="16" height="16" fill="#333333">
-                                                            <path fillRule="evenodd" clipRule="evenodd"
-                                                                  d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
-                                                        </svg>
-                                                        <p className="space__tooltip-value">Будни {wtr.start} &ndash; {wtr.end}</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        )
-                                    }
-                                    {this.data.asset.workTimeRanges
-                                        .filter(wtr => wtr.isWeekend)
-                                        .map((wtr, index) =>
-                                            <tr key={index + 1000} className="space__row">
-                                                <td className="space__cell">Выходные</td>
-                                                <td className="space__cell space__cell--price">
-                                                    {numberFormat(wtr.price)}₽/час
-                                                    <div className="space__tooltip">
-                                                        <svg width="16" height="16" fill="#333333">
-                                                            <path fillRule="evenodd" clipRule="evenodd"
-                                                                  d="M8 14A6 6 0 108 2a6 6 0 000 12zm0 2A8 8 0 108 0a8 8 0 000 16zm.5-7L9 4H7l.5 5h1zM8 12a1 1 0 100-2 1 1 0 000 2z"/>
-                                                        </svg>
-                                                        <p className="space__tooltip-value">Выходные {wtr.start} &ndash; {wtr.end}</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        )
-                                    }
-                                    </tbody>
-                                </table>
-                                <button className="space__book-button button unbutton"
-                                        type="button"
-                                        onClick={this.openBookModal(0)}
+                </div>
+
+                {this.data.asset.imageUrls.length > 0 ?
+                    <div className="space__slider glide" id="space-slider-1">
+                        <div className="space__track glide__track" data-glide-el="track">
+                            <Carousel
+                                value={this.data.carouselValue}
+                                onChange={v => this.data.carouselValue = v}
+                                infinite={true}
+                            >
+                                {this.data.asset.imageUrls.map((s, index) =>
+                                    <img className="space__pic" key={index} src={s} width={808}
+                                         height={464} alt=""/>
+                                )}
+                            </Carousel>
+                        </div>
+                        <div className="space__footer slider-footer">
+                            <div className="space__counter slider-footer__counter">
+                                <span className="slider-footer__index">{this.data.carouselValue + 1}</span>/<span
+                                className="slider-footer__total">{this.data.asset.imageUrls.length}</span>
+                            </div>
+                            <div className="space__controls slider-footer__controls" data-glide-el="controls">
+                                <button
+                                    className="space__control slider-footer__arrow slider-control slider-control--left circle-button unbutton"
+                                    type="button"
+                                    data-glide-dir="<"
+                                    onClick={this.carouselPrev}
                                 >
-                                    <span>Забронировать</span>
-                                    <svg id="long-arrow-right" width="20" height="20" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" clipRule="evenodd"
-                                              d="M16.0858 8.99995L12.2929 5.20706L13.7071 3.79285L19.9142 9.99995L13.7071 16.2071L12.2929 14.7928L16.0858 11H0V8.99995H16.0858Z"/>
+                                    <span className="visually-hidden">Листать назад</span>
+                                    <svg width="16" height="16">
+                                        <use xlinkHref="#arrow-left"/>
                                     </svg>
                                 </button>
+                                <button
+                                    className="space__control slider-footer__arrow slider-control slider-control--right circle-button unbutton"
+                                    type="button"
+                                    data-glide-dir=">"
+                                    onClick={this.carouselNext}
+                                >
+                                    <svg width="16" height="16">
+                                        <use xlinkHref="#arrow-right"/>
+                                    </svg>
+                                    <span className="visually-hidden">Листать вперёд</span>
+                                </button>
                             </div>
-                            : <div/>}
+                        </div>
                     </div>
+                    : <div/>}
                 </div>
                 {this.data.workTimeHours.length > 0 ?
-                    <div className="space__accordion">
-                        <button className="space__button space__button--booking unbutton">Бронирование
-                        </button>
+                    <div className="space__accordion space__accordion--time">
+                        <div className="space__top">
+                            <button className="space__button space__button--booking unbutton" type="button">Выбери время для бронирования</button>
+                            <ul className="space__indicators-list list">
+                                <li className="space__indicator space__indicator--free">Свободно</li>
+                                <li className="space__indicator space__indicator--occupied">Занято</li>
+                            </ul>
+                        </div>
                         <div className="space__list space__accordion-content">
                             {this.data.workTimeHours.map(h =>
                                 <button key={h.hour}
                                         className="space__time-option apply-button unbutton"
+                                        type="button"
                                         onClick={this.openBookModal(h.hour)}
                                         disabled={h.booked}
                                 >
@@ -601,8 +605,8 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                        onChange={this.setBookingHourAmount}
                                                 />
                                                 <button className="popup__juk popup__juk--plus unbutton"
-                                                        onClick={this.increaseBookingHourAmount}
-                                                        type="button">+
+                                                        type="button"
+                                                        onClick={this.increaseBookingHourAmount}>+
                                                 </button>
                                                 <label className="popup__label label" htmlFor="popup-hours">Количество
                                                     часов</label>
@@ -677,7 +681,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                     </svg>
                                                 </button>
                                                 <button className="popup__button pageclip-form__submit button unbutton"
-                                                        id="apply-submit"
+                                                        id="apply-submit" type="button"
                                                         disabled={this.data.bookingButtonDisabled || this.data.isBooking}
                                                         onClick={this.bookAsset}
                                                 >

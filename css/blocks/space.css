@@ -9,6 +9,7 @@
 
 .space__info {
   display: flex;
+  justify-content: space-between;
 }
 
 .space__slider {
@@ -70,11 +71,11 @@
 .space__description {
   width: 200px;
   flex-grow: 1;
-  padding: 36px 40px 16px;
+  padding: 36px 40px 24px;
 }
 
 .space__headline {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   font-family: "Inter", "Helvetica", sans-serif;
   font-weight: 800;
   font-size: 22px;
@@ -92,14 +93,70 @@
   opacity: 0.8;
 }
 
+.space__amenities-list {
+  margin-bottom: 36px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.space__amenity {
+  margin-bottom: 16px;
+  padding-left: 32px;
+  background-image: url("../../img/booking-icons/icon-internet.svg");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 16px auto;
+}
+
+.space__amenity--seats {
+  background-image: url("../../img/booking-icons/icon-seats.svg");
+}
+
+.space__amenity--tv {
+  background-image: url("../../img/booking-icons/icon-tv.svg");
+}
+
+.space__amenity--speaker {
+  background-image: url("../../img/booking-icons/icon-speaker.svg");
+}
+
+.space__amenity--whiteboard {
+  background-image: url("../../img/booking-icons/icon-whiteboard.svg");
+}
+
+.space__amenity--internet {
+  background-image: url("../../img/booking-icons/icon-internet.svg");
+}
+
+.space__amenity--water {
+  background-image: url("../../img/booking-icons/icon-water.svg");
+}
+
+.space__amenity:last-of-type {
+  margin-bottom: 0;
+}
+
 .space__text {
+  display: none;
   margin-bottom: 40px;
   opacity: 0.8;
+}
+
+.space__accordion--time {
+  position: relative;
+  padding: 30px 36px 36px;
+  border-top: 1px solid rgba(51, 51, 51, 0.06);
 }
 
 .space__accordion--price {
   padding-top: 30px;
   border-top: 1px solid rgba(51, 51, 51, 0.1);
+}
+
+.space__top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
 }
 
 .space__button {
@@ -114,7 +171,35 @@
 }
 
 .space__button--booking {
-  display: none;
+  width: calc(100% - 250px);
+  margin-bottom: 0;
+}
+
+.space__indicators-list {
+  display: flex;
+}
+
+.space__indicator {
+  position: relative;
+  margin-left: 32px;
+  padding-left: 32px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.space__indicator::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(51, 51, 51, 0.15);
+}
+
+.space__indicator--occupied::before {
+  background-color: rgba(51, 51, 51, 0.03);
+  background-image: repeating-linear-gradient(-45deg, rgba(51, 51, 51, 0.1), rgba(51, 51, 51, 0.1) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 6px);
 }
 
 .space__table {
@@ -128,8 +213,8 @@
 .space__cell {
   width: 60px;
   padding: 0 12px 14px 0;
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 16px;
   letter-spacing: 0.01em;
   opacity: 0.8;
   white-space: nowrap;
@@ -145,6 +230,12 @@
 
 .space__row:last-of-type .space__cell {
   padding-bottom: 0;
+}
+
+.space__cell span {
+  display: block;
+  margin-top: 8px;
+  opacity: 0.5;
 }
 
 .space__tooltip {
@@ -194,8 +285,6 @@
   grid-template-columns: repeat(8, 1fr);
   column-gap: var(--basic-gap);
   row-gap: var(--basic-gap);
-  padding: 40px 40px;
-  border-top: 1px solid rgba(51, 51, 51, 0.06);
 }
 
 .space__time-option {
@@ -231,7 +320,6 @@
 @media (max-width: 1279px) {
   .space__slider {
     width: 320px;
-    max-width: 808px;
     flex-grow: 1;
   }
 
@@ -243,7 +331,17 @@
 
 @media (max-width: 959px) {
   .space__info {
-    flex-direction: column;
+    flex-direction: column-reverse;
+  }
+
+  .space__amenities-list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .space__amenity {
+    width: 48%;
   }
 
   .space__slider,
@@ -329,16 +427,16 @@
     margin: 0 calc(-1 * var(--basic-gap));
   }
 
+  .space__top {
+    flex-direction: column;
+  }
+
   .space__button {
     position: relative;
     width: 100%;
     margin: 0;
     padding: var(--basic-gap) 0;
     pointer-events: all;
-  }
-
-  .space__button--booking {
-    display: block;
   }
 
   .space__button::after {
@@ -356,6 +454,10 @@
     box-sizing: border-box;
     transform: rotate(0);
     transform-origin: center;
+  }
+
+  .space__indicators-list {
+    align-self: flex-end;
   }
 
   .space__accordion--closed .space__button::after {
@@ -379,6 +481,16 @@
     row-gap: 16px;
     padding: 0 0 var(--basic-gap);
     border-top: 0;
+  }
+}
+
+@media (max-width: 414px) {
+  .space__amenities-list {
+    display: block;
+  }
+
+  .space__amenity {
+    width: 100%;
   }
 }
 
