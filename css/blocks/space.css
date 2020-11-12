@@ -94,7 +94,6 @@
 }
 
 .space__amenities-list {
-  margin-bottom: 36px;
   font-size: 14px;
   line-height: 16px;
 }
@@ -149,6 +148,7 @@
 }
 
 .space__accordion--price {
+  margin-top: 36px;
   padding-top: 30px;
   border-top: 1px solid rgba(51, 51, 51, 0.1);
 }
@@ -424,7 +424,7 @@
 
   .space__accordion--price {
     width: calc(100% + 2 * var(--basic-gap));
-    margin: 0 calc(-1 * var(--basic-gap));
+    margin: 36px calc(-1 * var(--basic-gap));
   }
 
   .space__top {
