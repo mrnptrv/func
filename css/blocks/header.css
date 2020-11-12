@@ -72,17 +72,30 @@
 }
 
 .nav__logo {
-  fill: #ffffff;
   margin-right: 104px;
+  transition: all 0.2s ease-in;
   z-index: 21;
+}
+
+a.nav__logo:hover,
+a.nav__logo:focus {
+  opacity: 0.75;
+}
+
+a.nav__logo:active {
+  transform: scale(0.95);
+}
+
+.nav__logo-pic {
+  fill: #ffffff;
   transition: fill 0.2s ease-in;
 }
 
-.nav--sticky .nav__logo {
+.nav--sticky .nav__logo-pic {
   fill: #000000;
 }
 
-.nav--open-menu .nav__logo {
+.nav--open-menu .nav__logo-pic {
   fill: #ffffff;
 }
 
@@ -478,7 +491,7 @@
     min-height: -webkit-fill-available;
   }
 
-  .nav__logo {
+  .nav__logo-pic {
     width: 80px;
   }
 
