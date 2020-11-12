@@ -412,16 +412,6 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                 }
                                 </tbody>
                             </table>
-                            <button className="space__book-button button unbutton"
-                                    type="button"
-                                    onClick={this.openBookModal(0)}
-                            >
-                                <span>Забронировать</span>
-                                <svg id="long-arrow-right" width="20" height="20" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" clipRule="evenodd"
-                                          d="M16.0858 8.99995L12.2929 5.20706L13.7071 3.79285L19.9142 9.99995L13.7071 16.2071L12.2929 14.7928L16.0858 11H0V8.99995H16.0858Z"/>
-                                </svg>
-                            </button>
                         </div>
                         : <div/>}
                 </div>

@@ -194,18 +194,17 @@
   left: 0;
   width: 16px;
   height: 16px;
-  border: 1px solid rgba(51, 51, 51, 0.15);
+  border: 1px solid #d0d0d0;
 }
 
 .space__indicator--occupied::before {
-  background-color: rgba(51, 51, 51, 0.03);
-  background-image: repeating-linear-gradient(-45deg, rgba(51, 51, 51, 0.1), rgba(51, 51, 51, 0.1) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 6px);
+  background-color: rgba(51, 51, 51, 0.1);
+  background-image: repeating-linear-gradient(-45deg, rgba(51, 51, 51, 0.15), rgba(51, 51, 51, 0.15) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 6px);
 }
 
 .space__table {
   width: 100%;
   max-width: 380px;
-  margin-bottom: 36px;
   border: 0;
   border-collapse: collapse;
 }
@@ -278,6 +277,7 @@
 
 .space__book-button {
   width: 350px;
+  margin-top: 36px;
 }
 
 .space__list {
@@ -294,7 +294,7 @@
   line-height: 26px;
   letter-spacing: 0.01em;
   text-align: center;
-  border: 1px solid rgba(51, 51, 51, 0.1);
+  border: 1px solid #d0d0d0;
   outline: 0;
   transition: all 0.2s ease-out;
 }
@@ -310,8 +310,8 @@
 }
 
 .space__time-option:disabled {
-  background-color: rgba(51, 51, 51, 0.03);
-  background-image: repeating-linear-gradient(-45deg, rgba(51, 51, 51, 0.1), rgba(51, 51, 51, 0.1) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 10px);
+  background-color: rgba(51, 51, 51, 0.1);
+  background-image: repeating-linear-gradient(-45deg, rgba(51, 51, 51, 0.15), rgba(51, 51, 51, 0.15) 1px, rgba(255, 255, 255, 0) 1px, rgba(255, 255, 255, 0) 10px);
   cursor: not-allowed;
 }
 
