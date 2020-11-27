@@ -103,8 +103,7 @@ export class AssetListContainer extends React.Component<any, any> {
                                     onChange={this.onChangeCapacityFilter}
                             >
                                 <option value="all">Все переговорки</option>
-                                <option value="6-">До 6 человек</option>
-                                <option value="10-">До 10 человек</option>
+                                <option value="1-10">1-10 человек</option>
                                 <option value="10+">От 10 человек</option>
                             </select>
                             <label className="top__label label" htmlFor="filter-people">Количество людей</label>

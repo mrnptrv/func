@@ -3,3 +3,4 @@ npm-debug.*
 Thumbs.db
 .DS_Store
 .idea/
+frontend.iml
