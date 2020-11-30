@@ -35,7 +35,7 @@ export const App = hot(({history}) => {
                 <Route path="/dashboard/list" component={AssetListContainer}/>
                 <Route path="/dashboard/asset/:id" exact component={AssetEditContainer}/>
                 <Route path="/dashboard/create-asset" exact component={AssetCreateContainer}/>
-                <Route >Not Found</Route>
+                <Route >Loading...</Route>
             </Switch>
         </Router>
     );

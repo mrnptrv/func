@@ -2,16 +2,32 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
-import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
-import {bookingApi} from "app/constants/api";
-import {Booking} from "../../../api";
+import {Button, Dropdown, DropdownButton, Form, Modal, Spinner, Table} from "react-bootstrap";
+import {assetsApi, bookingApi} from "app/constants/api";
+import {Asset, Booking} from "../../../api";
+import ReactDatePicker from "react-datepicker";
+import Col from "react-bootstrap/Col";
+import format from "date-fns/format";
 
 class BookingData {
     @observable isLoading = true
     @observable error = ""
     @observable booking: Array<Booking> = new Array<Booking>();
+    @observable assetList: Array<Asset> = new Array<Asset>();
     @observable statusFilter = "PENDING";
+    @observable assetPubIdFilter = ""
     @observable isShowErrorModal = false;
+    @observable fromDate = new Date()
+    @observable toDate: Date = null
+}
+
+const dateFilterStyle = {
+    minWidth: 220,
+    maxWidth: 220
+}
+
+const filterRowStyle = {
+    paddingBottom: 10
 }
 
 @observer
@@ -24,22 +40,44 @@ export class BookingContainer extends React.Component<any, any> {
         this.load()
     }
 
+    private setFromDate = (d: Date) => {
+        this.data.fromDate = d;
+        this.load()
+    }
+
+    private setToDate = (d: Date) => {
+        this.data.toDate = d;
+
+        this.load();
+    }
+
+    private selectAsset(pubId) {
+        this.data.assetPubIdFilter = pubId
+        this.load();
+    }
+
     private load() {
         this.data.isLoading = true
         bookingApi().listUsingPOST({
-            status: this.data.statusFilter !== 'ALL' ? this.data.statusFilter : undefined
-        })
-            .then((response) => {
-                this.data.isLoading = false
-                this.data.booking = response.data
-            })
-            .catch((error) => {
-                if (error && error.response && error.response.data.message) {
-                    this.data.error = error.response.data.message
-                }
+            status: this.data.statusFilter !== 'ALL' ? this.data.statusFilter : undefined,
+            assetId :this.data.assetPubIdFilter || undefined,
+            from : this.data.fromDate ? format(this.data.fromDate, "yyyy-MM-dd") : undefined,
+            to : this.data.toDate ? format(this.data.toDate, "yyyy-MM-dd") : undefined
+        }).then((response) => {
+            this.data.booking = response.data
+        }).then(() => {
+            return assetsApi().assetsListUsingPOST({})
+        }).then((res) => {
+            this.data.assetList = res.data
+        }).then(() => {
+            this.data.isLoading = false
+        }).catch((error) => {
+            if (error && error.response && error.response.data.message) {
+                this.data.error = error.response.data.message
+            }
 
-                this.data.isLoading = false;
-            })
+            this.data.isLoading = false;
+        })
     }
 
     private edit = (booking) => {
@@ -124,7 +162,7 @@ export class BookingContainer extends React.Component<any, any> {
                         <Dropdown.Item
                             onClick={this.edit(booking)}
                             >
-                            Edit
+                            Edism="2"t
                         </Dropdown.Item>
                         {booking.status !== 'BOOKED' ?
                         <Dropdown.Item
@@ -153,27 +191,79 @@ export class BookingContainer extends React.Component<any, any> {
                 <MainMenu/>
                 <h4>Booking ({this.data.booking.length})
                 </h4>
-                <DropdownButton title={this.data.statusFilter} variant="outline-secondary">
-                    {['ALL', 'PENDING', 'BOOKED', 'DECLINED'].map(s =>
-                        <Dropdown.Item
-                            onClick={this.filterByStatus(s)}
-                        >
-                            {s}
-                        </Dropdown.Item>
-                    )}
-                </DropdownButton>
+                <Form>
+                    <Form.Row className="align-items-center" style={filterRowStyle}>
+                        <Col>
+                            <Form.Label>Status:</Form.Label>
 
-                <Table striped boarder hover>
+                            <Form.Control
+                                as="select"
+                                value={this.data.statusFilter}
+                                onChange={(e) => this.filterByStatus(e.target.value)}
+                                size="sm"
+                            >
+                                {['ALL', 'PENDING', 'BOOKED', 'DECLINED'].map(s => {
+                                    return <option
+                                    key={s}
+                                    value={s}
+                                    >{s}</option>
+                                })}
+                            </Form.Control>
+                        </Col>
+                        <Col sm={3}>
+                            <Form.Label size="sm">Asset:</Form.Label>
+                            <Form.Control
+                                as="select"
+                                value={this.data.assetPubIdFilter}
+                                onChange={(e) => this.selectAsset(e.target.value)}
+                                size="sm"
+                            >
+                                <option value="">-</option>
+                                {this.data.assetList.map(a => {
+                                    return <option
+                                        key={a.pubId}
+                                        value={a.pubId}
+                                    >{a.name}</option>
+                                })}
+                            </Form.Control>
+                        </Col>
+                        <Col style={dateFilterStyle}>
+                            <Form.Label>From:</Form.Label>
+                            <ReactDatePicker
+                                dateFormat="dd.MM.yyyy"
+                                className="top__input top__input--select input input--select"
+                                placeholderText="From"
+                                selected={this.data.fromDate}
+                                onChange={this.setFromDate}
+                            />
+                        </Col>
+                        <Col style={dateFilterStyle}>
+                            <Form.Label>To:</Form.Label>
+                            <ReactDatePicker
+                                dateFormat="dd.MM.yyyy"
+                                className="top__input top__input--select input input--select"
+                                placeholderText="To"
+                                selected={this.data.toDate}
+                                onChange={this.setToDate}
+                            />
+                        </Col>
+                        <Col>&nbsp;</Col>
+                    </Form.Row>
+                </Form>
+
+                <Table striped hover>
                     <thead>
-                    <th>Asset</th>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Price</th>
-                    <th>Description</th>
-                    <th/>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th/>
+                    </tr>
                     </thead>
                     <tbody>
 

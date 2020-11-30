@@ -325,7 +325,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                         <Form.Group>
                             <Form.Label>Date</Form.Label>
                             <ReactDatePicker
-                                dateFormat="dd/MM/yyyy"
+                                dateFormat="dd.MM.yyyy"
                                 className="top__input top__input--select input input--select"
                                 placeholderText="Дата"
                                 selected={this.data.bookingDate}

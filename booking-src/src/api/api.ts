@@ -332,7 +332,19 @@ export interface ListRequest {
      * @type {string}
      * @memberof ListRequest
      */
+    from?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListRequest
+     */
     status?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListRequest
+     */
+    to?: string;
 }
 /**
  * 
