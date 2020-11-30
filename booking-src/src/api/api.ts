@@ -302,6 +302,12 @@ export interface FindBookedAssetsRequest {
      * @memberof FindBookedAssetsRequest
      */
     date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FindBookedAssetsRequest
+     */
+    withoutBookingId?: string;
 }
 /**
  * 
@@ -427,6 +433,61 @@ export interface UpdateAssetRequest {
      * @memberof UpdateAssetRequest
      */
     workTimeRanges?: Array<WorkTimeRangeReq>;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateRequest
+ */
+export interface UpdateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    assetId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    bookingId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    date: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    description?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    end: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    phone: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    start: string;
 }
 /**
  * 
@@ -1557,6 +1618,51 @@ export const BookingApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary Get book an asset
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUsingGET2: async (pubId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pubId' is not null or undefined
+            if (pubId === null || pubId === undefined) {
+                throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling getUsingGET2.');
+            }
+            const localVarPath = `/api/booking/get/{pubId}`
+                .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Booking list
          * @param {ListRequest} listRequest listRequest
          * @param {*} [options] Override http request option.
@@ -1597,6 +1703,54 @@ export const BookingApiAxiosParamCreator = function (configuration?: Configurati
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             const needsSerialization = (typeof listRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(listRequest !== undefined ? listRequest : {}) : (listRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update an asset
+         * @param {UpdateRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUsingPOST1: async (updateRequest: UpdateRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateRequest' is not null or undefined
+            if (updateRequest === null || updateRequest === undefined) {
+                throw new RequiredError('updateRequest','Required parameter updateRequest was null or undefined when calling updateUsingPOST1.');
+            }
+            const localVarPath = `/api/booking/update`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof updateRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(updateRequest !== undefined ? updateRequest : {}) : (updateRequest || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -1670,6 +1824,20 @@ export const BookingApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get book an asset
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUsingGET2(pubId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Booking>> {
+            const localVarAxiosArgs = await BookingApiAxiosParamCreator(configuration).getUsingGET2(pubId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Booking list
          * @param {ListRequest} listRequest listRequest
          * @param {*} [options] Override http request option.
@@ -1677,6 +1845,20 @@ export const BookingApiFp = function(configuration?: Configuration) {
          */
         async listUsingPOST(listRequest: ListRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Booking>>> {
             const localVarAxiosArgs = await BookingApiAxiosParamCreator(configuration).listUsingPOST(listRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Update an asset
+         * @param {UpdateRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateUsingPOST1(updateRequest: UpdateRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Booking>> {
+            const localVarAxiosArgs = await BookingApiAxiosParamCreator(configuration).updateUsingPOST1(updateRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1733,6 +1915,16 @@ export const BookingApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary Get book an asset
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUsingGET2(pubId: string, options?: any): AxiosPromise<Booking> {
+            return BookingApiFp(configuration).getUsingGET2(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Booking list
          * @param {ListRequest} listRequest listRequest
          * @param {*} [options] Override http request option.
@@ -1740,6 +1932,16 @@ export const BookingApiFactory = function (configuration?: Configuration, basePa
          */
         listUsingPOST(listRequest: ListRequest, options?: any): AxiosPromise<Array<Booking>> {
             return BookingApiFp(configuration).listUsingPOST(listRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update an asset
+         * @param {UpdateRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUsingPOST1(updateRequest: UpdateRequest, options?: any): AxiosPromise<Booking> {
+            return BookingApiFp(configuration).updateUsingPOST1(updateRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1801,6 +2003,18 @@ export class BookingApi extends BaseAPI {
 
     /**
      * 
+     * @summary Get book an asset
+     * @param {string} pubId pubId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingApi
+     */
+    public getUsingGET2(pubId: string, options?: any) {
+        return BookingApiFp(this.configuration).getUsingGET2(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Booking list
      * @param {ListRequest} listRequest listRequest
      * @param {*} [options] Override http request option.
@@ -1809,6 +2023,127 @@ export class BookingApi extends BaseAPI {
      */
     public listUsingPOST(listRequest: ListRequest, options?: any) {
         return BookingApiFp(this.configuration).listUsingPOST(listRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update an asset
+     * @param {UpdateRequest} updateRequest updateRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingApi
+     */
+    public updateUsingPOST1(updateRequest: UpdateRequest, options?: any) {
+        return BookingApiFp(this.configuration).updateUsingPOST1(updateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
+ * WarmupApi - axios parameter creator
+ * @export
+ */
+export const WarmupApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Warmup
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        warmupUsingGET: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/_ah/warmup`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * WarmupApi - functional programming interface
+ * @export
+ */
+export const WarmupApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Warmup
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async warmupUsingGET(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+            const localVarAxiosArgs = await WarmupApiAxiosParamCreator(configuration).warmupUsingGET(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * WarmupApi - factory interface
+ * @export
+ */
+export const WarmupApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Warmup
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        warmupUsingGET(options?: any): AxiosPromise<string> {
+            return WarmupApiFp(configuration).warmupUsingGET(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * WarmupApi - object-oriented interface
+ * @export
+ * @class WarmupApi
+ * @extends {BaseAPI}
+ */
+export class WarmupApi extends BaseAPI {
+    /**
+     * 
+     * @summary Warmup
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WarmupApi
+     */
+    public warmupUsingGET(options?: any) {
+        return WarmupApiFp(this.configuration).warmupUsingGET(options).then((request) => request(this.axios, this.basePath));
     }
 
 }

@@ -40,7 +40,12 @@ export class BookingContainer extends React.Component<any, any> {
 
                 this.data.isLoading = false;
             })
+    }
 
+    private edit = (booking) => {
+        return () => {
+            this.props.history.push("/dashboard/edit-booking/" + booking.pubId)
+        }
     }
 
     private approve(booking) {
@@ -68,7 +73,6 @@ export class BookingContainer extends React.Component<any, any> {
 
     private decline(booking) {
         return () => {
-            console.log('@@@ index.tsx -> booking decline -> 71', booking.pubId);
             bookingApi().declineUsingPOST(booking.pubId).then((r) => {
                 this.data.booking = this.data.booking.map(b => {
                     if (b.pubId === booking.pubId) {
@@ -117,6 +121,11 @@ export class BookingContainer extends React.Component<any, any> {
                 <td>{booking.description}</td>
                 <td className="text-right">
                     <DropdownButton title="&bull;&bull;&bull;" variant="outline-secondary">
+                        <Dropdown.Item
+                            onClick={this.edit(booking)}
+                            >
+                            Edit
+                        </Dropdown.Item>
                         {booking.status !== 'BOOKED' ?
                         <Dropdown.Item
                             onClick={this.approve(booking)}

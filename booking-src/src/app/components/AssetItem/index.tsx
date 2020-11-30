@@ -84,13 +84,12 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
     private calculateWorkTimeHours() {
         let workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
         let isWeekend = this.data.bookingDate.getDay() === 6 || this.data.bookingDate.getDay() === 0;
-
         let a = this.data.asset
         let workTimeRanges = a.workTimeRanges.filter(wtr => wtr.isWeekend == isWeekend)
 
         if (workTimeRanges.length > 0) {
-            let minStartHour = this.getHour(workTimeRanges[0].start);
-            let maxEndHour = this.getHour(workTimeRanges[0].end);
+            let minStartHour = this.getHour(workTimeRanges[0].start)
+            let maxEndHour = this.getHour(workTimeRanges[0].end)
 
             workTimeRanges.forEach(wtr => {
                 if (wtr.isWeekend == isWeekend) {
@@ -127,7 +126,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         return workTimeHours
     }
 
-    private calculatePrice = () => {
+    private calculatePrice() {
         let startHour = this.data.bookingHour
         let endHour = this.data.bookingHour + this.data.bookingHourAmount
 
@@ -145,8 +144,8 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             this.data.error = ""
             this.data.fieldErrors = new Array<String>()
             this.data.bookingHour = hour || this.data.bookingWorkTimeHours
-                .filter(h=>!h.booked)
-                .map(h=>h.hour)
+                .filter(h => !h.booked)
+                .map(h => h.hour)
                 .shift()
             this.data.bookingHourAmount = 1
             this.data.bookingName = ""

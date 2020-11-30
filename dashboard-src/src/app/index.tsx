@@ -8,6 +8,7 @@ import {AssetListContainer} from "app/containers/AssetListContainer";
 import {AssetEditContainer} from "app/containers/AssetEditContainer";
 import {AssetCreateContainer} from "app/containers/AssetCreateContainer";
 import {BookingContainer} from "app/containers/BookingContainer";
+import {BookingEditContainer} from "app/containers/BookingEditContainer";
 
 // render react DOM
 export const App = hot(({history}) => {
@@ -30,6 +31,7 @@ export const App = hot(({history}) => {
                 <Route path="/dashboard/login" component={LoginContainer}/>
                 <Route path="/dashboard/register" component={RegisterContainer}/>
                 <Route path="/dashboard/booking" component={BookingContainer}/>
+                <Route path="/dashboard/edit-booking/:id" component={BookingEditContainer}/>
                 <Route path="/dashboard/list" component={AssetListContainer}/>
                 <Route path="/dashboard/asset/:id" exact component={AssetEditContainer}/>
                 <Route path="/dashboard/create-asset" exact component={AssetCreateContainer}/>
