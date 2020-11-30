@@ -132,10 +132,8 @@ export class BookingContainer extends React.Component<any, any> {
     }
 
     private filterByStatus(status) {
-        return () => {
-            this.data.statusFilter = status
-            this.load()
-        }
+      this.data.statusFilter = status
+      this.load()
     }
 
     private hideErrorDialog = () => {
