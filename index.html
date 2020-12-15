@@ -701,7 +701,8 @@
                 <b>500&#8381;</b> / день
               </p>
               <p class="prices__note text">или</p>
-              <p class="prices__amount">7&nbsp;500&#8381; / месяц</p>
+              <p class="prices__note text">7&nbsp;500&#8381; / месяц</p>
+              <p class="prices__footnote">Места есть. Приходите и&nbsp;работайте</p>
             </li>
             <li class="prices__item">
               <b class="prices__name">«Свой» стол</b>
@@ -710,13 +711,40 @@
                 <b>8&nbsp;500&#8381;</b> / месяц
               </p>
               <p class="prices__note text">или</p>
-              <p class="prices__amount">24&nbsp;000&#8381; / квартал</p>
+              <p class="prices__note text">24&nbsp;000&#8381; / квартал</p>
+              <p class="prices__footnote">Места есть. Приходите и&nbsp;работайте</p>
             </li>
             <li class="prices__item">
               <b class="prices__name">«Свой» офис</b>
               <p class="prices__description text">для команды, организации или нескольких человек</p>
               <b class="prices__accent">договорная цена</b>
-              <button class="prices__button button apply-button unbutton" type="button" data-goal="apply">
+              <button class="prices__button button button--ghost apply-button unbutton" type="button" data-goal="apply">
+                <span>Оставить заявку</span>
+                <svg width="20" height="16">
+                  <use xlink:href="#long-arrow-right"></use>
+                </svg>
+              </button>
+            </li>
+            <li class="prices__item">
+              <b class="prices__name">Аренда переговорок</b>
+              <p class="prices__description text">переговорная комната в аренду от 6 до 35 человек</p>
+              <p class="prices__amount prices__amount--single-line">
+                от <b>350&#8381;</b> / час
+              </p>
+              <a class="prices__button button unbutton" href="/booking/index.html">
+                <span>Забронировать</span>
+                <svg width="20" height="16">
+                  <use xlink:href="#long-arrow-right"></use>
+                </svg>
+              </a>
+            </li>
+            <li class="prices__item">
+              <b class="prices__name">Конференс-зал</b>
+              <p class="prices__description text">аренда конференс-зала до 300 человек (320 м<sup>2</sup>, проектор, кофе/чай и т.д.)</p>
+              <p class="prices__amount prices__amount--single-line">
+                от <b>10&nbsp;000&#8381;</b>
+              </p>
+              <button class="prices__button button button--ghost apply-button unbutton" type="button" data-goal="apply">
                 <span>Оставить заявку</span>
                 <svg width="20" height="16">
                   <use xlink:href="#long-arrow-right"></use>
@@ -952,7 +980,7 @@
             </p>
             <p class="popup__group popup__group--message group group--message">
               <textarea class="popup__input popup__input--message input input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;" required></textarea>
-              <label class="popup__label label" for="apply-email">Расскажите о себе<span>, чем занимаетесь и сколько вас человек</span></label>
+              <label class="popup__label label" for="apply-message">Расскажите о себе<span>, чем занимаетесь и сколько вас человек</span></label>
             </p>
             <p class="popup__actions">
               <button class="popup__button button button--secondary unbutton" id="apply-cancel" type="button">

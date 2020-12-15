@@ -490,33 +490,40 @@
 .prices__list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  column-gap: var(--basic-gap);
+  gap: var(--basic-gap);
   margin-top: 98px;
 }
 
 .prices__item {
+  display: flex;
+  flex-direction: column;
   align-self: start;
   height: 100%;
-  padding: 44px 36px 36px;
+  min-height: 412px;
+  padding: 32px 36px 36px;
   background-color: #ffffff;
   box-shadow: 0 4px 10px 0 rgba(51, 51, 51, 0.03);
 }
 
 .prices__name {
-  margin-bottom: 22px;
+  margin-bottom: 12px;
   font-weight: 800;
   font-size: 22px;
   line-height: 34px;
 }
 
 .prices__description {
-  margin-bottom: 30px;
+  margin: 0 -1px 30px;
 }
 
 .prices__amount {
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
+}
+
+.prices__amount--single-line {
+  margin-bottom: 42px;
 }
 
 .prices__amount b {
@@ -528,19 +535,27 @@
 }
 
 .prices__note {
-  margin: 22px 0;
+  margin-top: 14px;
+}
+
+.prices__footnote {
+  margin-top: 38px;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 28px;
+  letter-spacing: 0.01em;
 }
 
 .prices__accent {
-  margin-top: 30px;
+  margin: 6px 0 36px;
   font-weight: 800;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 34px;
 }
 
 .prices__button {
   width: 100%;
-  margin-top: 36px;
+  margin-top: auto;
 }
 
 /* MAIN -> toggler */
@@ -1018,6 +1033,10 @@
     row-gap: 24px;
     max-width: 400px;
     margin: 36px auto 0;
+  }
+
+  .prices__item {
+    min-height: unset;
   }
 
   .speech {
