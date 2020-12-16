@@ -200,6 +200,10 @@ body {
   transition: all 0.2s ease-out;
 }
 
+.button:active {
+  transform: scale(0.97);
+}
+
 .button:disabled {
   opacity: 0.2;
   pointer-events: none;
@@ -212,12 +216,6 @@ body {
   display: inline-block;
   transition: all 0.2s ease-out;
   transform: translateX(-50%);
-}
-
-.button:disabled {
-  opacity: 0.2;
-  pointer-events: none;
-  cursor: not-allowed;
 }
 
 .button:hover span,
@@ -252,6 +250,17 @@ body {
 
 .button--secondary svg {
   fill: #333333;
+}
+
+.button--ghost {
+  padding: 18px 23px;
+  color: var(--feature-color);
+  background-color: #ffffff;
+  border: 1px solid var(--feature-color);
+}
+
+.button--ghost svg {
+  fill: var(--feature-color);
 }
 
 .circle-button {
