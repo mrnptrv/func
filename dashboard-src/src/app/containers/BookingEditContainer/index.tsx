@@ -46,7 +46,6 @@ export class BookingEditContainer extends React.Component<any, any> {
         this.data.error = ""
         this.data.fieldErrors = new Array<String>()
 
-        console.log('@@@ index.tsx -> save -> 33', this.data.booking);
         let start = this.getStartHour();
         let end = this.getEndHour();
 

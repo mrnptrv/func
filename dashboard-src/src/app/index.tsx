@@ -9,6 +9,9 @@ import {AssetEditContainer} from "app/containers/AssetEditContainer";
 import {AssetCreateContainer} from "app/containers/AssetCreateContainer";
 import {BookingContainer} from "app/containers/BookingContainer";
 import {BookingEditContainer} from "app/containers/BookingEditContainer";
+import {LocationListContainer} from "app/containers/LocationListContainer";
+import {LocationCreateContainer} from "app/containers/LocationCreateContainer";
+import {LocationEditContainer} from "app/containers/LocationEditContainer";
 
 // render react DOM
 export const App = hot(({history}) => {
@@ -16,7 +19,6 @@ export const App = hot(({history}) => {
 
     api.getUsingGET1().then(() => {
         // history.push("/dashboard/list")
-        console.log('@@@ index.tsx -> after get -> 18', history.location.pathname);
 
         if (history.location.pathname == "/dashboard/index.html" || history.location.pathname == "/dashboard/") {
             history.push("/dashboard/list")
@@ -35,7 +37,10 @@ export const App = hot(({history}) => {
                 <Route path="/dashboard/list" component={AssetListContainer}/>
                 <Route path="/dashboard/asset/:id" exact component={AssetEditContainer}/>
                 <Route path="/dashboard/create-asset" exact component={AssetCreateContainer}/>
-                <Route >Loading...</Route>
+                <Route path="/dashboard/location/list" exact component={LocationListContainer}/>
+                <Route path="/dashboard/create-location" exact component={LocationCreateContainer}/>
+                <Route path="/dashboard/edit-location/:id" exact component={LocationEditContainer}/>
+                <Route>Loading...</Route>
             </Switch>
         </Router>
     );
