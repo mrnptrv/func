@@ -4,7 +4,7 @@ import {action, observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {assetsApi} from "app/constants/api";
-import {Asset} from "../../../api";
+import {Asset} from "app/api/api";
 
 class AssetListData {
     @observable isLoading = true

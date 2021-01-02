@@ -231,6 +231,61 @@ export interface BookingRequest {
 /**
  * 
  * @export
+ * @interface Company
+ */
+export interface Company {
+    /**
+     * 
+     * @type {string}
+     * @memberof Company
+     */
+    address: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Company
+     */
+    created: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof Company
+     */
+    createdBy: User;
+    /**
+     * 
+     * @type {string}
+     * @memberof Company
+     */
+    details: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Company
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Company
+     */
+    pubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Company
+     */
+    updated: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof Company
+     */
+    updatedBy: User;
+}
+/**
+ * 
+ * @export
  * @interface CreateAssetRequest
  */
 export interface CreateAssetRequest {
@@ -274,6 +329,31 @@ export interface CreateAssetRequest {
 /**
  * 
  * @export
+ * @interface CreateCompanyRequest
+ */
+export interface CreateCompanyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCompanyRequest
+     */
+    address: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCompanyRequest
+     */
+    details?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCompanyRequest
+     */
+    name: string;
+}
+/**
+ * 
+ * @export
  * @interface CreateLocationRequest
  */
 export interface CreateLocationRequest {
@@ -294,6 +374,19 @@ export interface DeleteAssetRequest {
      * 
      * @type {string}
      * @memberof DeleteAssetRequest
+     */
+    pubId: string;
+}
+/**
+ * 
+ * @export
+ * @interface DeleteCompanyRequest
+ */
+export interface DeleteCompanyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof DeleteCompanyRequest
      */
     pubId: string;
 }
@@ -514,6 +607,37 @@ export interface UpdateAssetRequest {
      * @memberof UpdateAssetRequest
      */
     workTimeRanges?: Array<WorkTimeRangeReq>;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateCompanyRequest
+ */
+export interface UpdateCompanyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateCompanyRequest
+     */
+    address?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateCompanyRequest
+     */
+    details?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateCompanyRequest
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateCompanyRequest
+     */
+    pubId: string;
 }
 /**
  * 
@@ -2147,6 +2271,456 @@ export class BookingApi extends BaseAPI {
 
 
 /**
+ * CompanyApi - axios parameter creator
+ * @export
+ */
+export const CompanyApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create company
+         * @param {CreateCompanyRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createCompanyUsingPOST: async (createRequest: CreateCompanyRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createRequest' is not null or undefined
+            if (createRequest === null || createRequest === undefined) {
+                throw new RequiredError('createRequest','Required parameter createRequest was null or undefined when calling createCompanyUsingPOST.');
+            }
+            const localVarPath = `/api/company/create`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof createRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(createRequest !== undefined ? createRequest : {}) : (createRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary delete asset
+         * @param {DeleteCompanyRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCompanyUsingPOST: async (deleteRequest: DeleteCompanyRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deleteRequest' is not null or undefined
+            if (deleteRequest === null || deleteRequest === undefined) {
+                throw new RequiredError('deleteRequest','Required parameter deleteRequest was null or undefined when calling deleteCompanyUsingPOST.');
+            }
+            const localVarPath = `/api/company/delete`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof deleteRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(deleteRequest !== undefined ? deleteRequest : {}) : (deleteRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary get a company
+         * @param {string} [name] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCompanyListUsingPOST: async (name?: string, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/company/list/`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary get a company
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCompanyUsingGET: async (pubId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pubId' is not null or undefined
+            if (pubId === null || pubId === undefined) {
+                throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling getCompanyUsingGET.');
+            }
+            const localVarPath = `/api/company/get/{pubId}`
+                .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update company
+         * @param {UpdateCompanyRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCompanyUsingPOST: async (updateRequest: UpdateCompanyRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateRequest' is not null or undefined
+            if (updateRequest === null || updateRequest === undefined) {
+                throw new RequiredError('updateRequest','Required parameter updateRequest was null or undefined when calling updateCompanyUsingPOST.');
+            }
+            const localVarPath = `/api/company/update`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof updateRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(updateRequest !== undefined ? updateRequest : {}) : (updateRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CompanyApi - functional programming interface
+ * @export
+ */
+export const CompanyApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create company
+         * @param {CreateCompanyRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createCompanyUsingPOST(createRequest: CreateCompanyRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Company>> {
+            const localVarAxiosArgs = await CompanyApiAxiosParamCreator(configuration).createCompanyUsingPOST(createRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary delete asset
+         * @param {DeleteCompanyRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteCompanyUsingPOST(deleteRequest: DeleteCompanyRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await CompanyApiAxiosParamCreator(configuration).deleteCompanyUsingPOST(deleteRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary get a company
+         * @param {string} [name] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCompanyListUsingPOST(name?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Company>>> {
+            const localVarAxiosArgs = await CompanyApiAxiosParamCreator(configuration).getCompanyListUsingPOST(name, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary get a company
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCompanyUsingGET(pubId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Company>> {
+            const localVarAxiosArgs = await CompanyApiAxiosParamCreator(configuration).getCompanyUsingGET(pubId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Update company
+         * @param {UpdateCompanyRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateCompanyUsingPOST(updateRequest: UpdateCompanyRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Company>> {
+            const localVarAxiosArgs = await CompanyApiAxiosParamCreator(configuration).updateCompanyUsingPOST(updateRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * CompanyApi - factory interface
+ * @export
+ */
+export const CompanyApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Create company
+         * @param {CreateCompanyRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createCompanyUsingPOST(createRequest: CreateCompanyRequest, options?: any): AxiosPromise<Company> {
+            return CompanyApiFp(configuration).createCompanyUsingPOST(createRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary delete asset
+         * @param {DeleteCompanyRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCompanyUsingPOST(deleteRequest: DeleteCompanyRequest, options?: any): AxiosPromise<void> {
+            return CompanyApiFp(configuration).deleteCompanyUsingPOST(deleteRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary get a company
+         * @param {string} [name] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCompanyListUsingPOST(name?: string, options?: any): AxiosPromise<Array<Company>> {
+            return CompanyApiFp(configuration).getCompanyListUsingPOST(name, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary get a company
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCompanyUsingGET(pubId: string, options?: any): AxiosPromise<Company> {
+            return CompanyApiFp(configuration).getCompanyUsingGET(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update company
+         * @param {UpdateCompanyRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateCompanyUsingPOST(updateRequest: UpdateCompanyRequest, options?: any): AxiosPromise<Company> {
+            return CompanyApiFp(configuration).updateCompanyUsingPOST(updateRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CompanyApi - object-oriented interface
+ * @export
+ * @class CompanyApi
+ * @extends {BaseAPI}
+ */
+export class CompanyApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create company
+     * @param {CreateCompanyRequest} createRequest createRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyApi
+     */
+    public createCompanyUsingPOST(createRequest: CreateCompanyRequest, options?: any) {
+        return CompanyApiFp(this.configuration).createCompanyUsingPOST(createRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary delete asset
+     * @param {DeleteCompanyRequest} deleteRequest deleteRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyApi
+     */
+    public deleteCompanyUsingPOST(deleteRequest: DeleteCompanyRequest, options?: any) {
+        return CompanyApiFp(this.configuration).deleteCompanyUsingPOST(deleteRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get a company
+     * @param {string} [name] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyApi
+     */
+    public getCompanyListUsingPOST(name?: string, options?: any) {
+        return CompanyApiFp(this.configuration).getCompanyListUsingPOST(name, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get a company
+     * @param {string} pubId pubId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyApi
+     */
+    public getCompanyUsingGET(pubId: string, options?: any) {
+        return CompanyApiFp(this.configuration).getCompanyUsingGET(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update company
+     * @param {UpdateCompanyRequest} updateRequest updateRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyApi
+     */
+    public updateCompanyUsingPOST(updateRequest: UpdateCompanyRequest, options?: any) {
+        return CompanyApiFp(this.configuration).updateCompanyUsingPOST(updateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
  * LocationApi - axios parameter creator
  * @export
  */
@@ -2250,7 +2824,7 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary get an location
+         * @summary get a location
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2294,7 +2868,7 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary get an location
+         * @summary get a location
          * @param {string} pubId pubId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2424,7 +2998,7 @@ export const LocationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary get an location
+         * @summary get a location
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2438,7 +3012,7 @@ export const LocationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary get an location
+         * @summary get a location
          * @param {string} pubId pubId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2495,7 +3069,7 @@ export const LocationApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * 
-         * @summary get an location
+         * @summary get a location
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2505,7 +3079,7 @@ export const LocationApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * 
-         * @summary get an location
+         * @summary get a location
          * @param {string} pubId pubId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2559,7 +3133,7 @@ export class LocationApi extends BaseAPI {
 
     /**
      * 
-     * @summary get an location
+     * @summary get a location
      * @param {string} [name] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2571,7 +3145,7 @@ export class LocationApi extends BaseAPI {
 
     /**
      * 
-     * @summary get an location
+     * @summary get a location
      * @param {string} pubId pubId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

@@ -1,5 +1,5 @@
 import * as Cookies from "js-cookie";
-import {AssetsApi, AuthAPIApi, BookingApi, LocationApi} from "../../api";
+import {CompanyApi, AssetsApi, AuthAPIApi, BookingApi, LocationApi} from "app/api";
 
 const BASE_URL = ""
 
@@ -13,6 +13,10 @@ export const assetsApi = () => {
 
 export const locationApi = () => {
     return new LocationApi(getConfiguration())
+}
+
+export const companyApi = () => {
+    return new CompanyApi(getConfiguration())
 }
 
 export const bookingApi = () => {

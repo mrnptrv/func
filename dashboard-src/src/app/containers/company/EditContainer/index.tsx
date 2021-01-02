@@ -1,26 +1,26 @@
 import * as React from 'react';
-import * as style from "../style.css"
+import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
-import {locationApi} from "app/constants/api";
-import {Location} from "app/api/api";
+import {companyApi} from "app/constants/api";
+import {Company} from "app/api/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
 
-class LocationEditData {
-    @observable isLocationLoading = true
+class CompanyEditData {
+    @observable isCompanyLoading = true
     @observable error = ""
-    @observable location: Location = null
+    @observable company: Company = null
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
 }
 
 @observer
-export class LocationEditContainer extends React.Component<any, any> {
-    private data = new LocationEditData()
+export class CompanyEditContainer extends React.Component<any, any> {
+    private data = new CompanyEditData()
 
     cancel = () => {
-        this.props.history.push("/dashboard/location/list")
+        this.props.history.push("/dashboard/company-list")
     }
 
     save = () => {
@@ -28,9 +28,11 @@ export class LocationEditContainer extends React.Component<any, any> {
         this.data.error = ""
         this.data.fieldErrors = new Array<String>()
 
-        locationApi().updateLocationUsingPOST({
-            pubId: this.data.location.pubId,
-            name: this.data.location.name,
+        companyApi().updateCompanyUsingPOST({
+            pubId: this.data.company.pubId,
+            name: this.data.company.name,
+            address: this.data.company.address,
+            details: this.data.company.details
         }).then(() => {
             this.data.isSaving = false
         }).catch((error) => {
@@ -50,15 +52,15 @@ export class LocationEditContainer extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
 
-        this.data.isLocationLoading = true
+        this.data.isCompanyLoading = true
 
-        locationApi().getLocationUsingGET(this.props.match.params.id)
+        companyApi().getCompanyUsingGET(this.props.match.params.id)
             .then(res => {
-                this.data.location = res.data
-                this.data.isLocationLoading = false
+                this.data.company = res.data
+                this.data.isCompanyLoading = false
             })
             .catch(error => {
-                this.data.isLocationLoading = false
+                this.data.isCompanyLoading = false
 
                 if (error && error.response && error.response.data.message) {
                     this.data.error = error.response.data.message
@@ -70,15 +72,33 @@ export class LocationEditContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Location</h4>
-                {this.data.isLocationLoading ? <Spinner animation="grow"/> :
+                <h4>Company</h4>
+                {this.data.isCompanyLoading ? <Spinner animation="grow"/> :
                     <Form className={style.assetForm}>
                         <Form.Group>
                             <Form.Control
                                 type="text"
                                 placeholder="Name"
-                                value={this.data.location.name}
-                                onChange={(e) => this.data.location.name = e.target.value}
+                                value={this.data.company.name}
+                                onChange={(e) => this.data.company.name = e.target.value}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Control
+                                as="textarea"
+                                placeholder="Address"
+                                rows={3}
+                                value={this.data.company.address}
+                                onChange={(e) => this.data.company.address = e.target.value}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Control
+                                as="textarea"
+                                placeholder="Details"
+                                rows={3}
+                                value={this.data.company.details}
+                                onChange={(e) => this.data.company.details = e.target.value}
                             />
                         </Form.Group>
                         <Form.Group>
@@ -86,7 +106,7 @@ export class LocationEditContainer extends React.Component<any, any> {
                             <Alert variant="danger">
                                 {this.data.error}
                                 {
-                                (<ul>{this.data.fieldErrors.map((e,i) => <li key={i}>{e}</li>)}</ul>)
+                                    (<ul>{this.data.fieldErrors.map((e, i) => <li key={i}>{e}</li>)}</ul>)
                                 }
                             </Alert>
                             }

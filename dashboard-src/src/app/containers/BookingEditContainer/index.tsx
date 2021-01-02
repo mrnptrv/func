@@ -4,11 +4,10 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import ReactDatePicker from "react-datepicker";
 import {MainMenu} from "app/components/MainMenu";
-import {Asset, Booking} from "../../../api";
+import {Asset, Booking, BookedAsset} from "app/api/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
 import {assetsApi, bookingApi} from "app/constants";
 import format from "date-fns/format";
-import {BookedAsset} from "../../../../../booking-src/src/api";
 
 
 class BookingEditData {

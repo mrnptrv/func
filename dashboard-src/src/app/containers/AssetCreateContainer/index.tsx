@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
 import {assetsApi} from "app/constants/api";
-import {Asset, WorkTimeRange} from "../../../api";
+import {Asset, WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 
 const WORK_HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]

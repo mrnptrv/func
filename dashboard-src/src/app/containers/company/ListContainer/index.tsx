@@ -3,22 +3,22 @@ import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
-import {locationApi} from "app/constants/api";
-import {Location} from "app/api/api";
+import {companyApi} from "app/constants/api";
+import {Company} from "app/api/api";
 
-class LocationListData {
+class CompanyListData {
     @observable isLoading = true
     @observable error = ""
-    @observable locations: Array<Location> = new Array<Location>()
+    @observable companies: Array<Company> = new Array<Company>()
     @observable isShowDeletionDialog = false;
-    @observable deletionLocation: Location = null;
+    @observable deletionCompany: Company = null;
 
     @action
-    deleteLocation(location) {
-        locationApi().deleteLocationUsingPOST({
-            pubId: location.pubId
+    deleteCompany(company) {
+        companyApi().deleteCompanyUsingPOST({
+            pubId: company.pubId
         }).then(() => {
-            this.locations = this.locations.filter(a => a.pubId != location.pubId)
+            this.companies = this.companies.filter(a => a.pubId != company.pubId)
         }).catch(error => {
             console.log(error);
         })
@@ -26,16 +26,16 @@ class LocationListData {
 }
 
 @observer
-export class LocationListContainer extends React.Component<any, any> {
-    private data = new LocationListData()
+export class CompanyListContainer extends React.Component<any, any> {
+    private data = new CompanyListData()
 
     constructor(props: any, context: any) {
         super(props, context);
 
         this.data.isLoading = true
-        locationApi().getLocationListUsingPOST("").then(
+        companyApi().getCompanyListUsingPOST("").then(
             (response) => {
-                this.data.locations = response.data
+                this.data.companies = response.data
                 this.data.isLoading = false
             }).catch(error => {
             if (error && error.response && error.response.data.message) {
@@ -46,41 +46,41 @@ export class LocationListContainer extends React.Component<any, any> {
         })
     }
 
-    deleteLocation = () => {
-        this.data.deleteLocation(this.data.deletionLocation)
+    deleteCompany = () => {
+        this.data.deleteCompany(this.data.deletionCompany)
         this.data.isShowDeletionDialog = false;
     }
 
     openDeletionDialog = (asset) => {
         return () => {
-            this.data.deletionLocation = asset;
+            this.data.deletionCompany = asset;
             this.data.isShowDeletionDialog = true
         }
     }
 
     hideDeletionDialog = () => {
         this.data.isShowDeletionDialog = false
-        this.data.deletionLocation = null;
+        this.data.deletionCompany = null;
     }
 
-    editLocation = (location) => {
+    editCompany = (company) => {
         return () => {
-            this.props.history.push("/dashboard/edit-location/" + location.pubId)
+            this.props.history.push("/dashboard/edit-company/" + company.pubId)
         }
     }
 
-    newLocation = () => {
-        this.props.history.push("/dashboard/create-location")
+    newCompany = () => {
+        this.props.history.push("/dashboard/create-company")
     }
 
     render() {
-        const items = this.data.locations.map((location) =>
-            <tr key={location.pubId}>
-                <td>{location.name}</td>
+        const items = this.data.companies.map((company) =>
+            <tr key={company.pubId}>
+                <td>{company.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editLocation(location)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(location)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editCompany(company)}>Edit</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(company)}>Delete</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -89,10 +89,10 @@ export class LocationListContainer extends React.Component<any, any> {
             <div>
                 <MainMenu/>
 
-                <h4>Locations ({this.data.locations.length})
+                <h4>Companies ({this.data.companies.length})
                     <Button
                         variant="light"
-                        onClick={this.newLocation}
+                        onClick={this.newCompany}
                     > + </Button>
                 </h4>
                 <Table striped={true} bordered={true} hover>
@@ -113,18 +113,18 @@ export class LocationListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete Location</Modal.Title>
+                        <Modal.Title>Delete Company</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                            Continue deleting the location?
+                            Continue deleting the company?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
-                        <Button variant="primary" onClick={this.deleteLocation}>Yes</Button>
+                        <Button variant="primary" onClick={this.deleteCompany}>Yes</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

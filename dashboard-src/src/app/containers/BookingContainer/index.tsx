@@ -4,7 +4,7 @@ import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Form, Modal, Spinner, Table} from "react-bootstrap";
 import {assetsApi, bookingApi} from "app/constants/api";
-import {Asset, Booking} from "../../../api";
+import {Asset, Booking} from "app/api/api";
 import ReactDatePicker from "react-datepicker";
 import Col from "react-bootstrap/Col";
 import format from "date-fns/format";

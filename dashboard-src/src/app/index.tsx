@@ -12,6 +12,9 @@ import {BookingEditContainer} from "app/containers/BookingEditContainer";
 import {LocationListContainer} from "app/containers/LocationListContainer";
 import {LocationCreateContainer} from "app/containers/LocationCreateContainer";
 import {LocationEditContainer} from "app/containers/LocationEditContainer";
+import {CompanyListContainer} from "app/containers/company/ListContainer";
+import {CompanyEditContainer} from "app/containers/company/EditContainer";
+import {CompanyCreateContainer} from "app/containers/company/CreateContainer";
 
 // render react DOM
 export const App = hot(({history}) => {
@@ -40,6 +43,9 @@ export const App = hot(({history}) => {
                 <Route path="/dashboard/location/list" exact component={LocationListContainer}/>
                 <Route path="/dashboard/create-location" exact component={LocationCreateContainer}/>
                 <Route path="/dashboard/edit-location/:id" exact component={LocationEditContainer}/>
+                <Route path="/dashboard/company-list" exact component={CompanyListContainer}/>
+                <Route path="/dashboard/edit-company/:id" exact component={CompanyEditContainer}/>
+                <Route path="/dashboard/create-company" exact component={CompanyCreateContainer}/>
                 <Route>Loading...</Route>
             </Switch>
         </Router>
