@@ -249,7 +249,7 @@ export class BookingContainer extends React.Component<any, any> {
                     </Form.Row>
                 </Form>
 
-                <Table striped hover>
+                <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
                         <th>Asset</th>

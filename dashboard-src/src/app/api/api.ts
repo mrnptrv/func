@@ -22,6 +22,44 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface AccessAssumptionReq
+ */
+export interface AccessAssumptionReq {
+    /**
+     * 
+     * @type {string}
+     * @memberof AccessAssumptionReq
+     */
+    access: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AccessAssumptionReq
+     */
+    paymentPlanIds?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface AccessAssumptionRes
+ */
+export interface AccessAssumptionRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof AccessAssumptionRes
+     */
+    access: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AccessAssumptionRes
+     */
+    paymentPlanIds: Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface Asset
  */
 export interface Asset {
@@ -43,6 +81,12 @@ export interface Asset {
      * @memberof Asset
      */
     imageUrls: Array<string>;
+    /**
+     * 
+     * @type {Location}
+     * @memberof Asset
+     */
+    location: Location;
     /**
      * 
      * @type {string}
@@ -80,6 +124,12 @@ export interface AssetListRequest {
      * @memberof AssetListRequest
      */
     capacityFilter?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetListRequest
+     */
+    locationPubId?: string;
 }
 /**
  * 
@@ -312,6 +362,12 @@ export interface CreateAssetRequest {
      * @type {string}
      * @memberof CreateAssetRequest
      */
+    locationPubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAssetRequest
+     */
     name: string;
     /**
      * 
@@ -367,6 +423,61 @@ export interface CreateLocationRequest {
 /**
  * 
  * @export
+ * @interface CreatePaymentPlanRequest
+ */
+export interface CreatePaymentPlanRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentPlanRequest
+     */
+    assetPubId?: string;
+    /**
+     * 
+     * @type {PaymentPlanAssumptionReq}
+     * @memberof CreatePaymentPlanRequest
+     */
+    assumption?: PaymentPlanAssumptionReq;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentPlanRequest
+     */
+    companyPubId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentPlanRequest
+     */
+    description?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentPlanRequest
+     */
+    locationPubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentPlanRequest
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentPlanRequest
+     */
+    price: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentPlanRequest
+     */
+    unit: string;
+}
+/**
+ * 
+ * @export
  * @interface DeleteAssetRequest
  */
 export interface DeleteAssetRequest {
@@ -400,6 +511,19 @@ export interface DeleteLocationRequest {
      * 
      * @type {string}
      * @memberof DeleteLocationRequest
+     */
+    pubId: string;
+}
+/**
+ * 
+ * @export
+ * @interface DeletePaymentPlanRequest
+ */
+export interface DeletePaymentPlanRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof DeletePaymentPlanRequest
      */
     pubId: string;
 }
@@ -543,6 +667,166 @@ export interface LoginResponse {
 /**
  * 
  * @export
+ * @interface PaymentPlan
+ */
+export interface PaymentPlan {
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    assetPubId?: string;
+    /**
+     * 
+     * @type {PaymentPlanAssumptionRes}
+     * @memberof PaymentPlan
+     */
+    assumption?: PaymentPlanAssumptionRes;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    companyPubId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    created: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof PaymentPlan
+     */
+    createdBy: User;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    description: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    locationPubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    price: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    pubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    unit: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    updated: string;
+    /**
+     * 
+     * @type {User}
+     * @memberof PaymentPlan
+     */
+    updatedBy: User;
+}
+/**
+ * 
+ * @export
+ * @interface PaymentPlanAssumptionReq
+ */
+export interface PaymentPlanAssumptionReq {
+    /**
+     * 
+     * @type {AccessAssumptionReq}
+     * @memberof PaymentPlanAssumptionReq
+     */
+    access?: AccessAssumptionReq;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlanAssumptionReq
+     */
+    day: string;
+    /**
+     * 
+     * @type {TimeRangeAssumptionReq}
+     * @memberof PaymentPlanAssumptionReq
+     */
+    time?: TimeRangeAssumptionReq;
+}
+/**
+ * 
+ * @export
+ * @interface PaymentPlanAssumptionRes
+ */
+export interface PaymentPlanAssumptionRes {
+    /**
+     * 
+     * @type {AccessAssumptionRes}
+     * @memberof PaymentPlanAssumptionRes
+     */
+    access?: AccessAssumptionRes;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlanAssumptionRes
+     */
+    day: string;
+    /**
+     * 
+     * @type {TimeRangeAssumptionRes}
+     * @memberof PaymentPlanAssumptionRes
+     */
+    time?: TimeRangeAssumptionRes;
+}
+/**
+ * 
+ * @export
+ * @interface PaymentPlanListRequest
+ */
+export interface PaymentPlanListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlanListRequest
+     */
+    exceptPaymentPlanId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlanListRequest
+     */
+    locationPubId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlanListRequest
+     */
+    name?: string;
+}
+/**
+ * 
+ * @export
  * @interface RegisterRequest
  */
 export interface RegisterRequest {
@@ -558,6 +842,50 @@ export interface RegisterRequest {
      * @memberof RegisterRequest
      */
     password?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TimeRangeAssumptionReq
+ */
+export interface TimeRangeAssumptionReq {
+    /**
+     * 
+     * @type {string}
+     * @memberof TimeRangeAssumptionReq
+     */
+    begin: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TimeRangeAssumptionReq
+     */
+    end: string;
+}
+/**
+ * 
+ * @export
+ * @interface TimeRangeAssumptionRes
+ */
+export interface TimeRangeAssumptionRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof TimeRangeAssumptionRes
+     */
+    begin: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TimeRangeAssumptionRes
+     */
+    end: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TimeRangeAssumptionRes
+     */
+    start: string;
 }
 /**
  * 
@@ -583,6 +911,12 @@ export interface UpdateAssetRequest {
      * @memberof UpdateAssetRequest
      */
     imageUrls?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetRequest
+     */
+    locationPubId: string;
     /**
      * 
      * @type {string}
@@ -657,6 +991,67 @@ export interface UpdateLocationRequest {
      * @memberof UpdateLocationRequest
      */
     pubId: string;
+}
+/**
+ * 
+ * @export
+ * @interface UpdatePaymentPlanRequest
+ */
+export interface UpdatePaymentPlanRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    assetPubId?: string;
+    /**
+     * 
+     * @type {PaymentPlanAssumptionReq}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    assumption?: PaymentPlanAssumptionReq;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    companyPubId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    description?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    locationPubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    price: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    pubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentPlanRequest
+     */
+    unit: string;
 }
 /**
  * 
@@ -3165,6 +3560,460 @@ export class LocationApi extends BaseAPI {
      */
     public updateLocationUsingPOST(updateRequest: UpdateLocationRequest, options?: any) {
         return LocationApiFp(this.configuration).updateLocationUsingPOST(updateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
+ * PaymentPlanApi - axios parameter creator
+ * @export
+ */
+export const PaymentPlanApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create payment plan
+         * @param {CreatePaymentPlanRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createPaymentPlanUsingPOST: async (createRequest: CreatePaymentPlanRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createRequest' is not null or undefined
+            if (createRequest === null || createRequest === undefined) {
+                throw new RequiredError('createRequest','Required parameter createRequest was null or undefined when calling createPaymentPlanUsingPOST.');
+            }
+            const localVarPath = `/api/paymentplan/create`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof createRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(createRequest !== undefined ? createRequest : {}) : (createRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary delete asset
+         * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deletePaymentPlanUsingPOST: async (deleteRequest: DeletePaymentPlanRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deleteRequest' is not null or undefined
+            if (deleteRequest === null || deleteRequest === undefined) {
+                throw new RequiredError('deleteRequest','Required parameter deleteRequest was null or undefined when calling deletePaymentPlanUsingPOST.');
+            }
+            const localVarPath = `/api/paymentplan/delete`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof deleteRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(deleteRequest !== undefined ? deleteRequest : {}) : (deleteRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary get a payment plan
+         * @param {PaymentPlanListRequest} listRequest listRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPaymentPlanListUsingPOST: async (listRequest: PaymentPlanListRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'listRequest' is not null or undefined
+            if (listRequest === null || listRequest === undefined) {
+                throw new RequiredError('listRequest','Required parameter listRequest was null or undefined when calling getPaymentPlanListUsingPOST.');
+            }
+            const localVarPath = `/api/paymentplan/list/`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof listRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(listRequest !== undefined ? listRequest : {}) : (listRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary get a payement plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPaymentPlanUsingGET: async (pubId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pubId' is not null or undefined
+            if (pubId === null || pubId === undefined) {
+                throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling getPaymentPlanUsingGET.');
+            }
+            const localVarPath = `/api/paymentplan/get/{pubId}`
+                .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update payment plan
+         * @param {UpdatePaymentPlanRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updatePaymentPlanUsingPOST: async (updateRequest: UpdatePaymentPlanRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateRequest' is not null or undefined
+            if (updateRequest === null || updateRequest === undefined) {
+                throw new RequiredError('updateRequest','Required parameter updateRequest was null or undefined when calling updatePaymentPlanUsingPOST.');
+            }
+            const localVarPath = `/api/paymentplan/update`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof updateRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(updateRequest !== undefined ? updateRequest : {}) : (updateRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * PaymentPlanApi - functional programming interface
+ * @export
+ */
+export const PaymentPlanApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create payment plan
+         * @param {CreatePaymentPlanRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createPaymentPlanUsingPOST(createRequest: CreatePaymentPlanRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPlan>> {
+            const localVarAxiosArgs = await PaymentPlanApiAxiosParamCreator(configuration).createPaymentPlanUsingPOST(createRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary delete asset
+         * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deletePaymentPlanUsingPOST(deleteRequest: DeletePaymentPlanRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await PaymentPlanApiAxiosParamCreator(configuration).deletePaymentPlanUsingPOST(deleteRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary get a payment plan
+         * @param {PaymentPlanListRequest} listRequest listRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPaymentPlanListUsingPOST(listRequest: PaymentPlanListRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PaymentPlan>>> {
+            const localVarAxiosArgs = await PaymentPlanApiAxiosParamCreator(configuration).getPaymentPlanListUsingPOST(listRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary get a payement plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPaymentPlanUsingGET(pubId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPlan>> {
+            const localVarAxiosArgs = await PaymentPlanApiAxiosParamCreator(configuration).getPaymentPlanUsingGET(pubId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Update payment plan
+         * @param {UpdatePaymentPlanRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updatePaymentPlanUsingPOST(updateRequest: UpdatePaymentPlanRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPlan>> {
+            const localVarAxiosArgs = await PaymentPlanApiAxiosParamCreator(configuration).updatePaymentPlanUsingPOST(updateRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * PaymentPlanApi - factory interface
+ * @export
+ */
+export const PaymentPlanApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Create payment plan
+         * @param {CreatePaymentPlanRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createPaymentPlanUsingPOST(createRequest: CreatePaymentPlanRequest, options?: any): AxiosPromise<PaymentPlan> {
+            return PaymentPlanApiFp(configuration).createPaymentPlanUsingPOST(createRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary delete asset
+         * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deletePaymentPlanUsingPOST(deleteRequest: DeletePaymentPlanRequest, options?: any): AxiosPromise<void> {
+            return PaymentPlanApiFp(configuration).deletePaymentPlanUsingPOST(deleteRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary get a payment plan
+         * @param {PaymentPlanListRequest} listRequest listRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPaymentPlanListUsingPOST(listRequest: PaymentPlanListRequest, options?: any): AxiosPromise<Array<PaymentPlan>> {
+            return PaymentPlanApiFp(configuration).getPaymentPlanListUsingPOST(listRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary get a payement plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPaymentPlanUsingGET(pubId: string, options?: any): AxiosPromise<PaymentPlan> {
+            return PaymentPlanApiFp(configuration).getPaymentPlanUsingGET(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update payment plan
+         * @param {UpdatePaymentPlanRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updatePaymentPlanUsingPOST(updateRequest: UpdatePaymentPlanRequest, options?: any): AxiosPromise<PaymentPlan> {
+            return PaymentPlanApiFp(configuration).updatePaymentPlanUsingPOST(updateRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * PaymentPlanApi - object-oriented interface
+ * @export
+ * @class PaymentPlanApi
+ * @extends {BaseAPI}
+ */
+export class PaymentPlanApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create payment plan
+     * @param {CreatePaymentPlanRequest} createRequest createRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentPlanApi
+     */
+    public createPaymentPlanUsingPOST(createRequest: CreatePaymentPlanRequest, options?: any) {
+        return PaymentPlanApiFp(this.configuration).createPaymentPlanUsingPOST(createRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary delete asset
+     * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentPlanApi
+     */
+    public deletePaymentPlanUsingPOST(deleteRequest: DeletePaymentPlanRequest, options?: any) {
+        return PaymentPlanApiFp(this.configuration).deletePaymentPlanUsingPOST(deleteRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get a payment plan
+     * @param {PaymentPlanListRequest} listRequest listRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentPlanApi
+     */
+    public getPaymentPlanListUsingPOST(listRequest: PaymentPlanListRequest, options?: any) {
+        return PaymentPlanApiFp(this.configuration).getPaymentPlanListUsingPOST(listRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get a payement plan
+     * @param {string} pubId pubId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentPlanApi
+     */
+    public getPaymentPlanUsingGET(pubId: string, options?: any) {
+        return PaymentPlanApiFp(this.configuration).getPaymentPlanUsingGET(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update payment plan
+     * @param {UpdatePaymentPlanRequest} updateRequest updateRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentPlanApi
+     */
+    public updatePaymentPlanUsingPOST(updateRequest: UpdatePaymentPlanRequest, options?: any) {
+        return PaymentPlanApiFp(this.configuration).updatePaymentPlanUsingPOST(updateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
 }

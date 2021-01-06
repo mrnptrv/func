@@ -6,8 +6,9 @@ import {MainMenu} from "app/components/MainMenu";
 import {assetsApi} from "app/constants/api";
 import {Asset, WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
-
-const WORK_HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+import {LOCATION_STORE} from "app/store/LocationStore";
+import {LocationSelect} from "app/components/LocationSelect";
+import {WORK_HOURS} from "app/constants/constants";
 
 class AssetEditData {
     @observable isAssetLoading = true
@@ -20,6 +21,7 @@ class AssetEditData {
 @observer
 export class AssetEditContainer extends React.Component<any, any> {
     private data = new AssetEditData()
+    private locationStore = LOCATION_STORE
 
     cancel = () => {
         this.props.history.push("/dashboard/list")
@@ -37,7 +39,8 @@ export class AssetEditContainer extends React.Component<any, any> {
             description: this.data.asset.description,
             workTimeRanges: this.data.asset.workTimeRanges,
             imageUrls: this.data.asset.imageUrls,
-            capacity: this.data.asset.capacity
+            capacity: this.data.asset.capacity,
+            locationPubId: this.locationStore.selectedLocation.pubId
         }).then(() => {
             this.data.isSaving = false
         }).catch((error) => {
@@ -76,6 +79,8 @@ export class AssetEditContainer extends React.Component<any, any> {
             .then(res => {
                 this.data.asset = res.data
                 this.data.isAssetLoading = false
+
+                this.locationStore.selectLocation(this.data.asset.location.pubId)
             })
             .catch(error => {
                 this.data.isAssetLoading = false
@@ -124,7 +129,10 @@ export class AssetEditContainer extends React.Component<any, any> {
                 <MainMenu/>
                 <h4>Asset</h4>
                 {this.data.isAssetLoading ? <Spinner animation="grow"/> :
-                    <Form className={style.assetForm}>
+                    <Form className={style.editForm}>
+                        <Form.Group>
+                            <LocationSelect/>
+                        </Form.Group>
                         <Form.Group>
                             <Form.Control
                                 type="text"

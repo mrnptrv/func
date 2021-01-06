@@ -6,8 +6,8 @@ import {MainMenu} from "app/components/MainMenu";
 import {assetsApi} from "app/constants/api";
 import {Asset, WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
+import {WORK_HOURS} from "app/constants/constants";
 
-const WORK_HOURS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 class AssetCreateData {
     @observable error = ""
@@ -18,7 +18,23 @@ class AssetCreateData {
         pubId: "",
         type: "MEETING_ROOM",
         workTimeRanges: new Array<WorkTimeRange>(),
-        capacity : 0
+        capacity: 0,
+        location: {
+            pubId: "",
+            name: "",
+            created: "",
+            createdBy: {
+                pubId: "",
+                email: "",
+                phone: ""
+            },
+            updated: "",
+            updatedBy: {
+                pubId: "",
+                email: "",
+                phone: "",
+            }
+        }
     }
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
@@ -38,6 +54,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
         this.data.fieldErrors = new Array<String>()
 
         assetsApi().createUsingPOST({
+            locationPubId: "",
             type: this.data.asset.type,
             name: this.data.asset.name,
             description: this.data.asset.description,

@@ -72,7 +72,7 @@ export class LocationEditContainer extends React.Component<any, any> {
                 <MainMenu/>
                 <h4>Location</h4>
                 {this.data.isLocationLoading ? <Spinner animation="grow"/> :
-                    <Form className={style.assetForm}>
+                    <Form className={style.editForm}>
                         <Form.Group>
                             <Form.Control
                                 type="text"

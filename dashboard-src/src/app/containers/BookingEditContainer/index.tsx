@@ -296,7 +296,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                 <MainMenu/>
                 <h4>Booking</h4>
                 {this.data.isBookingLoading ? <Spinner animation="grow"/> :
-                    <Form className={style.assetForm}>
+                    <Form className={style.editForm}>
                         <Form.Row>
                             <Form.Group>
                                 <Form.Label>Status</Form.Label>

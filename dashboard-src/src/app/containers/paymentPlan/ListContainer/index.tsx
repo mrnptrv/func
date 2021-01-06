@@ -3,22 +3,22 @@ import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
-import {assetsApi} from "app/constants/api";
-import {Asset} from "app/api/api";
+import {paymentPlanApi} from "app/constants/api";
+import {PaymentPlan} from "app/api/api";
 
-class AssetListData {
+class PaymentPlanListData {
     @observable isLoading = true
     @observable error = ""
-    @observable assets: Array<Asset> = new Array<Asset>()
+    @observable list: Array<PaymentPlan> = new Array<PaymentPlan>()
     @observable isShowDeletionDialog = false;
-    @observable deletionAsset: Asset = null;
+    @observable deletionPaymentPlan: PaymentPlan = null;
 
     @action
-    deleteAsset(asset) {
-        assetsApi().deleteUsingPOST({
-            pubId: asset.pubId
+    deletePaymentPlan(paymentPlan) {
+        paymentPlanApi().deletePaymentPlanUsingPOST({
+            pubId: paymentPlan.pubId
         }).then(() => {
-            this.assets = this.assets.filter(a => a.pubId != asset.pubId)
+            this.list = this.list.filter(a => a.pubId != paymentPlan.pubId)
         }).catch(error => {
             console.log(error);
         })
@@ -26,19 +26,18 @@ class AssetListData {
 }
 
 @observer
-export class AssetListContainer extends React.Component<any, any> {
-    private data = new AssetListData()
+export class PaymentPlanListContainer extends React.Component<any, any> {
+    private data = new PaymentPlanListData()
 
     constructor(props: any, context: any) {
         super(props, context);
 
         this.data.isLoading = true
-        assetsApi().assetsListUsingPOST({
-            capacityFilter: "all"
-        }).then((response) => {
-            this.data.assets = response.data
-            this.data.isLoading = false
-        }).catch(error => {
+        paymentPlanApi().getPaymentPlanListUsingPOST({}).then(
+            (response) => {
+                this.data.list = response.data
+                this.data.isLoading = false
+            }).catch(error => {
             if (error && error.response && error.response.data.message) {
                 this.data.error = error.response.data.message
             }
@@ -47,43 +46,41 @@ export class AssetListContainer extends React.Component<any, any> {
         })
     }
 
-    deleteAsset = () => {
-        this.data.deleteAsset(this.data.deletionAsset)
+    deletePaymentPlan = () => {
+        this.data.deletePaymentPlan(this.data.deletionPaymentPlan)
         this.data.isShowDeletionDialog = false;
     }
 
     openDeletionDialog = (asset) => {
         return () => {
-            this.data.deletionAsset = asset;
+            this.data.deletionPaymentPlan = asset;
             this.data.isShowDeletionDialog = true
         }
     }
 
     hideDeletionDialog = () => {
         this.data.isShowDeletionDialog = false
-        this.data.deletionAsset = null;
+        this.data.deletionPaymentPlan = null;
     }
 
-    editAsset = (asset) => {
+    editPaymentPlan = (paymentPlan) => {
         return () => {
-            this.props.history.push("/dashboard/asset/" + asset.pubId)
+            this.props.history.push("/dashboard/edit-payment-plan/" + paymentPlan.pubId)
         }
     }
 
-    newAsset = () => {
-        this.props.history.push("/dashboard/create-asset")
+    newPaymentPlan = () => {
+        this.props.history.push("/dashboard/create-payment-plan")
     }
 
     render() {
-        const items = this.data.assets.map((asset) =>
-            <tr key={asset.pubId}>
-                <td>{asset.name}</td>
-                <td>{asset.type}</td>
-                <td>{asset.capacity}</td>
+        const items = this.data.list.map((paymentPlan) =>
+            <tr key={paymentPlan.pubId}>
+                <td>{paymentPlan.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editAsset(asset)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(asset)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editPaymentPlan(paymentPlan)}>Edit</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(paymentPlan)}>Delete</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -92,19 +89,17 @@ export class AssetListContainer extends React.Component<any, any> {
             <div>
                 <MainMenu/>
 
-                <h4>Assets ({this.data.assets.length})
+                <h4>Payment plans ({this.data.list.length})
                     <Button
                         variant="light"
-                        onClick={this.newAsset}
+                        onClick={this.newPaymentPlan}
                     > + </Button>
                 </h4>
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Capacity</th>
-                    <th/>
+                        <th>Name</th>
+                        <th/>
                     </tr>
                     </thead>
                     <tbody>
@@ -118,19 +113,18 @@ export class AssetListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete asset</Modal.Title>
+                        <Modal.Title>Delete Payment Plan</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                           All bookings will delete with the asset.
-                           Are you sure to want to delete it with all bookings?
+                            Continue deleting the payment plan?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
-                        <Button variant="primary" onClick={this.deleteAsset}>Yes</Button>
+                        <Button variant="primary" onClick={this.deletePaymentPlan}>Yes</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

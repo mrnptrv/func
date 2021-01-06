@@ -74,7 +74,7 @@ export class CompanyEditContainer extends React.Component<any, any> {
                 <MainMenu/>
                 <h4>Company</h4>
                 {this.data.isCompanyLoading ? <Spinner animation="grow"/> :
-                    <Form className={style.assetForm}>
+                    <Form className={style.editForm}>
                         <Form.Group>
                             <Form.Control
                                 type="text"

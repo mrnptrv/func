@@ -11,6 +11,7 @@ export class MainMenu extends React.Component<any, any> {
                     <Nav.Link href="/dashboard/list">Assets</Nav.Link>
                     <Nav.Link href="/dashboard/location/list">Locations</Nav.Link>
                     <Nav.Link href="/dashboard/company-list">Companies</Nav.Link>
+                    <Nav.Link href="/dashboard/payment-plan-list">Payment plans</Nav.Link>
                 </Nav>
             </Navbar>
         );
