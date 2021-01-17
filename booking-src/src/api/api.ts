@@ -298,10 +298,10 @@ export interface Company {
     created: string;
     /**
      * 
-     * @type {User}
+     * @type {UserLite}
      * @memberof Company
      */
-    createdBy: User;
+    createdBy: UserLite;
     /**
      * 
      * @type {string}
@@ -328,10 +328,10 @@ export interface Company {
     updated: string;
     /**
      * 
-     * @type {User}
+     * @type {UserLite}
      * @memberof Company
      */
-    updatedBy: User;
+    updatedBy: UserLite;
 }
 /**
  * 
@@ -478,6 +478,67 @@ export interface CreatePaymentPlanRequest {
 /**
  * 
  * @export
+ * @interface CreateUserRequest
+ */
+export interface CreateUserRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    companyId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    docsUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    firstName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    lastName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    locationId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    paymentPlanId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    phone: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequest
+     */
+    thirdName: string;
+}
+/**
+ * 
+ * @export
  * @interface DeleteAssetRequest
  */
 export interface DeleteAssetRequest {
@@ -524,6 +585,19 @@ export interface DeletePaymentPlanRequest {
      * 
      * @type {string}
      * @memberof DeletePaymentPlanRequest
+     */
+    pubId: string;
+}
+/**
+ * 
+ * @export
+ * @interface DeleteUserRequest
+ */
+export interface DeleteUserRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof DeleteUserRequest
      */
     pubId: string;
 }
@@ -603,10 +677,10 @@ export interface Location {
     created: string;
     /**
      * 
-     * @type {User}
+     * @type {UserLite}
      * @memberof Location
      */
-    createdBy: User;
+    createdBy: UserLite;
     /**
      * 
      * @type {string}
@@ -627,10 +701,10 @@ export interface Location {
     updated: string;
     /**
      * 
-     * @type {User}
+     * @type {UserLite}
      * @memberof Location
      */
-    updatedBy: User;
+    updatedBy: UserLite;
 }
 /**
  * 
@@ -696,10 +770,10 @@ export interface PaymentPlan {
     created: string;
     /**
      * 
-     * @type {User}
+     * @type {UserLite}
      * @memberof PaymentPlan
      */
-    createdBy: User;
+    createdBy: UserLite;
     /**
      * 
      * @type {string}
@@ -744,10 +818,10 @@ export interface PaymentPlan {
     updated: string;
     /**
      * 
-     * @type {User}
+     * @type {UserLite}
      * @memberof PaymentPlan
      */
-    updatedBy: User;
+    updatedBy: UserLite;
 }
 /**
  * 
@@ -1111,9 +1185,100 @@ export interface UpdateRequest {
 /**
  * 
  * @export
+ * @interface UpdateUserRequest
+ */
+export interface UpdateUserRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    companyId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    docsUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    firstName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    lastName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    locationId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    paymentPlanId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    phone: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    pubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    thirdName: string;
+}
+/**
+ * 
+ * @export
  * @interface User
  */
 export interface User {
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    companyId: string;
+    /**
+     * 
+     * @type {UserLite}
+     * @memberof User
+     */
+    createdBy: UserLite;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    createdDate: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    docsUrl: string;
     /**
      * 
      * @type {string}
@@ -1125,13 +1290,55 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    phone: string;
+    firstName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    lastName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    locationId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    mobile: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    paymentPlanId: string;
     /**
      * 
      * @type {string}
      * @memberof User
      */
     pubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    thirdName: string;
+    /**
+     * 
+     * @type {UserLite}
+     * @memberof User
+     */
+    updatedBy: UserLite;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    updatedDate: string;
 }
 /**
  * 
@@ -1151,6 +1358,68 @@ export interface UserData {
      * @memberof UserData
      */
     phone: string;
+}
+/**
+ * 
+ * @export
+ * @interface UserListRequest
+ */
+export interface UserListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserListRequest
+     */
+    companyId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserListRequest
+     */
+    locationPubId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserListRequest
+     */
+    name?: string;
+}
+/**
+ * 
+ * @export
+ * @interface UserLite
+ */
+export interface UserLite {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLite
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLite
+     */
+    firstName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLite
+     */
+    lastName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLite
+     */
+    phone: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLite
+     */
+    pubId: string;
 }
 /**
  * 
@@ -1928,7 +2197,7 @@ export const AuthAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUsingGET1(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+        async getUsingGET1(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserLite>> {
             const localVarAxiosArgs = await AuthAPIApiAxiosParamCreator(configuration).getUsingGET1(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1978,7 +2247,7 @@ export const AuthAPIApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUsingGET1(options?: any): AxiosPromise<User> {
+        getUsingGET1(options?: any): AxiosPromise<UserLite> {
             return AuthAPIApiFp(configuration).getUsingGET1(options).then((request) => request(axios, basePath));
         },
         /**
@@ -3621,7 +3890,7 @@ export const PaymentPlanApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
-         * @summary delete asset
+         * @summary delete the payment plan
          * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3717,7 +3986,7 @@ export const PaymentPlanApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
-         * @summary get a payement plan
+         * @summary get the payment plan
          * @param {string} pubId pubId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3833,7 +4102,7 @@ export const PaymentPlanApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary delete asset
+         * @summary delete the payment plan
          * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3861,7 +4130,7 @@ export const PaymentPlanApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary get a payement plan
+         * @summary get the payment plan
          * @param {string} pubId pubId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3908,7 +4177,7 @@ export const PaymentPlanApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
-         * @summary delete asset
+         * @summary delete the payment plan
          * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3928,7 +4197,7 @@ export const PaymentPlanApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
-         * @summary get a payement plan
+         * @summary get the payment plan
          * @param {string} pubId pubId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3970,7 +4239,7 @@ export class PaymentPlanApi extends BaseAPI {
 
     /**
      * 
-     * @summary delete asset
+     * @summary delete the payment plan
      * @param {DeletePaymentPlanRequest} deleteRequest deleteRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3994,7 +4263,7 @@ export class PaymentPlanApi extends BaseAPI {
 
     /**
      * 
-     * @summary get a payement plan
+     * @summary get the payment plan
      * @param {string} pubId pubId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4014,6 +4283,460 @@ export class PaymentPlanApi extends BaseAPI {
      */
     public updatePaymentPlanUsingPOST(updateRequest: UpdatePaymentPlanRequest, options?: any) {
         return PaymentPlanApiFp(this.configuration).updatePaymentPlanUsingPOST(updateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
+ * UserApi - axios parameter creator
+ * @export
+ */
+export const UserApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create a user
+         * @param {CreateUserRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createUserUsingPOST: async (createRequest: CreateUserRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createRequest' is not null or undefined
+            if (createRequest === null || createRequest === undefined) {
+                throw new RequiredError('createRequest','Required parameter createRequest was null or undefined when calling createUserUsingPOST.');
+            }
+            const localVarPath = `/api/user/create`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof createRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(createRequest !== undefined ? createRequest : {}) : (createRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary delete the user
+         * @param {DeleteUserRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteUserUsingPOST: async (deleteRequest: DeleteUserRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deleteRequest' is not null or undefined
+            if (deleteRequest === null || deleteRequest === undefined) {
+                throw new RequiredError('deleteRequest','Required parameter deleteRequest was null or undefined when calling deleteUserUsingPOST.');
+            }
+            const localVarPath = `/api/user/delete`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof deleteRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(deleteRequest !== undefined ? deleteRequest : {}) : (deleteRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary get user list
+         * @param {UserListRequest} listRequest listRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserListUsingPOST: async (listRequest: UserListRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'listRequest' is not null or undefined
+            if (listRequest === null || listRequest === undefined) {
+                throw new RequiredError('listRequest','Required parameter listRequest was null or undefined when calling getUserListUsingPOST.');
+            }
+            const localVarPath = `/api/user/list/`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof listRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(listRequest !== undefined ? listRequest : {}) : (listRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary get the payment plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserUsingGET: async (pubId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pubId' is not null or undefined
+            if (pubId === null || pubId === undefined) {
+                throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling getUserUsingGET.');
+            }
+            const localVarPath = `/api/user/get/{pubId}`
+                .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update the user
+         * @param {UpdateUserRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserUsingPOST: async (updateRequest: UpdateUserRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateRequest' is not null or undefined
+            if (updateRequest === null || updateRequest === undefined) {
+                throw new RequiredError('updateRequest','Required parameter updateRequest was null or undefined when calling updateUserUsingPOST.');
+            }
+            const localVarPath = `/api/user/update`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof updateRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(updateRequest !== undefined ? updateRequest : {}) : (updateRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * UserApi - functional programming interface
+ * @export
+ */
+export const UserApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create a user
+         * @param {CreateUserRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createUserUsingPOST(createRequest: CreateUserRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).createUserUsingPOST(createRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary delete the user
+         * @param {DeleteUserRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteUserUsingPOST(deleteRequest: DeleteUserRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).deleteUserUsingPOST(deleteRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary get user list
+         * @param {UserListRequest} listRequest listRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserListUsingPOST(listRequest: UserListRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserLite>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getUserListUsingPOST(listRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary get the payment plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserUsingGET(pubId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getUserUsingGET(pubId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Update the user
+         * @param {UpdateUserRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateUserUsingPOST(updateRequest: UpdateUserRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUserUsingPOST(updateRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * UserApi - factory interface
+ * @export
+ */
+export const UserApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Create a user
+         * @param {CreateUserRequest} createRequest createRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createUserUsingPOST(createRequest: CreateUserRequest, options?: any): AxiosPromise<User> {
+            return UserApiFp(configuration).createUserUsingPOST(createRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary delete the user
+         * @param {DeleteUserRequest} deleteRequest deleteRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteUserUsingPOST(deleteRequest: DeleteUserRequest, options?: any): AxiosPromise<void> {
+            return UserApiFp(configuration).deleteUserUsingPOST(deleteRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary get user list
+         * @param {UserListRequest} listRequest listRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserListUsingPOST(listRequest: UserListRequest, options?: any): AxiosPromise<Array<UserLite>> {
+            return UserApiFp(configuration).getUserListUsingPOST(listRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary get the payment plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserUsingGET(pubId: string, options?: any): AxiosPromise<User> {
+            return UserApiFp(configuration).getUserUsingGET(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update the user
+         * @param {UpdateUserRequest} updateRequest updateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserUsingPOST(updateRequest: UpdateUserRequest, options?: any): AxiosPromise<User> {
+            return UserApiFp(configuration).updateUserUsingPOST(updateRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * UserApi - object-oriented interface
+ * @export
+ * @class UserApi
+ * @extends {BaseAPI}
+ */
+export class UserApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create a user
+     * @param {CreateUserRequest} createRequest createRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public createUserUsingPOST(createRequest: CreateUserRequest, options?: any) {
+        return UserApiFp(this.configuration).createUserUsingPOST(createRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary delete the user
+     * @param {DeleteUserRequest} deleteRequest deleteRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public deleteUserUsingPOST(deleteRequest: DeleteUserRequest, options?: any) {
+        return UserApiFp(this.configuration).deleteUserUsingPOST(deleteRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get user list
+     * @param {UserListRequest} listRequest listRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public getUserListUsingPOST(listRequest: UserListRequest, options?: any) {
+        return UserApiFp(this.configuration).getUserListUsingPOST(listRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary get the payment plan
+     * @param {string} pubId pubId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public getUserUsingGET(pubId: string, options?: any) {
+        return UserApiFp(this.configuration).getUserUsingGET(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update the user
+     * @param {UpdateUserRequest} updateRequest updateRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public updateUserUsingPOST(updateRequest: UpdateUserRequest, options?: any) {
+        return UserApiFp(this.configuration).updateUserUsingPOST(updateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
 }

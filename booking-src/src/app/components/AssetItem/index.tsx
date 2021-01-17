@@ -13,7 +13,7 @@ import format from "date-fns/format";
 
 class AssetItemData {
     @observable carouselValue = 0
-    @observable asset: Asset = {
+    @observable asset: { workTimeRanges: any[]; imageUrls: string[]; pubId: string; name: string; description: string; type: string; capacity: number } = {
         pubId: "",
         name: "",
         description: "",

@@ -8,20 +8,24 @@ class AssetStore {
     @observable assets: Array<Asset> = new Array<Asset>();
     @observable selectedAsset: Asset = null
     private loadedLocationId: string = ""
+    private init = false;
 
     constructor() {
-        this.loadAssets()
         eventBus.register(this)
     }
 
     @subscribe(CHANGE_LOCATION_TOPIC)
     changeLocationLister(e) {
         if (e && this.loadedLocationId !== LOCATION_STORE.selectedLocationPubId()) {
-            this.loadAssets()
+            if (this.init) {
+                this.loadAssets()
+            }
         }
     }
 
     loadAssets() {
+        this.init = true
+        console.log('@@@ AssetStore.ts -> loadAssets -> 25');
         let locationPubId = LOCATION_STORE.selectedLocationPubId();
         if (locationPubId && locationPubId !== this.loadedLocationId) {
             this.loadedLocationId = locationPubId

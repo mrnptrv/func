@@ -4,10 +4,13 @@ import {paymentPlanApi} from "app/constants";
 import {CHANGE_LOCATION_TOPIC, LOCATION_STORE} from "app/store/LocationStore";
 import {eventBus, subscribe} from 'mobx-event-bus2'
 
-class PaymentPlanStore {
+class PaymentPlanMultiSelectStore {
     @observable paymentPlans: Array<PaymentPlan> = new Array<PaymentPlan>();
+    @observable selectedPaymentPlans: Array<PaymentPlan> = new Array<PaymentPlan>();
     @observable selectedPaymentPlan: PaymentPlan = null;
+
     private loadedLocationId: string = ""
+    public exceptPaymentPlanId: string = ""
 
     constructor() {
         this.loadPaymentPlans().then(() => {
@@ -23,7 +26,7 @@ class PaymentPlanStore {
 
     @action
     clear() {
-        this.selectedPaymentPlan = null
+        this.selectedPaymentPlans = []
     }
 
     @action
@@ -34,34 +37,29 @@ class PaymentPlanStore {
 
             return paymentPlanApi().getPaymentPlanListUsingPOST({
                 locationPubId: this.loadedLocationId,
+                exceptPaymentPlanId: this.exceptPaymentPlanId
             }).then(r => {
                 this.paymentPlans = r.data
+                if (this.selectedPaymentPlans.length && this.selectedPaymentPlans[0].locationPubId !== LOCATION_STORE.selectedLocationPubId()) {
+                    this.clear()
+                }
             })
         }
 
         return Promise.resolve()
     }
 
-    selectedId(): string {
-        if (this.selectedPaymentPlan) {
-            return this.selectedPaymentPlan.pubId
-        }
-
-        return null
+    selectedId(): Array<String> {
+        return this.selectedPaymentPlans.map(it => it.pubId)
     }
 
     @action
     select(pubId) {
         let selected = this.paymentPlans.find(l => l.pubId === pubId)
         if (selected) {
-            this.selectedPaymentPlan = selected
-        } else {
-            this.selectedPaymentPlan = null
+            this.selectedPaymentPlans.push(selected)
         }
-
-        eventBus.post(CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, pubId)
     }
 }
 
-export const PAYMENT_PLAN_STORE = new PaymentPlanStore()
-export const CHANGE_SELECTED_PAYMENT_PLAN_TOPIC = 'changeSelectedPaymentPlan'
+export const PAYMENT_PLAN_MULTI_SELECT_STORE = new PaymentPlanMultiSelectStore()

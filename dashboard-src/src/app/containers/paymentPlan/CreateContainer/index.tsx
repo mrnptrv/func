@@ -20,8 +20,8 @@ import {eventBus, subscribe} from "mobx-event-bus2";
 import {AccessAssumptionReq, TimeRangeAssumptionReq} from "app/api";
 import {HasAccessAssumptionSelect} from "app/components/HasAccessAssumptionSelect";
 import {HAS_ACCESS_ASSUMPTION_STORE} from "app/store/HasAccessAssumptionStore";
-import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
-import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
+import {PaymentPlanMultiSelect} from "app/components/PaymentPlanMultiSelect";
+import {PAYMENT_PLAN_MULTI_SELECT_STORE} from "app/store/PaymentPlanMultiSelectStore";
 
 class PaymentPlanCreateData {
     @observable error = ""
@@ -45,12 +45,13 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
     private timeUnitStore = TIME_UNIT_STORE
     private dayAssumptionStore = DAY_ASSUMPTION_STORE
     private hasAccessAssumptionStore = HAS_ACCESS_ASSUMPTION_STORE
-    private paymentPlanStore = PAYMENT_PLAN_STORE
+    private paymentPlanStore = PAYMENT_PLAN_MULTI_SELECT_STORE
 
     constructor(props: any, context: any) {
         super(props, context);
         eventBus.register(this)
         this.changeTimeUnit()
+        this.assetStore.loadAssets()
     }
 
     @subscribe(TIME_UNIT_CHANGE_TOPIC)
@@ -85,12 +86,12 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
 
     private getAccessAssumptionReq(): AccessAssumptionReq {
         if (this.hasAccessAssumptionStore.selectedId() == "NA" &&
-            this.paymentPlanStore.selectedPaymentPlan.length == 0
+            this.paymentPlanStore.selectedPaymentPlans.length == 0
         ) {
             return null
         }
         return {
-            paymentPlanIds: this.paymentPlanStore.selectedPaymentPlan.map(it => it.pubId),
+            paymentPlanIds: this.paymentPlanStore.selectedPaymentPlans.map(it => it.pubId),
             access: this.hasAccessAssumptionStore.selectedId()
         }
     }
@@ -235,7 +236,7 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Access to other payment plan:</Form.Label>
-                        <PaymentPlanSelect/>
+                        <PaymentPlanMultiSelect/>
                     </Form.Group>
                     <Form.Group>
                         {this.data.error &&

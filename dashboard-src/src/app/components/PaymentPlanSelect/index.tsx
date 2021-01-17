@@ -8,38 +8,34 @@ import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
 export class PaymentPlanSelect extends React.Component<any, any> {
     private store = PAYMENT_PLAN_STORE
 
-    private defaultOption = [];
-
-    select(selected) {
-        this.store.clear()
-        if (selected) {
-            selected.forEach(it => this.store.select(it.value))
-        }
+    selectCompany(pubId: string) {
+        this.store.select(pubId)
     }
+
+    private defaultOption = {label: "----", value: null};
 
     options() {
-        return this.store.paymentPlans.map(l => ({"label": l.name, "value": l.pubId}))
+        let options = this.store.paymentPlans.map(l => ({"label": l.name, "value": l.pubId}));
+        options.unshift(this.defaultOption)
+        return options
     }
 
-    defaultValue() {
+    value() {
         if (this.store.selectedPaymentPlan) {
-            let r = this.store.selectedPaymentPlan.map(it => ({
-                label: it.name,
-                value: it.pubId
-            }));
-            return r;
+            return {
+                label: this.store.selectedPaymentPlan.name,
+                value: this.store.selectedPaymentPlan.pubId
+            }
         }
-
-        return this.defaultOption;
+        return this.defaultOption
     }
 
     render() {
         return (
             <Select
-                isMulti
-                value={this.defaultValue()}
+                value={this.value()}
                 options={this.options()}
-                onChange={e => this.select(e)}
+                onChange={e => this.selectCompany(e.value)}
             />
         );
     }

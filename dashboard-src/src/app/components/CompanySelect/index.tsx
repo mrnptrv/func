@@ -7,7 +7,7 @@ import {COMPANY_STORE} from "app/store/CompanyStore";
 export class CompanySelect extends React.Component<any, any> {
     private store = COMPANY_STORE
 
-    selectLocation(pubId: string) {
+    selectCompany(pubId: string) {
         this.store.select(pubId)
     }
 
@@ -34,7 +34,7 @@ export class CompanySelect extends React.Component<any, any> {
             <Select
                 value={this.value()}
                 options={this.options()}
-                onChange={e => this.selectLocation(e.value)}
+                onChange={e => this.selectCompany(e.value)}
             />
         );
     }

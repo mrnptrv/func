@@ -6,6 +6,7 @@ import {eventBus} from 'mobx-event-bus2'
 class LocationStore {
     @observable locations: Array<Location> = new Array<Location>();
     @observable selectedLocation: Location = null
+    @observable selectedLocationId: string = ""
 
     constructor() {
         this.loadLocations()
@@ -15,7 +16,9 @@ class LocationStore {
         locationApi().getLocationListUsingPOST(null).then(r => {
             this.locations = r.data
 
-            if (r.data.length > 0) {
+            if (this.selectedLocationId) {
+                this.selectLocation(this.selectedLocationId)
+            } else if (r.data.length > 0) {
                 this.selectLocation(r.data[0].pubId)
             }
         })
@@ -23,12 +26,13 @@ class LocationStore {
 
     @action
     selectLocation(pubId) {
+        this.selectedLocationId = pubId
         this.selectedLocation = this.locations.find(l => l.pubId === pubId)
         eventBus.post(CHANGE_LOCATION_TOPIC, pubId)
     }
 
     selectedLocationPubId(): string {
-        return this.selectedLocation && this.selectedLocation.pubId
+        return this.selectedLocationId
     }
 }
 

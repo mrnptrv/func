@@ -4,14 +4,30 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
 import {assetsApi} from "app/constants/api";
-import {Asset, WorkTimeRange} from "app/api/api";
+import {WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {WORK_HOURS} from "app/constants/constants";
 
 
 class AssetCreateData {
     @observable error = ""
-    @observable asset: Asset = {
+    @observable asset: {
+        workTimeRanges: WorkTimeRange[];
+        imageUrls: string[];
+        name: string;
+        pubId: string;
+        description: string;
+        location: {
+                pubId: string;
+                name: string;
+                updatedBy: { phone: string; pubId: string; email: string };
+                createdBy: { phone: string; pubId: string; email: string };
+                created: string;
+                updated: string
+            };
+        type: string;
+        capacity: number
+    } = {
         description: "",
         imageUrls: new Array<string>(),
         name: "",
