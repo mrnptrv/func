@@ -8,6 +8,7 @@ export class MainMenu extends React.Component<any, any> {
                 <Navbar.Brand><h1>Func Dash</h1></Navbar.Brand>
                 <Nav className="mr-auto">
                     <Nav.Link href="/dashboard/booking">Booking</Nav.Link>
+                    <Nav.Link href="/dashboard/payment-list">Payments</Nav.Link>
                     <Nav.Link href="/dashboard/list">Assets</Nav.Link>
                     <Nav.Link href="/dashboard/location/list">Locations</Nav.Link>
                     <Nav.Link href="/dashboard/company-list">Companies</Nav.Link>

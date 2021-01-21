@@ -32,7 +32,6 @@ export class UserCreateContainer extends React.Component<any, any> {
     private companyStore = COMPANY_STORE
     private paymentPlanStore = PAYMENT_PLAN_STORE
 
-
     constructor(props: any, context: any) {
         super(props, context);
 
