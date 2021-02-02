@@ -9,6 +9,8 @@ import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
 import {WORK_HOURS} from "app/constants/constants";
+import {AssetTypeSelect} from "app/components/AssetTypeSelect";
+import {ASSET_TYPE_STORE} from "app/store/AssetTypeStore";
 
 class AssetEditData {
     @observable isAssetLoading = true
@@ -22,6 +24,7 @@ class AssetEditData {
 export class AssetEditContainer extends React.Component<any, any> {
     private data = new AssetEditData()
     private locationStore = LOCATION_STORE
+    private assetTypeStore = ASSET_TYPE_STORE
 
     cancel = () => {
         this.props.history.push("/dashboard/list")
@@ -34,13 +37,13 @@ export class AssetEditContainer extends React.Component<any, any> {
 
         assetsApi().updateUsingPOST({
             pubId: this.data.asset.pubId,
-            type: this.data.asset.type,
+            type: this.assetTypeStore.selectedId(),
             name: this.data.asset.name,
             description: this.data.asset.description,
             workTimeRanges: this.data.asset.workTimeRanges,
             imageUrls: this.data.asset.imageUrls,
             capacity: this.data.asset.capacity,
-            locationPubId: this.locationStore.selectedLocation.pubId
+            locationPubId: this.locationStore.selectedLocationPubId()
         }).then(() => {
             this.data.isSaving = false
         }).catch((error) => {
@@ -81,6 +84,7 @@ export class AssetEditContainer extends React.Component<any, any> {
                 this.data.isAssetLoading = false
 
                 this.locationStore.selectLocation(this.data.asset.location.pubId)
+                this.assetTypeStore.select(this.data.asset.type)
             })
             .catch(error => {
                 this.data.isAssetLoading = false
@@ -131,9 +135,15 @@ export class AssetEditContainer extends React.Component<any, any> {
                 {this.data.isAssetLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
+                            <Form.Label>Location:</Form.Label>
                             <LocationSelect/>
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label>Type:</Form.Label>
+                            <AssetTypeSelect/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Name:</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Name"
@@ -142,6 +152,7 @@ export class AssetEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label>Description:</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 placeholder="Description"
@@ -151,6 +162,7 @@ export class AssetEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label>Capacity:</Form.Label>
                             <Form.Control
                                 type="number"
                                 placeholder="Capacity"

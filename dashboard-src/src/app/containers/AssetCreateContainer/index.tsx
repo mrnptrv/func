@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import * as style from "./style.css"
+import * as style from "app/containers/style.css";
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
@@ -7,6 +7,10 @@ import {assetsApi} from "app/constants/api";
 import {WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {WORK_HOURS} from "app/constants/constants";
+import {LocationSelect} from "app/components/LocationSelect";
+import {AssetTypeSelect} from "app/components/AssetTypeSelect";
+import {LOCATION_STORE} from "app/store/LocationStore";
+import {ASSET_TYPE_STORE} from "app/store/AssetTypeStore";
 
 
 class AssetCreateData {
@@ -59,6 +63,8 @@ class AssetCreateData {
 @observer
 export class AssetCreateContainer extends React.Component<any, any> {
     private data = new AssetCreateData()
+    private locationStore = LOCATION_STORE
+    private assetTypeStore = ASSET_TYPE_STORE
 
     cancel = () => {
         this.props.history.push("/dashboard/list")
@@ -70,8 +76,8 @@ export class AssetCreateContainer extends React.Component<any, any> {
         this.data.fieldErrors = new Array<String>()
 
         assetsApi().createUsingPOST({
-            locationPubId: "",
-            type: this.data.asset.type,
+            locationPubId: this.locationStore.selectedLocationPubId(),
+            type: this.assetTypeStore.selectedId(),
             name: this.data.asset.name,
             description: this.data.asset.description,
             workTimeRanges: this.data.asset.workTimeRanges,
@@ -146,8 +152,17 @@ export class AssetCreateContainer extends React.Component<any, any> {
 
                 <h4>New Asset</h4>
 
-                <Form>
+                <Form className={style.editForm}>
                     <Form.Group>
+                        <Form.Label>Location:</Form.Label>
+                        <LocationSelect/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Type:</Form.Label>
+                        <AssetTypeSelect/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Name:</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Name"
@@ -157,6 +172,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
                     </Form.Group>
 
                     <Form.Group>
+                        <Form.Label>Description:</Form.Label>
                         <Form.Control
                             as="textarea"
                             placeholder="Description"
@@ -166,6 +182,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
                         />
                     </Form.Group>
                     <Form.Group>
+                        <Form.Label>Capacity:</Form.Label>
                         <Form.Control
                             type="capacity"
                             placeholder="Capacity"
