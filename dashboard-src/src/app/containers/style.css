@@ -1,3 +1,42 @@
 .editForm {
     width: 400px;
 }
+
+.start.payment-data-picker {
+    width: 200px;
+}
+
+.space__table {
+    width: 100%;
+    max-width: 380px;
+    border: 0;
+    border-collapse: collapse;
+}
+
+.space__cell {
+    width: 60px;
+    padding: 0 12px 14px 0;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.01em;
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+.space__cell--price {
+    position: relative;
+    padding: 0 36px 14px 0;
+    font-weight: 500;
+    opacity: 1;
+    text-align: right;
+
+    width: 60px;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+
+.space__row:last-of-type .space__cell {
+    padding-bottom: 0;
+}

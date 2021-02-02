@@ -7,6 +7,12 @@ import Select from 'react-select'
 export class LocationSelect extends React.Component<any, any> {
     private store = LOCATION_STORE
 
+
+    constructor(props: any, context: any) {
+        super(props, context);
+        this.store.loadLocations();
+    }
+
     selectLocation(pubId: String) {
         this.store.selectLocation(pubId)
     }

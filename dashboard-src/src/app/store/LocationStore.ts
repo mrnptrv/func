@@ -9,9 +9,9 @@ class LocationStore {
     @observable selectedLocationId: string = ""
 
     constructor() {
-        this.loadLocations()
     }
 
+    @action
     loadLocations() {
         locationApi().getLocationListUsingPOST(null).then(r => {
             this.locations = r.data

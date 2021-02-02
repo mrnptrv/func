@@ -7,6 +7,7 @@ import {eventBus, subscribe} from 'mobx-event-bus2'
 class AssetStore {
     @observable assets: Array<Asset> = new Array<Asset>();
     @observable selectedAsset: Asset = null
+    @observable selectedAssetId = ""
     private loadedLocationId: string = ""
     private init = false;
 
@@ -25,7 +26,6 @@ class AssetStore {
 
     loadAssets() {
         this.init = true
-        console.log('@@@ AssetStore.ts -> loadAssets -> 25');
         let locationPubId = LOCATION_STORE.selectedLocationPubId();
         if (locationPubId && locationPubId !== this.loadedLocationId) {
             this.loadedLocationId = locationPubId
@@ -36,20 +36,25 @@ class AssetStore {
                 this.assets = r.data
                 if (this.selectedAsset && this.selectedAsset.location.pubId !== LOCATION_STORE.selectedLocationPubId()) {
                     this.selectedAsset = null
+                    this.selectedAssetId = null
                 }
+                this.selectAsset(this.selectedAssetId)
             })
         }
     }
 
 
     selectedAssetPubId(): string {
-        return this.selectedAsset && this.selectedAsset.pubId
+        return this.selectedAssetId;
     }
 
     @action
     selectAsset(pubId) {
         this.selectedAsset = this.assets.find(l => l.pubId === pubId)
+        this.selectedAssetId = pubId
+        eventBus.post(CHANGE_SELECTED_ASSET_TOPIC, pubId)
     }
 }
 
 export const ASSET_STORE = new AssetStore()
+export const CHANGE_SELECTED_ASSET_TOPIC = 'changeSelectedAsset'

@@ -81,6 +81,14 @@
   border: 0;
 }
 
+.payment-form .start .react-datepicker-wrapper {
+  width: 210px;
+}
+
+.payment-form .start .react-datepicker-wrapper input{
+  height: 38px;
+}
+
 .react-datepicker {
   width: 288px;
   font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;

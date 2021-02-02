@@ -7,6 +7,13 @@ import {COMPANY_STORE} from "app/store/CompanyStore";
 export class CompanySelect extends React.Component<any, any> {
     private store = COMPANY_STORE
 
+
+    constructor(props: any, context: any) {
+        super(props, context);
+
+        this.store.load()
+    }
+
     selectCompany(pubId: string) {
         this.store.select(pubId)
     }

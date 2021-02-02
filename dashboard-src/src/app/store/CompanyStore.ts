@@ -9,7 +9,6 @@ class CompanyStore {
     @observable selectedId: string = null
 
     constructor() {
-        this.load()
     }
 
     load() {

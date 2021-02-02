@@ -8,6 +8,12 @@ import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
 export class PaymentPlanSelect extends React.Component<any, any> {
     private store = PAYMENT_PLAN_STORE
 
+
+    constructor(props: any, context: any) {
+        super(props, context);
+        this.store.loadPaymentPlans().then(() => {})
+    }
+
     selectCompany(pubId: string) {
         this.store.select(pubId)
     }

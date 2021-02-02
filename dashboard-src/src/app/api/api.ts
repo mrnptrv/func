@@ -1063,16 +1063,10 @@ export interface PaymentPlanAssumptionReq {
     access?: AccessAssumptionReq;
     /**
      * 
-     * @type {string}
+     * @type {Array<WorkTimeRangeReq>}
      * @memberof PaymentPlanAssumptionReq
      */
-    day: string;
-    /**
-     * 
-     * @type {TimeRangeAssumptionReq}
-     * @memberof PaymentPlanAssumptionReq
-     */
-    time?: TimeRangeAssumptionReq;
+    workTimeRanges?: Array<WorkTimeRangeReq>;
 }
 /**
  * 
@@ -1088,16 +1082,10 @@ export interface PaymentPlanAssumptionRes {
     access?: AccessAssumptionRes;
     /**
      * 
-     * @type {string}
+     * @type {Array<WorkTimeRangeRes>}
      * @memberof PaymentPlanAssumptionRes
      */
-    day: string;
-    /**
-     * 
-     * @type {TimeRangeAssumptionRes}
-     * @memberof PaymentPlanAssumptionRes
-     */
-    time?: TimeRangeAssumptionRes;
+    workTimeRanges: Array<WorkTimeRangeRes>;
 }
 /**
  * 
@@ -1105,6 +1093,12 @@ export interface PaymentPlanAssumptionRes {
  * @interface PaymentPlanListRequest
  */
 export interface PaymentPlanListRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlanListRequest
+     */
+    assetId?: string;
     /**
      * 
      * @type {string}
@@ -1148,50 +1142,6 @@ export interface RegisterRequest {
      * @memberof RegisterRequest
      */
     password?: string;
-}
-/**
- * 
- * @export
- * @interface TimeRangeAssumptionReq
- */
-export interface TimeRangeAssumptionReq {
-    /**
-     * 
-     * @type {string}
-     * @memberof TimeRangeAssumptionReq
-     */
-    begin: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TimeRangeAssumptionReq
-     */
-    end: string;
-}
-/**
- * 
- * @export
- * @interface TimeRangeAssumptionRes
- */
-export interface TimeRangeAssumptionRes {
-    /**
-     * 
-     * @type {string}
-     * @memberof TimeRangeAssumptionRes
-     */
-    begin: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TimeRangeAssumptionRes
-     */
-    end: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TimeRangeAssumptionRes
-     */
-    start: string;
 }
 /**
  * 

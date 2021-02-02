@@ -3,6 +3,7 @@ import {observer} from "mobx-react";
 import Select from 'react-select'
 import {TIME_UNIT_STORE} from "app/store/TimeUnitStore";
 
+
 @observer
 export class TimeUnitSelect extends React.Component<any, any> {
     private store = TIME_UNIT_STORE
@@ -35,6 +36,7 @@ export class TimeUnitSelect extends React.Component<any, any> {
                 value={this.value()}
                 options={this.options()}
                 onChange={e => this.selectUnit(e.value)}
+                styles={{menu: provided => ({...provided, zIndex: 9999})}}
             />
         );
     }

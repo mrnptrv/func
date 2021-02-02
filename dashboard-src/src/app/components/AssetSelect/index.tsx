@@ -6,8 +6,13 @@ import {ASSET_STORE} from "app/store/AssetStore";
 @observer
 export class AssetSelect extends React.Component<any, any> {
     private store = ASSET_STORE
-
     private defaultOption = {label: "----", value: null};
+
+
+    constructor(props: any, context: any) {
+        super(props, context);
+        this.store.loadAssets()
+    }
 
     select(pubId: string) {
         this.store.selectAsset(pubId)

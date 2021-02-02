@@ -77,6 +77,7 @@ export class BookingEditContainer extends React.Component<any, any> {
         super(props, context);
 
         this.data.isBookingLoading = true
+
         bookingApi().getUsingGET2(this.props.match.params.id).then(res => {
             this.data.booking = res.data
             this.data.bookingDate = new Date(this.data.booking.date)

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {MainMenu} from "app/components/MainMenu";
 import {paymentPlanApi} from "app/constants/api";
-import {AccessAssumptionReq, PaymentPlan, TimeRangeAssumptionReq} from "app/api/api";
+import {AccessAssumptionReq, PaymentPlan, WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
@@ -14,8 +14,6 @@ import {COMPANY_STORE} from "app/store/CompanyStore";
 import {CompanySelect} from "app/components/CompanySelect";
 import {TimeUnitSelect} from "app/components/TimeUnitSelect";
 import {TIME_UNIT_CHANGE_TOPIC, TIME_UNIT_STORE} from "app/store/TimeUnitStore";
-import {DayAssumptionSelect} from "app/components/DayAssumptionSelect";
-import {DAY_ASSUMPTION_STORE} from "app/store/DayAssumptionStore";
 import {WORK_HOURS} from "app/constants/constants";
 import {eventBus, subscribe} from "mobx-event-bus2";
 import {HasAccessAssumptionSelect} from "app/components/HasAccessAssumptionSelect";
@@ -26,8 +24,6 @@ import {PAYMENT_PLAN_MULTI_SELECT_STORE} from "app/store/PaymentPlanMultiSelectS
 class PaymentPlanEditData {
     @observable isPaymentPlanLoading = true
     @observable error = ""
-    @observable begin = "--"
-    @observable end = "--"
     @observable beginDisabled = false;
     @observable endDisabled = false;
     @observable paymentPlan: PaymentPlan = null
@@ -42,7 +38,6 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
     private assetStore = ASSET_STORE
     private companyStore = COMPANY_STORE
     private timeUnitStore = TIME_UNIT_STORE
-    private dayAssumptionStore = DAY_ASSUMPTION_STORE
     private hasAccessAssumptionStore = HAS_ACCESS_ASSUMPTION_STORE;
     private paymentPlanStore = PAYMENT_PLAN_MULTI_SELECT_STORE
 
@@ -65,8 +60,7 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
             assetPubId: this.assetStore.selectedAssetPubId(),
             companyPubId: this.companyStore.selectedCompanyPubId(),
             assumption: {
-                day: this.dayAssumptionStore.selectedId(),
-                time: this.getTimeAssumptionReq(),
+                workTimeRanges: this.data.paymentPlan.assumption.workTimeRanges,
                 access: this.getAccessAssumptionReq()
             }
         }).then(() => {
@@ -84,6 +78,39 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
         })
     }
 
+    private addWorkTimeRange = () => {
+        this.data.paymentPlan.assumption.workTimeRanges.push({
+            start: "00:00",
+            end: "00:00",
+            price: "0.00",
+            isWeekend: false
+        })
+    }
+
+    private deleteWorkTimeRange(wtr: WorkTimeRange) {
+        return () => {
+            this.data.paymentPlan.assumption.workTimeRanges = this.data.paymentPlan.assumption.workTimeRanges.filter(w => wtr != w)
+        };
+    }
+
+    private setStartWorkTime(wtr: WorkTimeRange, h: number) {
+        return () => {
+            wtr.start = (h < 10 ? "0" + h : h) + ":00"
+        }
+    }
+
+    private setEndWorkTime(wtr: WorkTimeRange, h: number) {
+        return () => {
+            wtr.end = (h < 10 ? "0" + h : h) + ":00"
+        }
+    }
+
+    private setWeekend(wtr: WorkTimeRange, isWeekend: boolean) {
+        return () => {
+            wtr.isWeekend = isWeekend
+        }
+    }
+
 
     constructor(props: any, context: any) {
         super(props, context);
@@ -99,11 +126,6 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                 this.locationStore.selectLocation(this.data.paymentPlan.locationPubId)
                 this.assetStore.selectAsset(this.data.paymentPlan.assetPubId)
                 this.companyStore.select(this.data.paymentPlan.companyPubId)
-                this.dayAssumptionStore.selectUnit(
-                    this.data.paymentPlan?.assumption?.day ?? "NA"
-                )
-                this.data.begin = this.data.paymentPlan?.assumption?.time?.begin ?? "--"
-                this.data.end = this.data.paymentPlan?.assumption?.time?.end ?? "--"
                 this.timeUnitStore.selectUnit(this.data.paymentPlan.unit)
                 this.hasAccessAssumptionStore.select(
                     this.data.paymentPlan?.assumption?.access?.access ?? "NA"
@@ -132,31 +154,11 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
     @subscribe(TIME_UNIT_CHANGE_TOPIC)
     changeTimeUnit() {
         if (TIME_UNIT_STORE.selectedId() === "HOUR") {
-            if (this.data.begin === "--") {
-                this.data.begin = "00:00"
-            }
-            if (this.data.end === "--") {
-                this.data.end = "00:00"
-            }
             this.data.beginDisabled = false
             this.data.endDisabled = false
         } else {
-            this.data.begin = "--"
-            this.data.end = "--"
             this.data.beginDisabled = true
             this.data.endDisabled = true
-        }
-    }
-
-    setStartWorkTime(h) {
-        return () => {
-            this.data.begin = (h < 10 ? "0" + h : h) + ":00"
-        }
-    }
-
-    setEndWorkTime(h) {
-        return () => {
-            this.data.end = (h < 10 ? "0" + h : h) + ":00"
         }
     }
 
@@ -214,51 +216,82 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                             <Form.Label>Unit:</Form.Label>
                             <TimeUnitSelect/>
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Price:</Form.Label>
-                            <Form.Control
-                                value={this.data.paymentPlan.price}
-                                onChange={(e) => {
-                                    this.data.paymentPlan.price = e.target.value
-                                }}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Day assumption:</Form.Label>
-                            <DayAssumptionSelect/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Time assumption:</Form.Label>
-                            <InputGroup className="mb-3">
+                        {TIME_UNIT_STORE.selectedId() !== "HOUR" ||
+                        this.data.paymentPlan.assumption.workTimeRanges.length == 0 ? (
+                            <Form.Group>
+                                <Form.Label>Price:</Form.Label>
+                                <Form.Control
+                                    value={this.data.paymentPlan.price}
+                                    onChange={(e) => {
+                                        this.data.paymentPlan.price = e.target.value
+                                    }}
+                                />
+                            </Form.Group>
+                        ) : (<></>)}
+                        {TIME_UNIT_STORE.selectedId() === "HOUR" ? (
+                            <Form.Group>
+                                <Form.Label>
+                                    Hour Prices:
+                                    <Button
+                                        variant="light"
+                                        onClick={this.addWorkTimeRange}
+                                    > + </Button>
+                                </Form.Label>
 
-                                <DropdownButton
-                                    as={InputGroup.Prepend}
-                                    variant="outline-secondary"
-                                    title={this.data.begin}
-                                    id="input-group-dropdown-1"
-                                    disabled={this.data.endDisabled}
-                                >
-                                    {WORK_HOURS.map(h =>
-                                        <Dropdown.Item onClick={this.setStartWorkTime(h)} key={h}>
-                                            {h < 10 ? "0" + h : h}:00
-                                        </Dropdown.Item>
-                                    )}
-                                </DropdownButton>
-                                <DropdownButton
-                                    as={InputGroup.Prepend}
-                                    variant="outline-secondary"
-                                    title={this.data.end}
-                                    id="input-group-dropdown-1"
-                                    disabled={this.data.endDisabled}
-                                >
-                                    {WORK_HOURS.map(h =>
-                                        <Dropdown.Item onClick={this.setEndWorkTime(h)} key={h}>
-                                            {h < 10 ? "0" + h : h}:00
-                                        </Dropdown.Item>
-                                    )}
-                                </DropdownButton>
-                            </InputGroup>
-                        </Form.Group>
+                                {this.data.paymentPlan.assumption.workTimeRanges.map(wtr =>
+                                    <InputGroup className="mb-3" key={wtr.start +":"+ wtr.isWeekend}>
+                                        <DropdownButton
+                                            as={InputGroup.Prepend}
+                                            variant="outline-secondary"
+                                            title={wtr.isWeekend ? "weekend " : "workday "}
+                                        >
+                                            <Dropdown.Item key={1} onClick={this.setWeekend(wtr, false)}>
+                                                workday
+                                            </Dropdown.Item>
+                                            <Dropdown.Item key={2} onClick={this.setWeekend(wtr, true)}>
+                                                weekend
+                                            </Dropdown.Item>
+                                        </DropdownButton>
+                                        <DropdownButton
+                                            as={InputGroup.Prepend}
+                                            variant="outline-secondary"
+                                            title={wtr.start}
+                                            id="input-group-dropdown-1"
+                                        >
+                                            {WORK_HOURS.map(h =>
+                                                <Dropdown.Item key={h} onClick={this.setStartWorkTime(wtr, h)}>
+                                                    {h < 10 ? "0" + h : h}:00
+                                                </Dropdown.Item>
+                                            )}
+                                        </DropdownButton>
+                                        <DropdownButton
+                                            as={InputGroup.Prepend}
+                                            variant="outline-secondary"
+                                            title={wtr.end}
+                                            id="input-group-dropdown-1"
+                                        >
+                                            {WORK_HOURS.map(h =>
+                                                <Dropdown.Item key={h} onClick={this.setEndWorkTime(wtr, h)}>
+                                                    {h < 10 ? "0" + h : h}:00
+                                                </Dropdown.Item>
+                                            )}
+                                        </DropdownButton>
+                                        <Form.Control
+                                            aria-describedby="basic-addon1"
+                                            value={wtr.price}
+                                            onChange={(e) => {
+                                                wtr.price = e.target.value
+                                            }}
+                                        />
+                                        <InputGroup.Append>
+                                            <Button variant="outline-secondary"
+                                                    onClick={this.deleteWorkTimeRange(wtr)}
+                                            >X</Button>
+                                        </InputGroup.Append>
+                                    </InputGroup>
+                                )}
+                            </Form.Group>
+                        ) : (<></>)}
                         <Form.Group>
                             <Form.Label>Access assumption:</Form.Label>
                             <HasAccessAssumptionSelect/>
@@ -298,16 +331,5 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                 }
             </div>
         );
-    }
-
-    private getTimeAssumptionReq(): TimeRangeAssumptionReq {
-        if (this.data.begin === "--" || this.data.end === "--") {
-            return null;
-        }
-
-        return {
-            begin: this.data.begin,
-            end: this.data.end
-        }
     }
 }

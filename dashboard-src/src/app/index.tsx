@@ -22,6 +22,8 @@ import {UserListContainer} from "app/containers/user/ListContainer";
 import {UserCreateContainer} from "app/containers/user/CreateContainer";
 import {UserEditContainer} from "app/containers/user/EditContainer";
 import {PaymentListContainer} from "app/containers/payment/ListContainer";
+import {PaymentEditContainer} from "app/containers/payment/EditContainer";
+import {PaymentCreateContainer} from "app/containers/payment/CreateContainer";
 
 // render react DOM
 export const App = hot(({history}) => {
@@ -60,6 +62,8 @@ export const App = hot(({history}) => {
                 <Route path="/dashboard/create-user" exact component={UserCreateContainer}/>
                 <Route path="/dashboard/edit-user/:id" exact component={UserEditContainer}/>
                 <Route path="/dashboard/payment-list" exact component={PaymentListContainer}/>
+                <Route path="/dashboard/create-payment" exact component={PaymentCreateContainer}/>
+                <Route path="/dashboard/edit-payment/:id" exact component={PaymentEditContainer}/>
                 <Route>Loading...</Route>
             </Switch>
         </Router>

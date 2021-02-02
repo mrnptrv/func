@@ -13,8 +13,6 @@ class PaymentPlanMultiSelectStore {
     public exceptPaymentPlanId: string = ""
 
     constructor() {
-        this.loadPaymentPlans().then(() => {
-        })
         eventBus.register(this)
     }
 

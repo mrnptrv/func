@@ -7,11 +7,10 @@ import {eventBus, subscribe} from 'mobx-event-bus2'
 class PaymentPlanStore {
     @observable paymentPlans: Array<PaymentPlan> = new Array<PaymentPlan>();
     @observable selectedPaymentPlan: PaymentPlan = null;
+    @observable selectedPaymentId = null;
     private loadedLocationId: string = ""
 
     constructor() {
-        this.loadPaymentPlans().then(() => {
-        })
         eventBus.register(this)
     }
 
@@ -27,7 +26,11 @@ class PaymentPlanStore {
     }
 
     @action
-    loadPaymentPlans(force: boolean = false): Promise<void> {
+    loadPaymentPlans(force: boolean = false): Promise<Array<PaymentPlan>> {
+        return this.load(force);
+    }
+
+    private load(force: boolean): Promise<Array<PaymentPlan>> {
         let locationPubId = LOCATION_STORE.selectedLocationPubId();
         if (force || locationPubId && locationPubId !== this.loadedLocationId) {
             this.loadedLocationId = locationPubId
@@ -36,18 +39,17 @@ class PaymentPlanStore {
                 locationPubId: this.loadedLocationId,
             }).then(r => {
                 this.paymentPlans = r.data
+                this.select(this.selectedPaymentId)
+
+                return this.paymentPlans
             })
         }
 
-        return Promise.resolve()
+        return Promise.resolve(this.paymentPlans)
     }
 
     selectedId(): string {
-        if (this.selectedPaymentPlan) {
-            return this.selectedPaymentPlan.pubId
-        }
-
-        return null
+        return this.selectedPaymentId;
     }
 
     @action
@@ -58,6 +60,7 @@ class PaymentPlanStore {
         } else {
             this.selectedPaymentPlan = null
         }
+        this.selectedPaymentId = pubId
 
         eventBus.post(CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, pubId)
     }
