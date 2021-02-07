@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {paymentPlanApi} from "app/constants/api";
 import {AccessAssumptionReq, PaymentPlan, WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
@@ -20,6 +19,7 @@ import {HasAccessAssumptionSelect} from "app/components/HasAccessAssumptionSelec
 import {HAS_ACCESS_ASSUMPTION_STORE} from "app/store/HasAccessAssumptionStore";
 import {PaymentPlanMultiSelect} from "app/components/PaymentPlanMultiSelect";
 import {PAYMENT_PLAN_MULTI_SELECT_STORE} from "app/store/PaymentPlanMultiSelectStore";
+import {MainMenu} from "app/components";
 
 class PaymentPlanEditData {
     @observable isPaymentPlanLoading = true
@@ -178,48 +178,46 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Payment Plan</h4>
+                <h4>Платежный план</h4>
                 {this.data.isPaymentPlanLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
-                            <Form.Label>Location:</Form.Label>
+                            <Form.Label>Локация:</Form.Label>
                             <LocationSelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Asset:</Form.Label>
+                            <Form.Label>Ресурс:</Form.Label>
                             <AssetSelect withEmpty={false}/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Company:</Form.Label>
+                            <Form.Label>Организация:</Form.Label>
                             <CompanySelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Name:</Form.Label>
+                            <Form.Label>Название:</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Name"
                                 value={this.data.paymentPlan.name}
                                 onChange={(e) => this.data.paymentPlan.name = e.target.value}
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Description:</Form.Label>
+                            <Form.Label>Описание:</Form.Label>
                             <Form.Control
                                 as="textarea"
-                                placeholder="Description"
                                 rows={3}
                                 value={this.data.paymentPlan.description}
                                 onChange={(e) => this.data.paymentPlan.description = e.target.value}
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Unit:</Form.Label>
+                            <Form.Label>Длительность:</Form.Label>
                             <TimeUnitSelect/>
                         </Form.Group>
                         {TIME_UNIT_STORE.selectedId() !== "HOUR" ||
                         this.data.paymentPlan.assumption.workTimeRanges.length == 0 ? (
                             <Form.Group>
-                                <Form.Label>Price:</Form.Label>
+                                <Form.Label>Цена:</Form.Label>
                                 <Form.Control
                                     value={this.data.paymentPlan.price}
                                     onChange={(e) => {
@@ -231,7 +229,7 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                         {TIME_UNIT_STORE.selectedId() === "HOUR" ? (
                             <Form.Group>
                                 <Form.Label>
-                                    Hour Prices:
+                                    Стоимость часа:
                                     <Button
                                         variant="light"
                                         onClick={this.addWorkTimeRange}
@@ -241,15 +239,16 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                                 {this.data.paymentPlan.assumption.workTimeRanges.map(wtr =>
                                     <InputGroup className="mb-3" key={wtr.start +":"+ wtr.isWeekend}>
                                         <DropdownButton
+                                            className={style.hourType}
                                             as={InputGroup.Prepend}
                                             variant="outline-secondary"
-                                            title={wtr.isWeekend ? "weekend " : "workday "}
+                                            title={wtr.isWeekend ? "выходные " : "будни "}
                                         >
                                             <Dropdown.Item key={1} onClick={this.setWeekend(wtr, false)}>
-                                                workday
+                                                будни
                                             </Dropdown.Item>
                                             <Dropdown.Item key={2} onClick={this.setWeekend(wtr, true)}>
-                                                weekend
+                                                выходные
                                             </Dropdown.Item>
                                         </DropdownButton>
                                         <DropdownButton
@@ -293,11 +292,11 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                             </Form.Group>
                         ) : (<></>)}
                         <Form.Group>
-                            <Form.Label>Access assumption:</Form.Label>
+                            <Form.Label>Наличие доступа:</Form.Label>
                             <HasAccessAssumptionSelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Access to other payment plan:</Form.Label>
+                            <Form.Label>Наличие доступа по платежным планам:</Form.Label>
                             <PaymentPlanMultiSelect/>
                         </Form.Group>
                         <Form.Group>
@@ -310,18 +309,20 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                             </Alert>
                             }
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="float-right">
                             <Button
+                                className="mr-2"
                                 variant="light"
                                 onClick={this.cancel}
                             >
-                                Cancel
+                                Отмена
                             </Button>
                             <Button
+                                className="mr-2"
                                 variant="primary"
                                 onClick={this.save}
                             >
-                                Save
+                                Сохранить
                                 {this.data.isSaving &&
                                 <Spinner animation="grow" as="span" size="sm" role="status"/>
                                 }

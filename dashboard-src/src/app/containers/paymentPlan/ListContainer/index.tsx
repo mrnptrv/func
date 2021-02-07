@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {paymentPlanApi} from "app/constants/api";
 import {PaymentPlan} from "app/api/api";
+import {MainMenu} from "app/components";
 
 class PaymentPlanListData {
     @observable isLoading = true
@@ -79,8 +79,8 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                 <td>{paymentPlan.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editPaymentPlan(paymentPlan)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(paymentPlan)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editPaymentPlan(paymentPlan)}>Редактировать</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(paymentPlan)}>Удалить</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -88,8 +88,8 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-
-                <h4>Payment plans ({this.data.list.length})
+                <h4>
+                    Платежные планы
                     <Button
                         variant="light"
                         onClick={this.newPaymentPlan}
@@ -98,7 +98,7 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Название</th>
                         <th/>
                     </tr>
                     </thead>
@@ -113,18 +113,18 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete Payment Plan</Modal.Title>
+                        <Modal.Title>Удаление платежного плана</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                            Continue deleting the payment plan?
+                            Платежный план будет удален. Продолжить?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
-                        <Button variant="primary" onClick={this.deletePaymentPlan}>Yes</Button>
+                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Нет</Button>
+                        <Button variant="primary" onClick={this.deletePaymentPlan}>Да</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

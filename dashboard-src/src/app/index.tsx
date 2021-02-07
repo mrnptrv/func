@@ -40,32 +40,34 @@ export const App = hot(({history}) => {
     })
 
     return (
-        <Router history={history}>
-            <Switch>
-                <Route path="/dashboard/login" component={LoginContainer}/>
-                <Route path="/dashboard/register" component={RegisterContainer}/>
-                <Route path="/dashboard/booking" component={BookingContainer}/>
-                <Route path="/dashboard/edit-booking/:id" component={BookingEditContainer}/>
-                <Route path="/dashboard/list" component={AssetListContainer}/>
-                <Route path="/dashboard/asset/:id" exact component={AssetEditContainer}/>
-                <Route path="/dashboard/create-asset" exact component={AssetCreateContainer}/>
-                <Route path="/dashboard/location/list" exact component={LocationListContainer}/>
-                <Route path="/dashboard/create-location" exact component={LocationCreateContainer}/>
-                <Route path="/dashboard/edit-location/:id" exact component={LocationEditContainer}/>
-                <Route path="/dashboard/company-list" exact component={CompanyListContainer}/>
-                <Route path="/dashboard/edit-company/:id" exact component={CompanyEditContainer}/>
-                <Route path="/dashboard/create-company" exact component={CompanyCreateContainer}/>
-                <Route path="/dashboard/payment-plan-list" exact component={PaymentPlanListContainer}/>
-                <Route path="/dashboard/create-payment-plan" exact component={PaymentPlanCreateContainer}/>
-                <Route path="/dashboard/edit-payment-plan/:id" exact component={PaymentPlanEditContainer}/>
-                <Route path="/dashboard/user-list" exact component={UserListContainer}/>
-                <Route path="/dashboard/create-user" exact component={UserCreateContainer}/>
-                <Route path="/dashboard/edit-user/:id" exact component={UserEditContainer}/>
-                <Route path="/dashboard/payment-list" exact component={PaymentListContainer}/>
-                <Route path="/dashboard/create-payment" exact component={PaymentCreateContainer}/>
-                <Route path="/dashboard/edit-payment/:id" exact component={PaymentEditContainer}/>
-                <Route>Loading...</Route>
-            </Switch>
-        </Router>
+        <>
+            <Router history={history}>
+                <Switch>
+                    <Route path="/dashboard/login" component={LoginContainer}/>
+                    <Route path="/dashboard/register" component={RegisterContainer}/>
+                    <Route path="/dashboard/booking" component={BookingContainer}/>
+                    <Route path="/dashboard/edit-booking/:id" component={BookingEditContainer}/>
+                    <Route path="/dashboard/list" component={AssetListContainer}/>
+                    <Route path="/dashboard/asset/:id" exact component={AssetEditContainer}/>
+                    <Route path="/dashboard/create-asset" exact component={AssetCreateContainer}/>
+                    <Route path="/dashboard/location/list" exact component={LocationListContainer}/>
+                    <Route path="/dashboard/create-location" exact component={LocationCreateContainer}/>
+                    <Route path="/dashboard/edit-location/:id" exact component={LocationEditContainer}/>
+                    <Route path="/dashboard/company-list" exact component={CompanyListContainer}/>
+                    <Route path="/dashboard/edit-company/:id" exact component={CompanyEditContainer}/>
+                    <Route path="/dashboard/create-company" exact component={CompanyCreateContainer}/>
+                    <Route path="/dashboard/payment-plan-list" exact component={PaymentPlanListContainer}/>
+                    <Route path="/dashboard/create-payment-plan" exact component={PaymentPlanCreateContainer}/>
+                    <Route path="/dashboard/edit-payment-plan/:id" exact component={PaymentPlanEditContainer}/>
+                    <Route path="/dashboard/user-list" exact component={UserListContainer}/>
+                    <Route path="/dashboard/create-user" exact component={UserCreateContainer}/>
+                    <Route path="/dashboard/edit-user/:id" exact component={UserEditContainer}/>
+                    <Route path="/dashboard/payment-list" exact component={PaymentListContainer}/>
+                    <Route path="/dashboard/create-payment" exact component={PaymentCreateContainer}/>
+                    <Route path="/dashboard/edit-payment/:id" exact component={PaymentEditContainer}/>
+                    <Route>Загрузка...</Route>
+                </Switch>
+            </Router>
+        </>
     );
 });

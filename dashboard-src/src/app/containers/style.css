@@ -40,3 +40,7 @@
 .space__row:last-of-type .space__cell {
     padding-bottom: 0;
 }
+
+.hourType button{
+    width: 120px;
+}

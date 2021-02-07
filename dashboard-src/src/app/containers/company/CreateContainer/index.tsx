@@ -1,10 +1,10 @@
 import * as React from 'react';
-// import * as style from "./style.css"
+import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {companyApi} from "app/constants/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
+import {MainMenu} from "app/components";
 
 class CompanyCreateData {
     @observable error = ""
@@ -20,7 +20,7 @@ export class CompanyCreateContainer extends React.Component<any, any> {
     private data = new CompanyCreateData()
 
     cancel = () => {
-        this.props.history.push("/dashboard/company/list")
+        this.props.history.push("/dashboard/company-list")
     }
 
     save = () => {
@@ -54,31 +54,30 @@ export class CompanyCreateContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
+                <h4>Новая организация</h4>
 
-                <h4>New Company</h4>
-
-                <Form>
+                <Form className={style.editForm}>
                     <Form.Group>
+                        <Form.Label>Название:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Name"
                             value={this.data.name}
                             onChange={(e) => this.data.name = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
+                        <Form.Label>Адрес:</Form.Label>
                         <Form.Control
                             as="textarea"
-                            placeholder="Address"
                             rows={3}
                             value={this.data.address}
                             onChange={(e) => this.data.address = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
+                        <Form.Label>Описание:</Form.Label>
                         <Form.Control
                             as="textarea"
-                            placeholder="Details"
                             rows={3}
                             value={this.data.details}
                             onChange={(e) => this.data.details = e.target.value}
@@ -94,18 +93,20 @@ export class CompanyCreateContainer extends React.Component<any, any> {
                         </Alert>
                         }
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="float-right">
                         <Button
+                            className="mr-2"
                             variant="light"
                             onClick={this.cancel}
                         >
-                            Cancel
+                            Отменить
                         </Button>
                         <Button
+                            className="mr-2"
                             variant="primary"
                             onClick={this.save}
                         >
-                            Save
+                            Сохранить
                             {this.data.isSaving &&
                             <Spinner animation="grow" as="span" size="sm" role="status"/>
                             }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {paymentPlanApi} from "app/constants/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
@@ -20,6 +19,7 @@ import {HasAccessAssumptionSelect} from "app/components/HasAccessAssumptionSelec
 import {HAS_ACCESS_ASSUMPTION_STORE} from "app/store/HasAccessAssumptionStore";
 import {PaymentPlanMultiSelect} from "app/components/PaymentPlanMultiSelect";
 import {PAYMENT_PLAN_MULTI_SELECT_STORE} from "app/store/PaymentPlanMultiSelectStore";
+import {MainMenu} from "app/components";
 
 class PaymentPlanCreateData {
     @observable workTimeRanges: Array<WorkTimeRange> = new Array<WorkTimeRange>();
@@ -153,43 +153,40 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-
-                <h4>Create Payment Plan</h4>
+                <h4>Новый платежный план</h4>
 
                 <Form className={style.editForm}>
                     <Form.Group>
-                        <Form.Label>Location:</Form.Label>
+                        <Form.Label>Локация:</Form.Label>
                         <LocationSelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Asset:</Form.Label>
+                        <Form.Label>Ресурс:</Form.Label>
                         <AssetSelect withEmpty={false}/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Company:</Form.Label>
+                        <Form.Label>Организация:</Form.Label>
                         <CompanySelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Name:</Form.Label>
+                        <Form.Label>Название:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Name"
                             value={this.data.name}
                             onChange={(e) => this.data.name = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Description:</Form.Label>
+                        <Form.Label>Описание:</Form.Label>
                         <Form.Control
                             as="textarea"
-                            placeholder="Description"
                             rows={3}
                             value={this.data.description}
                             onChange={(e) => this.data.description = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Unit:</Form.Label>
+                        <Form.Label>Длительность:</Form.Label>
                         <TimeUnitSelect/>
                     </Form.Group>
 
@@ -219,15 +216,16 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                             {this.data.workTimeRanges.map(wtr =>
                                 <InputGroup className="mb-3">
                                     <DropdownButton
+                                        className={style.hourType}
                                         as={InputGroup.Prepend}
                                         variant="outline-secondary"
-                                        title={wtr.isWeekend ? "weekend " : "workday "}
+                                        title={wtr.isWeekend ? "выходные " : "будни "}
                                     >
                                         <Dropdown.Item onClick={this.setWeekend(wtr, false)}>
-                                            workday
+                                            будни
                                         </Dropdown.Item>
                                         <Dropdown.Item onClick={this.setWeekend(wtr, true)}>
-                                            weekend
+                                            выходные
                                         </Dropdown.Item>
                                     </DropdownButton>
                                     <DropdownButton
@@ -271,11 +269,11 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                         </Form.Group>
                     ) : (<></>)}
                     <Form.Group>
-                        <Form.Label>Access assumption:</Form.Label>
+                        <Form.Label>Есть доступ:</Form.Label>
                         <HasAccessAssumptionSelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Access to other payment plan:</Form.Label>
+                        <Form.Label>Есть доступ по платежному плану:</Form.Label>
                         <PaymentPlanMultiSelect/>
                     </Form.Group>
                     <Form.Group>

@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {paymentApi, paymentPlanApi, userApi} from "app/constants/api";
 import {Payment} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
@@ -24,6 +23,7 @@ import {CHANGE_SELECTED_COMPANY_TOPIC, COMPANY_STORE} from "app/store/CompanySto
 import {CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
 import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
 import {numberFormat} from "../../../../../../booking-src/src/app/constants/numberFormat";
+import {MainMenu} from "app/components";
 
 class PaymentEditData {
     @observable isPaymentLoading = true
@@ -313,31 +313,31 @@ export class PaymentEditContainer extends React.Component<any, any> {
         return (
             <div className="payment-form">
                 <MainMenu/>
-                <h4>Payment</h4>
+                <h4>Платеж</h4>
                 {this.data.isPaymentLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
-                            <Form.Label>Location:</Form.Label>
+                            <Form.Label>Локация:</Form.Label>
                             <LocationSelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Asset:</Form.Label>
+                            <Form.Label>Ресурс:</Form.Label>
                             <AssetSelect withEmpty={false}/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>User:</Form.Label>
+                            <Form.Label>Резидент:</Form.Label>
                             <UserSelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Company:</Form.Label>
+                            <Form.Label>Организация:</Form.Label>
                             <CompanySelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Payment plan:</Form.Label>
+                            <Form.Label>Платежный план:</Form.Label>
                             <PaymentPlanSelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Start:</Form.Label>
+                            <Form.Label>Начало:</Form.Label>
                             <InputGroup className="mb-3 start">
                                 <ReactDatePicker
                                     dateFormat="dd.MM.yyyy"
@@ -364,7 +364,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
-                                Length:
+                                Количество:
                             </Form.Label>
                             <Form.Control
                                 type="text"
@@ -374,12 +374,12 @@ export class PaymentEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Unit:</Form.Label>
+                            <Form.Label>Длительность:</Form.Label>
                             <TimeUnitSelect/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
-                                Price:
+                                Цена:
                             </Form.Label>
                             <Form.Control
                                 type="text"
@@ -390,7 +390,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
                         </Form.Group>
                         {this.paymentPlanStore?.selectedPaymentPlan?.assumption?.workTimeRanges?.length > 0 ?
                             <Form.Group>
-                                <Form.Label>Ranges:</Form.Label>
+                                <Form.Label>Стоимость:</Form.Label>
                                 <table className={style.space__table}>
                                     <tbody>
                                     {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
@@ -398,10 +398,10 @@ export class PaymentEditContainer extends React.Component<any, any> {
                                         .map((wtr, index) =>
                                             <tr key={index} className={style.space__row}>
                                                 <td className={style.space__cell}>
-                                                    workday:&nbsp;
+                                                    будни:&nbsp;
                                                     <span>{wtr.start} &ndash; {wtr.end}</span>
                                                 </td>
-                                                <td className={style.space__cell}>{numberFormat(wtr.price)}</td>
+                                                <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
                                             </tr>
                                         )
                                     }
@@ -410,10 +410,10 @@ export class PaymentEditContainer extends React.Component<any, any> {
                                         .map((wtr, index) =>
                                             <tr key={index + 1000} className={style.space__row}>
                                                 <td className={style.space__cell}>
-                                                    weekend:&nbsp;
+                                                    выходные:&nbsp;
                                                     <span>{wtr.start} &ndash; {wtr.end}</span>
                                                 </td>
-                                                <td className={style.space__cell}>{numberFormat(wtr.price)}</td>
+                                                <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
                                             </tr>
                                         )
                                     }
@@ -423,7 +423,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
                             : (<></>)
                         }
                         <Form.Group>
-                            <Form.Label>Total:</Form.Label>
+                            <Form.Label>Всего:</Form.Label>
                             <div>
                                 {this.data.payment.total}
                             </div>
@@ -438,18 +438,20 @@ export class PaymentEditContainer extends React.Component<any, any> {
                             </Alert>
                             }
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="float-right">
                             <Button
+                                className="mr-2"
                                 variant="light"
                                 onClick={this.cancel}
                             >
-                                Cancel
+                                Отмена
                             </Button>
                             <Button
+                                className="mr-2"
                                 variant="primary"
                                 onClick={this.save}
                             >
-                                Save
+                                Сохранить
                                 {this.data.isSaving &&
                                 <Spinner animation="grow" as="span" size="sm" role="status"/>
                                 }
@@ -460,5 +462,4 @@ export class PaymentEditContainer extends React.Component<any, any> {
             </div>
         );
     }
-
 }

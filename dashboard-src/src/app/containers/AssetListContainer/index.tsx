@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {assetsApi} from "app/constants/api";
 import {Asset} from "app/api/api";
+import {MainMenu} from "app/components";
 
 class AssetListData {
     @observable isLoading = true
@@ -91,7 +91,6 @@ export class AssetListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-
                 <h4>Assets ({this.data.assets.length})
                     <Button
                         variant="light"

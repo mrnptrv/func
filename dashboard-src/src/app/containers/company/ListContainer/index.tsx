@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {companyApi} from "app/constants/api";
 import {Company} from "app/api/api";
+import {MainMenu} from "app/components";
 
 class CompanyListData {
     @observable isLoading = true
@@ -79,8 +79,8 @@ export class CompanyListContainer extends React.Component<any, any> {
                 <td>{company.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editCompany(company)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(company)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editCompany(company)}>Редактировать</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(company)}>Удалить</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -88,8 +88,9 @@ export class CompanyListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
+                <h4>
+                    Организации
 
-                <h4>Companies ({this.data.companies.length})
                     <Button
                         variant="light"
                         onClick={this.newCompany}
@@ -98,7 +99,7 @@ export class CompanyListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Название</th>
                         <th/>
                     </tr>
                     </thead>
@@ -113,18 +114,19 @@ export class CompanyListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete Company</Modal.Title>
+                        <Modal.Title>Удалить ораганизацию</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                            Continue deleting the company?
+                            Организация "{this.data?.deletionCompany?.name}" будет удалена.
+                            Продолжить?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
-                        <Button variant="primary" onClick={this.deleteCompany}>Yes</Button>
+                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Нет</Button>
+                        <Button variant="primary" onClick={this.deleteCompany}>Да</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

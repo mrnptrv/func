@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {locationApi} from "app/constants/api";
 import {Location} from "app/api/api";
+import {MainMenu} from "app/components";
 
 class LocationListData {
     @observable isLoading = true
@@ -79,8 +79,8 @@ export class LocationListContainer extends React.Component<any, any> {
                 <td>{location.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editLocation(location)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(location)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editLocation(location)}>Редактировать</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(location)}>Удалить</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -88,8 +88,8 @@ export class LocationListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-
-                <h4>Locations ({this.data.locations.length})
+                <h4>
+                    Локации
                     <Button
                         variant="light"
                         onClick={this.newLocation}
@@ -98,7 +98,7 @@ export class LocationListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Название</th>
                         <th/>
                     </tr>
                     </thead>
@@ -113,18 +113,19 @@ export class LocationListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete Location</Modal.Title>
+                        <Modal.Title>Удаление</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                            Continue deleting the location?
+                            Будет удалена локация "{this.data?.deletionLocation?.name}"
+                            Продолжить?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
-                        <Button variant="primary" onClick={this.deleteLocation}>Yes</Button>
+                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Нет</Button>
+                        <Button variant="primary" onClick={this.deleteLocation}>Да</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

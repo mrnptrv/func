@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as style from "app/containers/style.css";
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {assetsApi} from "app/constants/api";
 import {WorkTimeRange} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
@@ -11,6 +10,7 @@ import {LocationSelect} from "app/components/LocationSelect";
 import {AssetTypeSelect} from "app/components/AssetTypeSelect";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {ASSET_TYPE_STORE} from "app/store/AssetTypeStore";
+import {MainMenu} from "app/components";
 
 
 class AssetCreateData {
@@ -149,50 +149,49 @@ export class AssetCreateContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-
-                <h4>New Asset</h4>
+                <h4>Создание ресурса</h4>
 
                 <Form className={style.editForm}>
                     <Form.Group>
-                        <Form.Label>Location:</Form.Label>
+                        <Form.Label>Локация:</Form.Label>
                         <LocationSelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Type:</Form.Label>
+                        <Form.Label>Тип:</Form.Label>
                         <AssetTypeSelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Name:</Form.Label>
+                        <Form.Label>Название:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Name"
+                            placeholder="Название"
                             value={this.data.asset.name}
                             onChange={(e) => this.data.asset.name = e.target.value}
                         />
                     </Form.Group>
 
                     <Form.Group>
-                        <Form.Label>Description:</Form.Label>
+                        <Form.Label>Описание:</Form.Label>
                         <Form.Control
                             as="textarea"
-                            placeholder="Description"
+                            placeholder="Описание"
                             rows={3}
                             value={this.data.asset.description}
                             onChange={(e) => this.data.asset.description = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Capacity:</Form.Label>
+                        <Form.Label>Вместимость:</Form.Label>
                         <Form.Control
                             type="capacity"
-                            placeholder="Capacity"
+                            placeholder="Вместимость"
                             value={this.data.asset.capacity}
                             onChange={(e) => this.data.asset.capacity = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>
-                            Work Time
+                            Стоимость часа:
                             <Button
                                 variant="light"
                                 onClick={this.addWorkTimeRange}
@@ -202,15 +201,16 @@ export class AssetCreateContainer extends React.Component<any, any> {
                         {this.data.asset.workTimeRanges.map(wtr =>
                             <InputGroup className="mb-3">
                                 <DropdownButton
+                                    className={style.hourType}
                                     as={InputGroup.Prepend}
                                     variant="outline-secondary"
-                                    title={wtr.isWeekend ? "weekend " : "workday "}
+                                    title={wtr.isWeekend ? "выходные " : "рабочие "}
                                 >
                                     <Dropdown.Item onClick={this.setWeekend(wtr, false)}>
-                                        workday
+                                        рабочие
                                     </Dropdown.Item>
                                     <Dropdown.Item onClick={this.setWeekend(wtr, true)}>
-                                        weekend
+                                        выходные
                                     </Dropdown.Item>
                                 </DropdownButton>
                                 <DropdownButton
@@ -254,7 +254,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>
-                            Image URLs
+                            Изображения:
                             <Button
                                 variant="light"
                                 onClick={this.addImageUrl}
@@ -288,26 +288,27 @@ export class AssetCreateContainer extends React.Component<any, any> {
                         </Alert>
                         }
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="float-right">
                         <Button
-                            variant="light"
-                            onClick={this.cancel}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
+                            className="mr-2"
                             variant="primary"
                             onClick={this.save}
                         >
-                            Save
+                            Создать
                             {this.data.isSaving &&
                             <Spinner animation="grow" as="span" size="sm" role="status"/>
                             }
+                        </Button>
+                        <Button
+                            className="mr-2"
+                            variant="light"
+                            onClick={this.cancel}
+                        >
+                            Отмена
                         </Button>
                     </Form.Group>
                 </Form>
             </div>
         );
     }
-
 }

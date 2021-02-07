@@ -43,17 +43,17 @@ export class LoginContainer extends React.Component<any, any> {
     render() {
         return (
             <Modal.Dialog>
-                <Modal.Header>Login</Modal.Header>
+                <Modal.Header>Войти</Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group>
-                            <Form.Control type="text" placeholder="Login"
+                            <Form.Control type="text" placeholder="Логин"
                                           value={this.data.login}
                                           onChange={(e) => this.data.login = e.target.value}
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Control type="password" placeholder="Password"
+                            <Form.Control type="password" placeholder="Пароль"
                                           value={this.data.password}
                                           onChange={(e) => this.data.password = e.target.value}
                             />
@@ -63,14 +63,11 @@ export class LoginContainer extends React.Component<any, any> {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="link" onClick={this.register}>
-                        Register
-                    </Button>
                     <Button variant="primary"
                             onClick={this.login}
                             disabled={this.data.isLoading}
                     >
-                        Login
+                        Войти
                         {
                             this.data.isLoading &&
                             <Spinner as="span"

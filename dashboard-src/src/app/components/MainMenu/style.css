@@ -1,0 +1,21 @@
+.menu{
+    padding: 0;
+    min-width: 1000px;
+}
+.nav{
+    width: 100%;
+    padding: 0;
+}
+.linkF{
+    min-width: 150px;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.link{
+    padding: 0;
+    text-align: center;
+    min-width: 140px;
+    border-left: 2px solid rgba(0,0,0,.1);
+    white-space: nowrap;
+}

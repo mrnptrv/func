@@ -17,8 +17,8 @@ class HasAccessAssumptionStore {
     loadUnits() {
         this.hasAccessAssumptions = [
             {label: "----", id: "NA"},
-            {label: "has access", id: "HAS_ACCESS"},
-            {label: "no access", id: "NO_ACCESS"},
+            {label: "есть доступ", id: "HAS_ACCESS"},
+            {label: "нет доступа", id: "NO_ACCESS"},
         ]
         this.select("NA")
     }

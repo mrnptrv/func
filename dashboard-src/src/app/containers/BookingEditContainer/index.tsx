@@ -3,11 +3,12 @@ import * as style from "../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import ReactDatePicker from "react-datepicker";
-import {MainMenu} from "app/components/MainMenu";
-import {Asset, Booking, BookedAsset} from "app/api/api";
+import {Asset, BookedAsset, Booking} from "app/api/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
 import {assetsApi, bookingApi} from "app/constants";
 import format from "date-fns/format";
+import {getStatusName, ru_RU} from "app/constants/locale_ru";
+import {MainMenu} from "app/components";
 
 
 class BookingEditData {
@@ -295,19 +296,19 @@ export class BookingEditContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Booking</h4>
+                <h4>Бронирование</h4>
                 {this.data.isBookingLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
-                        <Form.Row>
-                            <Form.Group>
-                                <Form.Label>Status</Form.Label>
-                                <Form.Control text readOnly value={this.data.booking.status + " (" + this.data.bookingPrice + "р)"} onChange={(e) => {
-                                }}>
-                                </Form.Control>
-                            </Form.Group>
-                        </Form.Row>
                         <Form.Group>
-                            <Form.Label>Asset</Form.Label>
+                            <Form.Label>Статус:</Form.Label>
+                            <Form.Control text readOnly
+                                          value={getStatusName(this.data.booking.status) + " (" + this.data.bookingPrice + "р)"}
+                                          onChange={(e) => {
+                                          }}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Ресурс:</Form.Label>
                             <Form.Control
                                 as="select"
                                 value={this.data.booking.asset.pubId}
@@ -322,45 +323,44 @@ export class BookingEditContainer extends React.Component<any, any> {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Date</Form.Label>
+                            <Form.Label>Дата:</Form.Label>
                             <ReactDatePicker
+                                locale={ru_RU}
                                 dateFormat="dd.MM.yyyy"
                                 className="top__input top__input--select input input--select"
                                 placeholderText="Дата"
                                 selected={this.data.bookingDate}
                                 onChange={this.setBookingDate}/>
                         </Form.Group>
-                        <Form.Row>
-                            <Form.Group>
-                                <Form.Label>Begin</Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    value={this.data.bookingHour}
-                                    onChange={(e) => this.selectHour(+e.target.value)}
-                                >
-                                    {this.data.workTimeHours.map(wtr =>
-                                        (wtr.booked ?
-                                                <option disabled key={wtr.hour}
-                                                        value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
-                                                :
-                                                <option
-                                                    key={wtr.hour}
-                                                    value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
-                                        )
-                                    )}
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Hours</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    value={this.data.bookingHourAmount}
-                                    onChange={(e) => this.setHourAmount(+e.target.value)}
-                                />
-                            </Form.Group>
-                        </Form.Row>
                         <Form.Group>
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>Время:</Form.Label>
+                            <Form.Control
+                                as="select"
+                                value={this.data.bookingHour}
+                                onChange={(e) => this.selectHour(+e.target.value)}
+                            >
+                                {this.data.workTimeHours.map(wtr =>
+                                    (wtr.booked ?
+                                            <option disabled key={wtr.hour}
+                                                    value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
+                                            :
+                                            <option
+                                                key={wtr.hour}
+                                                value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
+                                    )
+                                )}
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Количество часов:</Form.Label>
+                            <Form.Control
+                                type="number"
+                                value={this.data.bookingHourAmount}
+                                onChange={(e) => this.setHourAmount(+e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>ФИО:</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={this.data.booking.userData.name}
@@ -368,7 +368,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Phone</Form.Label>
+                            <Form.Label>Телефон:</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={this.data.booking.userData.phone}
@@ -376,9 +376,10 @@ export class BookingEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Description</Form.Label>
+                            <Form.Label>Описание:</Form.Label>
                             <Form.Control
-                                type="textarea"
+                                as="textarea"
+                                rows={3}
                                 value={this.data.booking.description}
                                 onChange={(e) => this.setDescription(e.target.value)}
                             />
@@ -393,18 +394,20 @@ export class BookingEditContainer extends React.Component<any, any> {
                             </Alert>
                             }
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="float-right">
                             <Button
+                                className="mr-2"
                                 variant="light"
                                 onClick={this.cancel}
                             >
-                                Cancel
+                                Отменить
                             </Button>
                             <Button
+                                className="mr-2"
                                 variant="primary"
                                 onClick={this.save}
                             >
-                                Save
+                                Сохранить
                                 {this.data.isSaving &&
                                 <Spinner animation="grow" as="span" size="sm" role="status"/>
                                 }

@@ -43,17 +43,17 @@ export class RegisterContainer extends React.Component<any, any> {
     render() {
         return (
             <Modal.Dialog>
-                <Modal.Header>Register</Modal.Header>
+                <Modal.Header>Регистрация</Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group>
-                            <Form.Control type="text" placeholder="Login"
+                            <Form.Control type="text" placeholder="Логин"
                                           value={this.data.login}
                                           onChange={(e) => this.data.login = e.target.value}
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Control type="password" placeholder="Password"
+                            <Form.Control type="password" placeholder="Пароль"
                                           value={this.data.password}
                                           onChange={(e) => this.data.password = e.target.value}
                             />
@@ -69,7 +69,7 @@ export class RegisterContainer extends React.Component<any, any> {
                             onClick={this.register}
                             disabled={this.data.isLoading}
                     >
-                        Register
+                        Зарегистрироваться
                         {
                             this.data.isLoading &&
                             <Spinner as="span"
@@ -84,4 +84,4 @@ export class RegisterContainer extends React.Component<any, any> {
             </Modal.Dialog>
         );
     }
-};
+}

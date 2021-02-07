@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Form, Modal, Spinner, Table} from "react-bootstrap";
 import {assetsApi, bookingApi} from "app/constants/api";
 import {Asset, Booking} from "app/api/api";
 import ReactDatePicker from "react-datepicker";
 import Col from "react-bootstrap/Col";
 import format from "date-fns/format";
+import {getStatusName, ru_RU} from "app/constants/locale_ru";
+import {MainMenu} from "app/components";
 
 class BookingData {
     @observable isLoading = true
@@ -133,7 +134,7 @@ export class BookingContainer extends React.Component<any, any> {
 
     private filterByStatus(status) {
       this.data.statusFilter = status
-      this.load()
+        this.load()
     }
 
     private hideErrorDialog = () => {
@@ -144,6 +145,7 @@ export class BookingContainer extends React.Component<any, any> {
         this.data.isShowErrorModal = true;
     }
 
+
     render() {
         const items = this.data.booking.map((booking) =>
             <tr key={booking.pubId}>
@@ -151,7 +153,7 @@ export class BookingContainer extends React.Component<any, any> {
                 <td className="text-nowrap">{booking.asset.type}</td>
                 <td className="text-nowrap">{booking.userData.name}</td>
                 <td className="text-nowrap">{booking.userData.phone}</td>
-                <td className="text-nowrap">{booking.status}</td>
+                <td className="text-nowrap">{getStatusName(booking.status)}</td>
                 <td className="text-nowrap">{booking.date} {booking.start}-{booking.end}</td>
                 <td className="text-nowrap text-right">{booking.price}р</td>
                 <td>{booking.description}</td>
@@ -160,13 +162,13 @@ export class BookingContainer extends React.Component<any, any> {
                         <Dropdown.Item
                             onClick={this.edit(booking)}
                             >
-                            Edism="2"t
+                            Редактировать
                         </Dropdown.Item>
                         {booking.status !== 'BOOKED' ?
                         <Dropdown.Item
                             onClick={this.approve(booking)}
                         >
-                            Approve
+                            Подтвердить
                         </Dropdown.Item>
                             :<span/>
                         }
@@ -174,7 +176,7 @@ export class BookingContainer extends React.Component<any, any> {
                         <Dropdown.Item
                             onClick={this.decline(booking)}
                         >
-                            Decline
+                            Отменить
                         </Dropdown.Item>
 
                             :<span/>
@@ -187,12 +189,11 @@ export class BookingContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Booking ({this.data.booking.length})
-                </h4>
+                <h4>Бронирование </h4>
                 <Form>
                     <Form.Row className="align-items-center" style={filterRowStyle}>
                         <Col>
-                            <Form.Label>Status:</Form.Label>
+                            <Form.Label className="small">Статус:</Form.Label>
 
                             <Form.Control
                                 as="select"
@@ -204,12 +205,12 @@ export class BookingContainer extends React.Component<any, any> {
                                     return <option
                                     key={s}
                                     value={s}
-                                    >{s}</option>
+                                    >{getStatusName(s)}</option>
                                 })}
                             </Form.Control>
                         </Col>
                         <Col sm={3}>
-                            <Form.Label size="sm">Asset:</Form.Label>
+                            <Form.Label className="small">Переговорка:</Form.Label>
                             <Form.Control
                                 as="select"
                                 value={this.data.assetPubIdFilter}
@@ -226,21 +227,23 @@ export class BookingContainer extends React.Component<any, any> {
                             </Form.Control>
                         </Col>
                         <Col style={dateFilterStyle}>
-                            <Form.Label>From:</Form.Label>
+                            <Form.Label className="small">C:</Form.Label>
                             <ReactDatePicker
+                                locale={ru_RU}
                                 dateFormat="dd.MM.yyyy"
                                 className="top__input top__input--select input input--select"
-                                placeholderText="From"
+                                placeholderText=""
                                 selected={this.data.fromDate}
                                 onChange={this.setFromDate}
                             />
                         </Col>
                         <Col style={dateFilterStyle}>
-                            <Form.Label>To:</Form.Label>
+                            <Form.Label className="small">По:</Form.Label>
                             <ReactDatePicker
+                                locale={ru_RU}
                                 dateFormat="dd.MM.yyyy"
                                 className="top__input top__input--select input input--select"
-                                placeholderText="To"
+                                placeholderText=""
                                 selected={this.data.toDate}
                                 onChange={this.setToDate}
                             />
@@ -252,14 +255,14 @@ export class BookingContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                        <th>Asset</th>
-                        <th>Type</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Price</th>
-                        <th>Description</th>
+                        <th>Ресурс</th>
+                        <th>Тип</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>Статус</th>
+                        <th>Дата</th>
+                        <th>Цена</th>
+                        <th>Описание</th>
                         <th/>
                     </tr>
                     </thead>
@@ -276,7 +279,7 @@ export class BookingContainer extends React.Component<any, any> {
 
                 <Modal show={this.data.isShowErrorModal} onHide={this.hideErrorDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Error</Modal.Title>
+                        <Modal.Title>Ошибка</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -284,7 +287,7 @@ export class BookingContainer extends React.Component<any, any> {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.hideErrorDialog}>Close</Button>
+                        <Button variant="secondary" onClick={this.hideErrorDialog}>Закрыть</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

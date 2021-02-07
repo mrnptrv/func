@@ -2,7 +2,6 @@ import * as React from 'react';
 // import * as style from "./style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {userApi} from "app/constants/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
@@ -12,6 +11,8 @@ import {CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, PAYMENT_PLAN_STORE} from "app/store/
 import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
 import {eventBus, subscribe} from "mobx-event-bus2";
 import {CompanySelect} from "app/components/CompanySelect";
+import * as style from "app/containers/style.css";
+import {MainMenu} from "app/components";
 
 
 class UserCreateData {
@@ -117,65 +118,59 @@ export class UserCreateContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
+                <h4>Новый резидент</h4>
 
-                <h4>New User</h4>
-
-                <Form>
+                <Form className={style.editForm}>
                     <Form.Group>
-                        <Form.Label>Location:</Form.Label>
+                        <Form.Label>Локации:</Form.Label>
                         <LocationSelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>First Name:</Form.Label>
+                        <Form.Label>Имя:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="First Name"
                             value={this.data.firstName}
                             onChange={(e) => this.data.firstName = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Second Name:</Form.Label>
+                        <Form.Label>Фамилия:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Second Name"
                             value={this.data.lastName}
                             onChange={(e) => this.data.lastName = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Third Name:</Form.Label>
+                        <Form.Label>Отчество:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Third Name"
                             value={this.data.thirdName}
                             onChange={(e) => this.data.thirdName = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Email:</Form.Label>
+                        <Form.Label>Почта:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Email"
                             value={this.data.email}
                             onChange={(e) => this.data.email = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Phone:</Form.Label>
+                        <Form.Label>Телефон:</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Phone"
                             value={this.data.phone}
                             onChange={this.setPhone}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Company:</Form.Label>
+                        <Form.Label>Организация:</Form.Label>
                         <CompanySelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Payment plan:</Form.Label>
+                        <Form.Label>Платежный план:</Form.Label>
                         <PaymentPlanSelect/>
                     </Form.Group>
                     <Form.Group>
@@ -188,18 +183,20 @@ export class UserCreateContainer extends React.Component<any, any> {
                         </Alert>
                         }
                     </Form.Group>
-                    <Form.Group>
+                    <Form.Group className="float-right">
                         <Button
+                            className="mr-2"
                             variant="light"
                             onClick={this.cancel}
                         >
-                            Cancel
+                            Отменить
                         </Button>
                         <Button
+                            className="mr-2"
                             variant="primary"
                             onClick={this.save}
                         >
-                            Save
+                            Сохранить
                             {this.data.isSaving &&
                             <Spinner animation="grow" as="span" size="sm" role="status"/>
                             }
@@ -209,5 +206,4 @@ export class UserCreateContainer extends React.Component<any, any> {
             </div>
         );
     }
-
 }

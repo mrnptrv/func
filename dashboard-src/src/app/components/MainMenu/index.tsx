@@ -1,19 +1,20 @@
 import * as React from 'react';
 import {Nav, Navbar} from 'react-bootstrap';
+import * as style from "./style.css"
 
 export class MainMenu extends React.Component<any, any> {
     render() {
         return (
-            <Navbar>
-                <Navbar.Brand><h1>Func Dash</h1></Navbar.Brand>
-                <Nav className="mr-auto">
-                    <Nav.Link href="/dashboard/booking">Booking</Nav.Link>
-                    <Nav.Link href="/dashboard/payment-list">Payments</Nav.Link>
-                    <Nav.Link href="/dashboard/list">Assets</Nav.Link>
-                    <Nav.Link href="/dashboard/location/list">Locations</Nav.Link>
-                    <Nav.Link href="/dashboard/company-list">Companies</Nav.Link>
-                    <Nav.Link href="/dashboard/payment-plan-list">Payment plans</Nav.Link>
-                    <Nav.Link href="/dashboard/user-list">Users</Nav.Link>
+            <Navbar className={style.menu}>
+                <Navbar.Brand><h2>Func Dash</h2></Navbar.Brand>
+                <Nav className={style.nav + " justify-content-end"}>
+                    <Nav.Link className={style.linkF} href="/dashboard/booking">Бронирование</Nav.Link>
+                    <Nav.Link className={style.link} href="/dashboard/payment-list">Платежи</Nav.Link>
+                    <Nav.Link className={style.link} href="/dashboard/list">Ресурсы</Nav.Link>
+                    <Nav.Link className={style.link} href="/dashboard/location/list">Локации</Nav.Link>
+                    <Nav.Link className={style.link} href="/dashboard/company-list">Организации</Nav.Link>
+                    <Nav.Link className={style.link} href="/dashboard/payment-plan-list">Платежные планы</Nav.Link>
+                    <Nav.Link className={style.link} href="/dashboard/user-list">Резиденты</Nav.Link>
                 </Nav>
             </Navbar>
         );

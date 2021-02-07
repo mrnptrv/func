@@ -18,10 +18,10 @@ class TimeUnitStore {
     loadUnits() {
         this.units = [
             {label: "----", id: "NA"},
-            {label: "hour", id: "HOUR"},
-            {label: "day", id: "DAY"},
-            {label: "month", id: "MONTH"},
-            {label: "year", id: "YEAR"}
+            {label: "час", id: "HOUR"},
+            {label: "день", id: "DAY"},
+            {label: "месяц", id: "MONTH"},
+            {label: "год", id: "YEAR"}
         ]
         this.selectUnit("DAY")
     }

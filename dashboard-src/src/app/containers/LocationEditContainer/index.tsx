@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as style from "../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {locationApi} from "app/constants/api";
 import {Location} from "app/api/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
+import {MainMenu} from "app/components";
 
 class LocationEditData {
     @observable isLocationLoading = true
@@ -70,13 +70,13 @@ export class LocationEditContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Location</h4>
+                <h4>Локация</h4>
                 {this.data.isLocationLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
+                            <Form.Label>Название:</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Name"
                                 value={this.data.location.name}
                                 onChange={(e) => this.data.location.name = e.target.value}
                             />
@@ -91,18 +91,20 @@ export class LocationEditContainer extends React.Component<any, any> {
                             </Alert>
                             }
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="float-right">
                             <Button
+                                className="mr-2"
                                 variant="light"
                                 onClick={this.cancel}
                             >
-                                Cancel
+                                Отменить
                             </Button>
                             <Button
+                                className="mr-2"
                                 variant="primary"
                                 onClick={this.save}
                             >
-                                Save
+                                Сохранить
                                 {this.data.isSaving &&
                                 <Spinner animation="grow" as="span" size="sm" role="status"/>
                                 }

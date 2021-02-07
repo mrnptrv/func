@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
-import {MainMenu} from "app/components/MainMenu";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {paymentApi} from "app/constants/api";
 import {Payment} from "app/api/api";
+import {MainMenu} from "app/components";
 
 class PaymentListData {
     @observable isLoading = true
@@ -79,8 +79,8 @@ export class PaymentListContainer extends React.Component<any, any> {
                 <td>{payment.price} - {payment.createdDate}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editPayment(payment)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(payment)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editPayment(payment)}>Редактирование</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(payment)}>Удаление</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -88,8 +88,8 @@ export class PaymentListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-
-                <h4>Payments ({this.data.payments.length})
+                <h4>
+                    Платежи
                     <Button
                         variant="light"
                         onClick={this.newPayment}
@@ -98,7 +98,7 @@ export class PaymentListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Название</th>
                         <th/>
                     </tr>
                     </thead>
@@ -113,18 +113,18 @@ export class PaymentListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete Payment</Modal.Title>
+                        <Modal.Title>Удаление платеж</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                            Continue deleting the payment?
+                            Платеж будет удален. Продолжить?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
-                        <Button variant="primary" onClick={this.deletePayment}>Yes</Button>
+                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Нет</Button>
+                        <Button variant="primary" onClick={this.deletePayment}>Да</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
