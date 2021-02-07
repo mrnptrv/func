@@ -10,6 +10,13 @@ export class PaymentPlanMultiSelect extends React.Component<any, any> {
 
     private defaultOption = [];
 
+
+    constructor(props: any, context: any) {
+        super(props, context);
+        this.store.init()
+        this.store.loadPaymentPlans()
+    }
+
     select(selected) {
         this.store.clear()
         if (selected) {

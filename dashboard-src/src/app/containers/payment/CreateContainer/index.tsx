@@ -307,12 +307,12 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                         <LocationSelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>User:</Form.Label>
-                        <UserSelect/>
+                        <Form.Label>Asset:</Form.Label>
+                        <AssetSelect withEmpty={false}/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Asset:</Form.Label>
-                        <AssetSelect/>
+                        <Form.Label>User:</Form.Label>
+                        <UserSelect/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Company:</Form.Label>

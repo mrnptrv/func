@@ -42,7 +42,7 @@ export class UserEditContainer extends React.Component<any, any> {
                 this.data.user = res.data
 
                 this.locationStore.selectLocation(this.data.user.locationId)
-                this.paymentPlanStore.loadPaymentPlans(true).then(() => {
+                this.paymentPlanStore.loadPaymentPlans().then(() => {
                     this.paymentPlanStore.select(this.data.user.paymentPlanId)
                 })
 

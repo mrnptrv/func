@@ -163,7 +163,7 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Asset:</Form.Label>
-                        <AssetSelect/>
+                        <AssetSelect withEmpty={false}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Company:</Form.Label>

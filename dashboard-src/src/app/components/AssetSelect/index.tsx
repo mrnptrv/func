@@ -3,8 +3,12 @@ import {observer} from "mobx-react";
 import Select from 'react-select'
 import {ASSET_STORE} from "app/store/AssetStore";
 
+interface AssetSelectProps {
+    withEmpty: boolean,
+}
+
 @observer
-export class AssetSelect extends React.Component<any, any> {
+export class AssetSelect extends React.Component<AssetSelectProps, any> {
     private store = ASSET_STORE
     private defaultOption = {label: "----", value: null};
 
@@ -20,7 +24,9 @@ export class AssetSelect extends React.Component<any, any> {
 
     options() {
         let options = this.store.assets.map(l => ({"label": l.name, "value": l.pubId}));
-        options.unshift(this.defaultOption)
+        if (this.props.withEmpty) {
+            options.unshift(this.defaultOption)
+        }
         return options
     }
 

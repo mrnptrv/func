@@ -11,6 +11,7 @@ class PaymentPlanMultiSelectStore {
 
     private loadedLocationId: string = ""
     public exceptPaymentPlanId: string = ""
+    private initiated = false;
 
     constructor() {
         eventBus.register(this)
@@ -18,8 +19,16 @@ class PaymentPlanMultiSelectStore {
 
     @subscribe(CHANGE_LOCATION_TOPIC)
     changeLocationLister() {
-        this.loadPaymentPlans().then(() => {
-        })
+        if(this.initiated) {
+
+            this.loadPaymentPlans().then(() => {
+            })
+        }
+    }
+
+    @action
+    init(){
+        this.initiated = true
     }
 
     @action

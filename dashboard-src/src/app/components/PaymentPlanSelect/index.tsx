@@ -8,9 +8,9 @@ import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
 export class PaymentPlanSelect extends React.Component<any, any> {
     private store = PAYMENT_PLAN_STORE
 
-
     constructor(props: any, context: any) {
         super(props, context);
+        this.store.init()
         this.store.loadPaymentPlans().then(() => {})
     }
 
@@ -23,6 +23,7 @@ export class PaymentPlanSelect extends React.Component<any, any> {
     options() {
         let options = this.store.paymentPlans.map(l => ({"label": l.name, "value": l.pubId}));
         options.unshift(this.defaultOption)
+
         return options
     }
 
