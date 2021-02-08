@@ -41,7 +41,7 @@ const getConfiguration = () => {
         accessToken: getAccessToken(),
         baseOptions: {
             headers: {
-                "Accept-Language": "en_US"
+                "Accept-Language": "ru"
             }
         }
     }
