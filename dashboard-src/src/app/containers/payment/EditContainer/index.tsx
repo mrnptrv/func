@@ -197,7 +197,11 @@ export class PaymentEditContainer extends React.Component<any, any> {
     }
 
     private getStartHour = () => {
-        return (this.data.startHour < 10 ? "0" + this.data.startHour : this.data.startHour) + ":00"
+        if (this.timeUnitStore.selectedId() === 'HOUR') {
+            return (this.data.startHour < 10 ? "0" + this.data.startHour : this.data.startHour) + ":00"
+        }
+
+        return "00:00"
     }
 
     private setStartHour(h) {
@@ -347,19 +351,22 @@ export class PaymentEditContainer extends React.Component<any, any> {
                                     selected={this.data.startDate}
                                     onChange={this.setStartDate}/>
 
-                                <DropdownButton
-                                    variant="outline-secondary"
-                                    title={this.getStartHour()}
-                                >
-                                    {WORK_HOURS.map(h =>
-                                        <Dropdown.Item
-                                            key={h}
-                                            onClick={this.setStartHour(h)}
-                                        >
-                                            {h < 10 ? "0" + h : h}:00
-                                        </Dropdown.Item>
-                                    )}
-                                </DropdownButton>
+                                {this.timeUnitStore.selectedId() === 'HOUR' ?
+                                    <DropdownButton
+                                        variant="outline-secondary"
+                                        title={this.getStartHour()}
+                                    >
+                                        {WORK_HOURS.map(h =>
+                                            <Dropdown.Item
+                                                key={h}
+                                                onClick={this.setStartHour(h)}
+                                            >
+                                                {h < 10 ? "0" + h : h}:00
+                                            </Dropdown.Item>
+                                        )}
+                                    </DropdownButton>
+                                    : <></>
+                                }
                             </InputGroup>
                         </Form.Group>
                         <Form.Group>
