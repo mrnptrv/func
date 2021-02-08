@@ -146,19 +146,19 @@ export class UserEditContainer extends React.Component<any, any> {
                             <LocationSelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Имя:</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={this.data.user.firstName}
-                                onChange={(e) => this.data.user.firstName = e.target.value}
-                            />
-                        </Form.Group>
-                        <Form.Group>
                             <Form.Label>Фамилия:</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={this.data.user.lastName}
                                 onChange={(e) => this.data.user.lastName = e.target.value}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Имя:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={this.data.user.firstName}
+                                onChange={(e) => this.data.user.firstName = e.target.value}
                             />
                         </Form.Group>
                         <Form.Group>

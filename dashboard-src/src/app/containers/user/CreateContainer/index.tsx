@@ -126,19 +126,19 @@ export class UserCreateContainer extends React.Component<any, any> {
                         <LocationSelect/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Имя:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={this.data.firstName}
-                            onChange={(e) => this.data.firstName = e.target.value}
-                        />
-                    </Form.Group>
-                    <Form.Group>
                         <Form.Label>Фамилия:</Form.Label>
                         <Form.Control
                             type="text"
                             value={this.data.lastName}
                             onChange={(e) => this.data.lastName = e.target.value}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Имя:</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={this.data.firstName}
+                            onChange={(e) => this.data.firstName = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>
