@@ -5,6 +5,7 @@ import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-boo
 import {paymentApi} from "app/constants/api";
 import {Payment} from "app/api/api";
 import {MainMenu} from "app/components";
+import format from "date-fns/format";
 
 class PaymentListData {
     @observable isLoading = true
@@ -73,10 +74,26 @@ export class PaymentListContainer extends React.Component<any, any> {
         this.props.history.push("/dashboard/create-payment")
     }
 
+    formatDate(d: string) {
+        if (d) {
+            let date = new Date(d)
+            if (format(date, "HH:mm") === "00:00") {
+                return format(date, "yyyy-MM-dd")
+            }
+            return format(date, "yyyy-MM-dd HH:mm")
+        }
+        return ""
+    }
+
     render() {
         const items = this.data.payments.map((payment) =>
             <tr key={payment.pubId}>
-                <td>{payment.price} - {payment.createdDate}</td>
+                <td>{payment.companyName} {payment.userName}</td>
+                <td>{payment.assetName}</td>
+                <td>{payment.paymentPlanName}</td>
+                <td className="text-nowrap text-right">{payment.total}</td>
+                <td className="text-nowrap"> {this.formatDate(payment.start)} </td>
+                <td className="text-nowrap">{this.formatDate(payment.end)}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.editPayment(payment)}>Редактирование</Dropdown.Item>
@@ -98,7 +115,12 @@ export class PaymentListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                        <th>Название</th>
+                        <th>Организация/ФИО</th>
+                        <th>Ресурс</th>
+                        <th>Платеж</th>
+                        <th>Сумма</th>
+                        <th>От</th>
+                        <th>До</th>
                         <th/>
                     </tr>
                     </thead>

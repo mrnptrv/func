@@ -571,7 +571,7 @@ export interface CreateUserRequest {
      * @type {string}
      * @memberof CreateUserRequest
      */
-    email: string;
+    email?: string;
     /**
      * 
      * @type {string}
@@ -607,7 +607,7 @@ export interface CreateUserRequest {
      * @type {string}
      * @memberof CreateUserRequest
      */
-    thirdName: string;
+    thirdName?: string;
 }
 /**
  * 
@@ -841,7 +841,19 @@ export interface Payment {
      * @type {string}
      * @memberof Payment
      */
+    assetName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Payment
+     */
     companyId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Payment
+     */
+    companyName?: string;
     /**
      * 
      * @type {UserLite}
@@ -884,6 +896,12 @@ export interface Payment {
      * @memberof Payment
      */
     paymentPlanId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Payment
+     */
+    paymentPlanName?: string;
     /**
      * 
      * @type {string}
@@ -932,6 +950,12 @@ export interface Payment {
      * @memberof Payment
      */
     userId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Payment
+     */
+    userName?: string;
 }
 /**
  * 
@@ -1466,7 +1490,7 @@ export interface UpdateUserRequest {
      * @type {string}
      * @memberof UpdateUserRequest
      */
-    email: string;
+    email?: string;
     /**
      * 
      * @type {string}
@@ -1508,7 +1532,7 @@ export interface UpdateUserRequest {
      * @type {string}
      * @memberof UpdateUserRequest
      */
-    thirdName: string;
+    thirdName?: string;
 }
 /**
  * 
