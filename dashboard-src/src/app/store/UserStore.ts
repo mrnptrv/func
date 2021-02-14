@@ -34,7 +34,7 @@ class UserStore {
             locationPubId: this.locationId,
         }).then(r => {
             this.users = r.data
-            this.select(this.selectedUserId)
+            this.select(this.selectedUserId, false)
         })
 
     }
@@ -44,7 +44,7 @@ class UserStore {
     }
 
     @action
-    select(pubId) {
+    select(pubId, riseEvent = true) {
         let selected = this.users.find(l => l.pubId === pubId)
         if (selected) {
             this.selectedUser = selected
@@ -53,7 +53,9 @@ class UserStore {
         }
         this.selectedUserId = pubId
 
-        eventBus.post(CHANGE_SELECTED_USER_TOPIC, pubId)
+        if (riseEvent) {
+            eventBus.post(CHANGE_SELECTED_USER_TOPIC, pubId)
+        }
     }
 }
 

@@ -19,11 +19,13 @@ class CompanyStore {
     }
 
     @action
-    select(pubId) {
+    select(pubId, riseEvent = true) {
         this.selectedId = pubId
         this.selectedCompany = this.companies.find(l => l.pubId === pubId)
 
-        eventBus.post(CHANGE_SELECTED_COMPANY_TOPIC, pubId)
+        if (riseEvent) {
+            eventBus.post(CHANGE_SELECTED_COMPANY_TOPIC, pubId)
+        }
     }
 
     selectedCompanyPubId() {

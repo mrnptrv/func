@@ -501,6 +501,12 @@ export interface CreatePaymentRequest {
     details?: string;
     /**
      * 
+     * @type {string}
+     * @memberof CreatePaymentRequest
+     */
+    end: string;
+    /**
+     * 
      * @type {number}
      * @memberof CreatePaymentRequest
      */
@@ -1357,6 +1363,12 @@ export interface UpdatePaymentRequest {
      * @memberof UpdatePaymentRequest
      */
     details?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentRequest
+     */
+    end: string;
     /**
      * 
      * @type {number}

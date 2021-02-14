@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {paymentApi, paymentPlanApi, userApi} from "app/constants/api";
 import {CreatePaymentRequest} from "app/api/api";
-import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
+import {Alert, Button, Col, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
 import {eventBus, subscribe} from "mobx-event-bus2";
@@ -13,6 +13,12 @@ import {TimeUnitSelect} from "app/components/TimeUnitSelect";
 import ReactDatePicker from "react-datepicker";
 import {WORK_HOURS} from "app/constants/constants";
 import format from "date-fns/format";
+import addDays from "date-fns/addDays";
+import addMonths from "date-fns/addMonths";
+import addYears from "date-fns/addYears";
+import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
+import differenceInCalendarMonths from "date-fns/differenceInCalendarMonths";
+import differenceInCalendarYears from "date-fns/differenceInCalendarYears";
 import formatISO from "date-fns/formatISO";
 import {UserSelect} from "app/components/UserSelect";
 import {CHANGE_SELECTED_USER_TOPIC, USER_STORE} from "app/store/UserStore";
@@ -28,7 +34,9 @@ import {MainMenu} from "app/components";
 class PaymentCreateData {
     @observable error = ""
     @observable startDate = new Date()
+    @observable endDate = new Date()
     @observable startHour = 8
+    @observable endHour = 24
     @observable payment: CreatePaymentRequest = {
         assetId: "",
         companyId: "",
@@ -38,6 +46,7 @@ class PaymentCreateData {
         paymentPlanId: PAYMENT_PLAN_STORE.selectedPaymentId,
         price: "100.00",
         start: "",
+        end: "",
         total: "",
         unit: "HOUR",
         userId: ""
@@ -135,7 +144,8 @@ export class PaymentCreateContainer extends React.Component<any, any> {
             unit: this.timeUnitStore.selectedId(),
             length: this.data.payment.length,
             total: this.data.payment.total,
-            start: formatISO(new Date(format(this.data.startDate, "yyyy-MM-dd") + " " + this.getStartHour())),
+            start: this.getStartDateRequest(),
+            end: this.getEndDateRequest(),
             userId: this.userStore.selectedId(),
             assetId: this.assetStore.selectedAssetPubId(),
             companyId: this.companyStore.selectedCompanyPubId(),
@@ -157,14 +167,44 @@ export class PaymentCreateContainer extends React.Component<any, any> {
         })
     }
 
+    private getStartDateRequest() {
+        return formatISO(new Date(format(this.data.startDate, "yyyy-MM-dd") + " " + this.getStartHour()));
+    }
+
+    private getEndDateRequest() {
+        if (this.timeUnitStore.selectedId() === "HOUR") {
+            return formatISO(new Date(format(this.data.startDate, "yyyy-MM-dd") + " " + this.getEndHour()));
+        } else {
+            return formatISO(new Date(format(this.data.endDate, "yyyy-MM-dd") + " " + this.getEndHour()));
+        }
+    }
+
     private setLength = (e) => {
         let newValue = e.target.value
         newValue = newValue.replace(new RegExp("[^0-9\.]", "g"), "")
 
         this.data.payment.length = newValue ? parseInt(newValue) : 0
 
+        this.calcEndDate()
         this.calcTotal()
     }
+
+    private calcEndDate() {
+        if (this.timeUnitStore.selectedId() === "HOUR") {
+            this.data.endHour = this.data.startHour + this.data.payment.length
+            if (this.data.endHour > 24) {
+                this.data.endHour = 24;
+                this.data.payment.length = 24 - this.data.startHour
+            }
+        } else if (this.timeUnitStore.selectedId() === "DAY") {
+            this.data.endDate = addDays(this.data.startDate, this.data.payment.length)
+        } else if (this.timeUnitStore.selectedId() === "MONTH") {
+            this.data.endDate = addMonths(this.data.startDate, this.data.payment.length)
+        } else if (this.timeUnitStore.selectedId() === "YEAR") {
+            this.data.endDate = addYears(this.data.startDate, this.data.payment.length)
+        }
+    }
+
 
     private setPrice = (e) => {
         let newValue = e.target.value
@@ -200,6 +240,14 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     private setStartDate = (d: Date) => {
         this.data.startDate = d;
+        this.calcLength()
+    }
+
+    private setEndDate = (d: Date) => {
+        this.data.endDate = d;
+        this.timeUnitStore.selectUnit("DAY")
+        this.calcLength()
+        this.calcTotal()
     }
 
     private getStartHour = () => {
@@ -210,10 +258,47 @@ export class PaymentCreateContainer extends React.Component<any, any> {
         return "00:00"
     }
 
+    private getEndHour = () => {
+        if (this.timeUnitStore.selectedId() === 'HOUR') {
+            return (this.data.endHour < 10 ? "0" + this.data.endHour : this.data.endHour) + ":00"
+        }
+
+        return "00:00"
+    }
+
     private setStartHour(h) {
         return () => {
             this.data.startHour = h
+            this.calcLength()
             this.calcTotal()
+        }
+    }
+
+    private setEndHour(h) {
+        return () => {
+            this.data.endHour = h
+            this.calcLength();
+            this.calcTotal()
+        }
+    }
+
+    private calcLength() {
+        if (this.timeUnitStore.selectedId() === "HOUR") {
+            this.data.payment.length = this.data.endHour - this.data.startHour
+        }
+        if (this.timeUnitStore.selectedId() === "DAY") {
+            this.data.payment.length = differenceInCalendarDays(this.data.endDate, this.data.startDate)
+        }
+        if (this.timeUnitStore.selectedId() === "MONTH") {
+            this.data.payment.length = differenceInCalendarMonths(this.data.endDate, this.data.startDate)
+        }
+        if (this.timeUnitStore.selectedId() === "YEAR") {
+            this.data.payment.length = differenceInCalendarYears(this.data.endDate, this.data.startDate)
+        }
+
+        if (this.data.payment.length < 1) {
+            this.data.payment.length = 1
+            this.calcEndDate();
         }
     }
 
@@ -230,7 +315,9 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     @subscribe(TIME_UNIT_CHANGE_TOPIC)
     onChangeSelectedTimeUnitListener() {
+        this.calcLength()
         this.cleanPaymentPlanIfNotEqual()
+        this.calcTotal()
     }
 
     @subscribe(CHANGE_SELECTED_ASSET_TOPIC)
@@ -305,7 +392,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
             <div className="payment-form">
                 <MainMenu/>
                 <h4>Новый платеж</h4>
-                <Form className={style.editForm}>
+                <Form className={style.paymentForm}>
                     <Form.Group>
                         <Form.Label>Локация:</Form.Label>
                         <LocationSelect/>
@@ -326,49 +413,92 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                         <Form.Label>Платежный план:</Form.Label>
                         <PaymentPlanSelect/>
                     </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Начало:</Form.Label>
-                        <InputGroup className="mb-3 start">
-                            <ReactDatePicker
-                                dateFormat="dd.MM.yyyy"
-                                style={style.paymentDataPicker}
-                                className="top__input top__input--select input input--select"
-                                placeholderText=""
-                                selected={this.data.startDate}
-                                onChange={this.setStartDate}/>
-                            {this.timeUnitStore.selectedId() === 'HOUR' ?
-                                <DropdownButton
-                                    variant="outline-secondary"
-                                    title={this.getStartHour()}
-                                >
-                                    {WORK_HOURS.map(h =>
-                                        <Dropdown.Item
-                                            key={h}
-                                            onClick={this.setStartHour(h)}
+                    <Form.Row>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Доступ от:</Form.Label>
+                                <InputGroup className="mb-3 start">
+                                    <ReactDatePicker
+                                        dateFormat="dd.MM.yyyy"
+                                        style={style.paymentDataPicker}
+                                        className="top__input top__input--select input input--select"
+                                        placeholderText=""
+                                        selected={this.data.startDate}
+                                        onChange={this.setStartDate}/>
+                                    {this.timeUnitStore.selectedId() === 'HOUR' ?
+                                        <DropdownButton
+                                            variant="outline-secondary"
+                                            title={this.getStartHour()}
                                         >
-                                            {h < 10 ? "0" + h : h}:00
-                                        </Dropdown.Item>
-                                    )}
-                                </DropdownButton>
-                                : <></>
-                            }
-                        </InputGroup>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>
-                            Количество:
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="1"
-                            value={this.data.payment.length}
-                            onChange={this.setLength}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Длительность:</Form.Label>
-                        <TimeUnitSelect/>
-                    </Form.Group>
+                                            {WORK_HOURS.map(h =>
+                                                <Dropdown.Item
+                                                    key={h}
+                                                    onClick={this.setStartHour(h)}
+                                                >
+                                                    {h < 10 ? "0" + h : h}:00
+                                                </Dropdown.Item>
+                                            )}
+                                        </DropdownButton>
+                                        : <></>
+                                    }
+                                </InputGroup>
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>До:</Form.Label>
+                                <InputGroup className="mb-3 start">
+                                    {this.timeUnitStore.selectedId() !== 'HOUR' ?
+                                        <ReactDatePicker
+                                            dateFormat="dd.MM.yyyy"
+                                            style={style.paymentDataPicker}
+                                            className="top__input top__input--select input input--select"
+                                            placeholderText=""
+                                            selected={this.data.endDate}
+                                            onChange={this.setEndDate}/>
+                                        : <></>}
+                                    {this.timeUnitStore.selectedId() === 'HOUR' ?
+                                        <DropdownButton
+                                            variant="outline-secondary"
+                                            title={this.getEndHour()}
+                                        >
+                                            {WORK_HOURS.map(h =>
+                                                <Dropdown.Item
+                                                    key={h}
+                                                    onClick={this.setEndHour(h)}
+                                                >
+                                                    {h < 10 ? "0" + h : h}:00
+                                                </Dropdown.Item>
+                                            )}
+                                        </DropdownButton>
+                                        : <></>
+                                    }
+                                </InputGroup>
+                            </Form.Group>
+                        </Col>
+                    </Form.Row>
+                    <Form.Row>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>
+                                    Количество:
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="1"
+                                    value={this.data.payment.length}
+                                    onChange={this.setLength}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Длительность:</Form.Label>
+                                <TimeUnitSelect/>
+                            </Form.Group>
+                        </Col>
+                    </Form.Row>
+
                     <Form.Group>
                         <Form.Label>
                             Цена:

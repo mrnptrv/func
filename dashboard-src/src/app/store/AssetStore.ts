@@ -38,7 +38,7 @@ class AssetStore {
                     this.selectedAsset = null
                     this.selectedAssetId = null
                 }
-                this.selectAsset(this.selectedAssetId)
+                this.selectAsset(this.selectedAssetId, false)
             })
         }
     }
@@ -49,10 +49,12 @@ class AssetStore {
     }
 
     @action
-    selectAsset(pubId) {
+    selectAsset(pubId, riseEvent = true) {
         this.selectedAsset = this.assets.find(l => l.pubId === pubId)
         this.selectedAssetId = pubId
-        eventBus.post(CHANGE_SELECTED_ASSET_TOPIC, pubId)
+        if(riseEvent){
+            eventBus.post(CHANGE_SELECTED_ASSET_TOPIC, pubId)
+        }
     }
 }
 

@@ -1,6 +1,9 @@
 .editForm {
     width: 400px;
 }
+.paymentForm {
+    width: 600px;
+}
 
 .start.payment-data-picker {
     width: 200px;
