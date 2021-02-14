@@ -1,9 +1,8 @@
 import * as React from 'react';
-// import * as style from "./style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {userApi} from "app/constants/api";
-import {Alert, Button, Form, Spinner} from "react-bootstrap";
+import {Alert, Button, Col, Form, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
 import {CHANGE_SELECTED_COMPANY_TOPIC, COMPANY_STORE} from "app/store/CompanyStore";
@@ -120,51 +119,65 @@ export class UserCreateContainer extends React.Component<any, any> {
                 <MainMenu/>
                 <h4>Новый резидент</h4>
 
-                <Form className={style.editForm}>
+                <Form className={style.userForm}>
                     <Form.Group>
                         <Form.Label>Локации:</Form.Label>
                         <LocationSelect/>
                     </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Фамилия:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={this.data.lastName}
-                            onChange={(e) => this.data.lastName = e.target.value}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Имя:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={this.data.firstName}
-                            onChange={(e) => this.data.firstName = e.target.value}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Отчество:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={this.data.thirdName}
-                            onChange={(e) => this.data.thirdName = e.target.value}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Почта:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={this.data.email}
-                            onChange={(e) => this.data.email = e.target.value}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Телефон:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={this.data.phone}
-                            onChange={this.setPhone}
-                        />
-                    </Form.Group>
+                    <Form.Row>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Фамилия:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.data.lastName}
+                                    onChange={(e) => this.data.lastName = e.target.value}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Имя:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.data.firstName}
+                                    onChange={(e) => this.data.firstName = e.target.value}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Отчество:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.data.thirdName}
+                                    onChange={(e) => this.data.thirdName = e.target.value}
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Form.Row>
+                    <Form.Row>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Почта:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.data.email}
+                                    onChange={(e) => this.data.email = e.target.value}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>Телефон:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={this.data.phone}
+                                    onChange={this.setPhone}
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Form.Row>
                     <Form.Group>
                         <Form.Label>Организация:</Form.Label>
                         <CompanySelect/>
