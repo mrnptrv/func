@@ -59,18 +59,24 @@ export class UserListContainer extends React.Component<any, any> {
         }
     }
 
-    hideDeletionDialog = () => {
+    private hideDeletionDialog = () => {
         this.data.isShowDeletionDialog = false
         this.data.deletionUser = null;
     }
 
-    editUser = (user) => {
+    private editUser = (user) => {
         return () => {
             this.props.history.push("/dashboard/edit-user/" + user.pubId)
         }
     }
 
-    newUser = () => {
+    private createPayment = (user) => {
+        return () => {
+            this.props.history.push("/dashboard/create-payment/", {userId: user.pubId})
+        }
+    }
+
+    private newUser = () => {
         this.props.history.push("/dashboard/create-user")
     }
 
@@ -84,6 +90,7 @@ export class UserListContainer extends React.Component<any, any> {
                 <td className="text-nowrap">{formatDate(user.currentAccessTo)}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
+                        <Dropdown.Item onClick={this.createPayment(user)}>Оплатить</Dropdown.Item>
                         <Dropdown.Item onClick={this.editUser(user)}>Редактировать</Dropdown.Item>
                         <Dropdown.Item onClick={this.openDeletionDialog(user)}>Удалить</Dropdown.Item>
                     </DropdownButton>

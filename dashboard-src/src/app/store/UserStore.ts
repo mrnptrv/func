@@ -29,7 +29,6 @@ class UserStore {
     @action
     loadUsers(): Promise<void> {
         this.locationId = LOCATION_STORE.selectedLocationPubId();
-
         return userApi().getUserListUsingPOST({
             locationPubId: this.locationId,
         }).then(r => {

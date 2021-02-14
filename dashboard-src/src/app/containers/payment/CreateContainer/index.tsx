@@ -68,6 +68,18 @@ export class PaymentCreateContainer extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
 
+        let userId = this.props.location?.state?.userId
+        let companyId = this.props.location?.state?.companyId
+
+
+        if (userId) {
+            this.userStore.select(userId)
+            this.selectUser(userId)
+        } else if (companyId) {
+            this.companyStore.select(companyId)
+            this.selectCompany(companyId)
+        }
+
         eventBus.register(this)
     }
 
@@ -76,7 +88,16 @@ export class PaymentCreateContainer extends React.Component<any, any> {
     }
 
     cancel = () => {
-        this.props.history.push("/dashboard/payment-list")
+        let userId = this.props.location?.state?.userId
+        let companyId = this.props.location?.state?.companyId
+
+        if (userId) {
+            this.props.history.push("/dashboard/user-list")
+        } else if (companyId) {
+            this.props.history.push("/dashboard/company-list")
+        } else {
+            this.props.history.push("/dashboard/payment-list")
+        }
     }
 
     private getHour = (s) => {
@@ -347,12 +368,16 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     @subscribe(CHANGE_SELECTED_COMPANY_TOPIC)
     onChangeSelectedCompanyListener() {
-        let selectedCompany = this.companyStore.selectedCompany;
-        if (selectedCompany) {
+        let companyId = this.companyStore.selectedCompany?.pubId;
+        this.selectCompany(companyId);
+    }
+
+    private selectCompany(companyId: string) {
+        if (companyId) {
             this.userStore.select(null)
 
             paymentPlanApi().getPaymentPlanListUsingPOST({
-                companyId: selectedCompany.pubId,
+                companyId: companyId,
                 locationPubId: this.locationStore.selectedLocationId
             }).then((r) => {
                 if (r.data.length && r.data.length > 0) {
@@ -362,7 +387,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
                     if (selectedPaymentPlan) {
                         if (selectedPaymentPlan.companyPubId
-                            && selectedPaymentPlan.companyPubId !== selectedCompany.pubId
+                            && selectedPaymentPlan.companyPubId !== companyId
                         ) {
                             this.paymentPlanStore.select(null)
                         }
@@ -374,12 +399,14 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     @subscribe(CHANGE_SELECTED_USER_TOPIC)
     onChangeSelectedUserListener() {
-        let selectedUser = this.userStore.selectedUser;
+        let userId = this.userStore.selectedUser?.pubId;
+        this.selectUser(userId);
+    }
 
-        if (selectedUser) {
+    private selectUser(userId: string) {
+        if (userId) {
             this.companyStore.select(null)
-
-            userApi().getUserUsingGET(selectedUser.pubId).then((r) => {
+            userApi().getUserUsingGET(userId).then((r) => {
                 if (r.data.paymentPlanId) {
                     this.paymentPlanStore.select(r.data.paymentPlanId)
                 }

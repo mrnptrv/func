@@ -69,6 +69,12 @@ export class CompanyListContainer extends React.Component<any, any> {
         }
     }
 
+    private createPayment = (company) => {
+        return () => {
+            this.props.history.push("/dashboard/create-payment/", {companyId: company.pubId})
+        }
+    }
+
     newCompany = () => {
         this.props.history.push("/dashboard/create-company")
     }
@@ -79,6 +85,7 @@ export class CompanyListContainer extends React.Component<any, any> {
                 <td>{company.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
+                        <Dropdown.Item onClick={this.createPayment(company)}>Оплатить</Dropdown.Item>
                         <Dropdown.Item onClick={this.editCompany(company)}>Редактировать</Dropdown.Item>
                         <Dropdown.Item onClick={this.openDeletionDialog(company)}>Удалить</Dropdown.Item>
                     </DropdownButton>

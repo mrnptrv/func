@@ -31,7 +31,7 @@ export class PaymentListContainer extends React.Component<any, any> {
     private data = new PaymentListData()
 
     constructor(props: any, context: any) {
-        super(props, context);
+        super(props, context)
 
         this.data.isLoading = true
         paymentApi().getPaymentListUsingPOST({}).then(
