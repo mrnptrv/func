@@ -2,7 +2,12 @@
     width: 400px;
 }
 .paymentForm {
-    width: 600px;
+    width: 700px;
+    min-width: 700px;
+    padding-left: 0;
+}
+.paymentHeader {
+    padding-left: 0;
 }
 
 .userForm {

@@ -3,8 +3,20 @@ import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {paymentApi, paymentPlanApi, userApi} from "app/constants/api";
-import {CreatePaymentRequest} from "app/api/api";
-import {Alert, Button, Col, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
+import {CreatePaymentRequest, Payment} from "app/api/api";
+import {
+    Alert,
+    Button,
+    Col,
+    Container,
+    Dropdown,
+    DropdownButton,
+    Form,
+    InputGroup,
+    Row,
+    Spinner,
+    Table
+} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
 import {eventBus, subscribe} from "mobx-event-bus2";
@@ -30,6 +42,7 @@ import {CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, PAYMENT_PLAN_STORE} from "app/store/
 import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
 import {numberFormat} from "../../../../../../booking-src/src/app/constants/numberFormat";
 import {MainMenu} from "app/components";
+import {formatDate} from "app/constants/utils";
 
 class PaymentCreateData {
     @observable error = ""
@@ -53,6 +66,8 @@ class PaymentCreateData {
     }
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
+    @observable lastPayments: Array<Payment> = new Array<Payment>()
+    @observable lastPaymentsLoading = false
 }
 
 @observer
@@ -393,7 +408,17 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                         }
                     }
                 }
+
+                this.data.lastPaymentsLoading = true
+                paymentApi().getPaymentListUsingPOST({
+                    companyId: companyId
+                }).then((r) => {
+                    this.data.lastPaymentsLoading = false
+                    this.data.lastPayments = r.data
+                })
             })
+        }else{
+            this.data.lastPayments = []
         }
     }
 
@@ -411,202 +436,277 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                     this.paymentPlanStore.select(r.data.paymentPlanId)
                 }
             })
+
+            this.data.lastPaymentsLoading = true
+            paymentApi().getPaymentListUsingPOST({
+                userId: userId
+            }).then((r) => {
+                this.data.lastPaymentsLoading = false
+                this.data.lastPayments = r.data
+            })
+        }
+    }
+
+    private copyPayment(payment: Payment) {
+        return () => {
+            this.timeUnitStore.selectUnit(payment.unit)
+            this.paymentPlanStore.select(payment.paymentPlanId)
+            this.data.payment.price = payment.price
+            this.data.payment.length = payment.length
+            this.locationStore.selectLocation(payment.locationId)
+            this.timeUnitStore.selectUnit(payment.unit)
+            this.assetStore.selectAsset(payment.assetId, false)
+            this.userStore.select(payment.userId, false)
+            this.companyStore.select(payment.companyId, false)
+
+            this.calcEndDate()
+            this.calcTotal()
         }
     }
 
     render() {
+        const lastPayments = this.data.lastPayments.map((payment) =>
+            <tr key={payment.pubId}>
+                <td>{payment.assetName}</td>
+                <td>{payment.paymentPlanName}</td>
+                <td className="text-nowrap text-right">{payment.total}</td>
+                <td className="text-nowrap"> {formatDate(payment.start)} </td>
+                <td className="text-nowrap">{formatDate(payment.end)}</td>
+                <td className="text-right">
+                    <Button variant="light"
+                            onClick={this.copyPayment(payment)}
+                    >Копировать</Button>
+                </td>
+            </tr>
+        );
         return (
             <div className="payment-form">
-                <MainMenu/>
-                <h4>Новый платеж</h4>
-                <Form className={style.paymentForm}>
-                    <Form.Group>
-                        <Form.Label>Локация:</Form.Label>
-                        <LocationSelect/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Ресурс:</Form.Label>
-                        <AssetSelect withEmpty={false}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Резидент:</Form.Label>
-                        <UserSelect/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Организация:</Form.Label>
-                        <CompanySelect/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Платежный план:</Form.Label>
-                        <PaymentPlanSelect/>
-                    </Form.Group>
-                    <Form.Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Доступ от:</Form.Label>
-                                <InputGroup className="mb-3 start">
-                                    <ReactDatePicker
-                                        dateFormat="dd.MM.yyyy"
-                                        style={style.paymentDataPicker}
-                                        className="top__input top__input--select input input--select"
-                                        placeholderText=""
-                                        selected={this.data.startDate}
-                                        onChange={this.setStartDate}/>
-                                    {this.timeUnitStore.selectedId() === 'HOUR' ?
-                                        <DropdownButton
-                                            variant="outline-secondary"
-                                            title={this.getStartHour()}
-                                        >
-                                            {WORK_HOURS.map(h =>
-                                                <Dropdown.Item
-                                                    key={h}
-                                                    onClick={this.setStartHour(h)}
-                                                >
-                                                    {h < 10 ? "0" + h : h}:00
-                                                </Dropdown.Item>
-                                            )}
-                                        </DropdownButton>
-                                        : <></>
-                                    }
-                                </InputGroup>
-                            </Form.Group>
+                <Container>
+                    <Row>
+                        <Col className={style.paymentHeader}>
+                            <MainMenu/>
+                            <h4>Новый платеж</h4>
                         </Col>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>До:</Form.Label>
-                                <InputGroup className="mb-3 start">
-                                    {this.timeUnitStore.selectedId() !== 'HOUR' ?
-                                        <ReactDatePicker
-                                            dateFormat="dd.MM.yyyy"
-                                            style={style.paymentDataPicker}
-                                            className="top__input top__input--select input input--select"
-                                            placeholderText=""
-                                            selected={this.data.endDate}
-                                            onChange={this.setEndDate}/>
-                                        : <></>}
-                                    {this.timeUnitStore.selectedId() === 'HOUR' ?
-                                        <DropdownButton
-                                            variant="outline-secondary"
-                                            title={this.getEndHour()}
-                                        >
-                                            {WORK_HOURS.map(h =>
-                                                <Dropdown.Item
-                                                    key={h}
-                                                    onClick={this.setEndHour(h)}
-                                                >
-                                                    {h < 10 ? "0" + h : h}:00
-                                                </Dropdown.Item>
-                                            )}
-                                        </DropdownButton>
-                                        : <></>
-                                    }
-                                </InputGroup>
-                            </Form.Group>
-                        </Col>
-                    </Form.Row>
-                    <Form.Row>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>
-                                    Количество:
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="1"
-                                    value={this.data.payment.length}
-                                    onChange={this.setLength}
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group>
-                                <Form.Label>Длительность:</Form.Label>
-                                <TimeUnitSelect/>
-                            </Form.Group>
-                        </Col>
-                    </Form.Row>
+                    </Row>
+                    <Row>
+                        <Col className={style.paymentForm}>
+                            <Form>
+                                <Form.Group>
+                                    <Form.Label>Локация:</Form.Label>
+                                    <LocationSelect/>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Ресурс:</Form.Label>
+                                    <AssetSelect withEmpty={false}/>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Резидент:</Form.Label>
+                                    <UserSelect/>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Организация:</Form.Label>
+                                    <CompanySelect/>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Платежный план:</Form.Label>
+                                    <PaymentPlanSelect/>
+                                </Form.Group>
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label>Доступ от:</Form.Label>
+                                            <InputGroup className="mb-3 start">
+                                                <ReactDatePicker
+                                                    dateFormat="dd.MM.yyyy"
+                                                    style={style.paymentDataPicker}
+                                                    className="top__input top__input--select input input--select"
+                                                    placeholderText=""
+                                                    selected={this.data.startDate}
+                                                    onChange={this.setStartDate}/>
+                                                {this.timeUnitStore.selectedId() === 'HOUR' ?
+                                                    <DropdownButton
+                                                        variant="outline-secondary"
+                                                        title={this.getStartHour()}
+                                                    >
+                                                        {WORK_HOURS.map(h =>
+                                                            <Dropdown.Item
+                                                                key={h}
+                                                                onClick={this.setStartHour(h)}
+                                                            >
+                                                                {h < 10 ? "0" + h : h}:00
+                                                            </Dropdown.Item>
+                                                        )}
+                                                    </DropdownButton>
+                                                    : <></>
+                                                }
+                                            </InputGroup>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label>До:</Form.Label>
+                                            <InputGroup className="mb-3 start">
+                                                {this.timeUnitStore.selectedId() !== 'HOUR' ?
+                                                    <ReactDatePicker
+                                                        dateFormat="dd.MM.yyyy"
+                                                        style={style.paymentDataPicker}
+                                                        className="top__input top__input--select input input--select"
+                                                        placeholderText=""
+                                                        selected={this.data.endDate}
+                                                        onChange={this.setEndDate}/>
+                                                    : <></>}
+                                                {this.timeUnitStore.selectedId() === 'HOUR' ?
+                                                    <DropdownButton
+                                                        variant="outline-secondary"
+                                                        title={this.getEndHour()}
+                                                    >
+                                                        {WORK_HOURS.map(h =>
+                                                            <Dropdown.Item
+                                                                key={h}
+                                                                onClick={this.setEndHour(h)}
+                                                            >
+                                                                {h < 10 ? "0" + h : h}:00
+                                                            </Dropdown.Item>
+                                                        )}
+                                                    </DropdownButton>
+                                                    : <></>
+                                                }
+                                            </InputGroup>
+                                        </Form.Group>
+                                    </Col>
+                                </Form.Row>
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label>
+                                                Количество:
+                                            </Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="1"
+                                                value={this.data.payment.length}
+                                                onChange={this.setLength}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label>Длительность:</Form.Label>
+                                            <TimeUnitSelect/>
+                                        </Form.Group>
+                                    </Col>
+                                </Form.Row>
 
-                    <Form.Group>
-                        <Form.Label>
-                            Цена:
-                        </Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="100.00"
-                            value={this.data.payment.price}
-                            onChange={this.setPrice}
-                        />
-                    </Form.Group>
-                    {this.paymentPlanStore?.selectedPaymentPlan?.assumption?.workTimeRanges?.length > 0 ?
-                        <Form.Group>
-                            <Form.Label>Стоимость:</Form.Label>
-                            <table className={style.space__table}>
-                                <tbody>
-                                {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
-                                    .filter(wtr => !wtr.isWeekend)
-                                    .map((wtr, index) =>
-                                        <tr key={index} className={style.space__row}>
-                                            <td className={style.space__cell}>
-                                                будни&nbsp;
-                                                <span>{wtr.start} &ndash; {wtr.end}</span>
-                                            </td>
-                                            <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
-                                        </tr>
-                                    )
+                                <Form.Group>
+                                    <Form.Label>
+                                        Цена:
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="100.00"
+                                        value={this.data.payment.price}
+                                        onChange={this.setPrice}
+                                    />
+                                </Form.Group>
+                                {this.paymentPlanStore?.selectedPaymentPlan?.assumption?.workTimeRanges?.length > 0 ?
+                                    <Form.Group>
+                                        <Form.Label>Стоимость:</Form.Label>
+                                        <table className={style.space__table}>
+                                            <tbody>
+                                            {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
+                                                .filter(wtr => !wtr.isWeekend)
+                                                .map((wtr, index) =>
+                                                    <tr key={index} className={style.space__row}>
+                                                        <td className={style.space__cell}>
+                                                            будни&nbsp;
+                                                            <span>{wtr.start} &ndash; {wtr.end}</span>
+                                                        </td>
+                                                        <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
+                                                    </tr>
+                                                )
+                                            }
+                                            {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
+                                                .filter(wtr => wtr.isWeekend)
+                                                .map((wtr, index) =>
+                                                    <tr key={index + 1000} className={style.space__row}>
+                                                        <td className={style.space__cell}>
+                                                            выходной:&nbsp;
+                                                            <span>{wtr.start} &ndash; {wtr.end}</span>
+                                                        </td>
+                                                        <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
+                                                    </tr>
+                                                )
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </Form.Group>
+                                    : (<></>)
                                 }
-                                {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
-                                    .filter(wtr => wtr.isWeekend)
-                                    .map((wtr, index) =>
-                                        <tr key={index + 1000} className={style.space__row}>
-                                            <td className={style.space__cell}>
-                                                выходной:&nbsp;
-                                                <span>{wtr.start} &ndash; {wtr.end}</span>
-                                            </td>
-                                            <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
+                                <Form.Group>
+                                    <Form.Label>Всего:</Form.Label>
+                                    <div>
+                                        {this.data.payment.total}
+                                    </div>
+                                </Form.Group>
+                                <Form.Group>
+                                    {this.data.error &&
+                                    <Alert variant="danger">
+                                        {this.data.error}
+                                        {
+                                            (<ul>{this.data.fieldErrors.map((e, i) => <li key={i}>{e}</li>)}</ul>)
+                                        }
+                                    </Alert>
+                                    }
+                                </Form.Group>
+                                <Form.Group className="float-right">
+                                    <Button
+                                        className="mr-2"
+                                        variant="light"
+                                        onClick={this.cancel}
+                                    >
+                                        Отменить
+                                    </Button>
+                                    <Button
+                                        className="mr-2"
+                                        variant="primary"
+                                        onClick={this.save}
+                                    >
+                                        Сохранить
+                                        {this.data.isSaving &&
+                                        <Spinner animation="grow" as="span" size="sm" role="status"/>
+                                        }
+                                    </Button>
+                                </Form.Group>
+                            </Form>
+                        </Col>
+                        <Col>
+                            {this.userStore.selectedUser || this.companyStore.selectedCompany
+                                ? <Table striped={true} bordered={true} hover>
+                                    <thead>
+                                    <tr>
+                                        <th>Ресурс</th>
+                                        <th>Платеж</th>
+                                        <th>Сумма</th>
+                                        <th>От</th>
+                                        <th>До</th>
+                                        <th/>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {this.data.lastPaymentsLoading ?
+                                        <tr>
+                                            <td colSpan={7}><Spinner size="sm" animation="grow"/></td>
                                         </tr>
-                                    )
-                                }
-                                </tbody>
-                            </table>
-                        </Form.Group>
-                        : (<></>)
-                    }
-                    <Form.Group>
-                        <Form.Label>Всего:</Form.Label>
-                        <div>
-                            {this.data.payment.total}
-                        </div>
-                    </Form.Group>
-                    <Form.Group>
-                        {this.data.error &&
-                        <Alert variant="danger">
-                            {this.data.error}
-                            {
-                                (<ul>{this.data.fieldErrors.map((e, i) => <li key={i}>{e}</li>)}</ul>)
+                                        : lastPayments
+                                    }
+                                    </tbody>
+                                </Table>
+                                : <></>
                             }
-                        </Alert>
-                        }
-                    </Form.Group>
-                    <Form.Group className="float-right">
-                        <Button
-                            className="mr-2"
-                            variant="light"
-                            onClick={this.cancel}
-                        >
-                            Отменить
-                        </Button>
-                        <Button
-                            className="mr-2"
-                            variant="primary"
-                            onClick={this.save}
-                        >
-                            Сохранить
-                            {this.data.isSaving &&
-                            <Spinner animation="grow" as="span" size="sm" role="status"/>
-                            }
-                        </Button>
-                    </Form.Group>
-                </Form>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         );
     }

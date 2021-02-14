@@ -23,7 +23,12 @@
     width: 400px;
 }
 ._3PwfQ {
-    width: 600px;
+    width: 700px;
+    min-width: 700px;
+    padding-left: 0;
+}
+._3IrcB {
+    padding-left: 0;
 }
 ._1XQbt {
     width: 900px;

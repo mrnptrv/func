@@ -80,15 +80,17 @@ class PaymentPlanStore {
 
     @action
     select(pubId) {
-        let selected = this.paymentPlans.find(l => l.pubId === pubId)
-        if (selected) {
-            this.selectedPaymentPlan = selected
-        } else {
-            this.selectedPaymentPlan = null
-        }
-        this.selectedPaymentId = pubId
+        if (this.selectedPaymentId !== pubId) {
+            let selected = this.paymentPlans.find(l => l.pubId === pubId)
+            if (selected) {
+                this.selectedPaymentPlan = selected
+            } else {
+                this.selectedPaymentPlan = null
+            }
+            this.selectedPaymentId = pubId
 
-        eventBus.post(CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, pubId)
+            eventBus.post(CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, pubId)
+        }
     }
 }
 

@@ -35,8 +35,10 @@ class TimeUnitStore {
 
     @action
     selectUnit(id) {
-        this.selectedUnit = this.units.find(l => l.id === id)
-        eventBus.post(TIME_UNIT_CHANGE_TOPIC, this.selectedUnit)
+        if (this.selectedUnit?.id != id) {
+            this.selectedUnit = this.units.find(l => l.id === id)
+            eventBus.post(TIME_UNIT_CHANGE_TOPIC, this.selectedUnit)
+        }
     }
 }
 
