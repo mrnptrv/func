@@ -1727,6 +1727,67 @@ export interface UserLite {
 /**
  * 
  * @export
+ * @interface UserWithCurrentAccess
+ */
+export interface UserWithCurrentAccess {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    currentAccessAsset: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    currentAccessFrom?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    currentAccessTo?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    firstName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    lastName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    phone: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    pubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    thirdName: string;
+}
+/**
+ * 
+ * @export
  * @interface WorkTimeRange
  */
 export interface WorkTimeRange {
@@ -5332,7 +5393,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserListUsingPOST(listRequest: UserListRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserLite>>> {
+        async getUserListUsingPOST(listRequest: UserListRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserWithCurrentAccess>>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getUserListUsingPOST(listRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -5403,7 +5464,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserListUsingPOST(listRequest: UserListRequest, options?: any): AxiosPromise<Array<UserLite>> {
+        getUserListUsingPOST(listRequest: UserListRequest, options?: any): AxiosPromise<Array<UserWithCurrentAccess>> {
             return UserApiFp(configuration).getUserListUsingPOST(listRequest, options).then((request) => request(axios, basePath));
         },
         /**

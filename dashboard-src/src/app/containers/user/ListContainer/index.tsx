@@ -3,15 +3,16 @@ import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
 import {userApi} from "app/constants/api";
-import {UserLite} from "app/api/api";
+import {UserWithCurrentAccess} from "app/api/api";
 import {MainMenu} from "app/components";
+import {formatDate} from "app/constants/utils";
 
 class UserListData {
     @observable isLoading = true
     @observable error = ""
-    @observable users: Array<UserLite> = new Array<UserLite>()
+    @observable users: Array<UserWithCurrentAccess> = new Array<UserWithCurrentAccess>()
     @observable isShowDeletionDialog = false;
-    @observable deletionUser: UserLite = null;
+    @observable deletionUser: UserWithCurrentAccess = null;
 
     @action
     deleteUser(user) {
@@ -76,7 +77,11 @@ export class UserListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.users.map((user) =>
             <tr key={user.pubId}>
-                <td>{user.firstName} {user.lastName} {user.thirdName} ( {user.email} / {user.phone} )</td>
+                <td>{user.firstName} {user.lastName} {user.thirdName}</td>
+                <td>{user.phone}</td>
+                <td className="text-nowrap text-right">{user.currentAccessAsset}</td>
+                <td className="text-nowrap">{formatDate(user.currentAccessFrom)}</td>
+                <td className="text-nowrap">{formatDate(user.currentAccessTo)}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.editUser(user)}>Редактировать</Dropdown.Item>
@@ -99,6 +104,10 @@ export class UserListContainer extends React.Component<any, any> {
                     <thead>
                     <tr>
                         <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>Доступ</th>
+                        <th>C</th>
+                        <th>До</th>
                         <th/>
                     </tr>
                     </thead>
