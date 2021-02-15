@@ -121,7 +121,7 @@ export class UserListContainer extends React.Component<any, any> {
                     <tbody>
                     {this.data.isLoading ?
                         <tr>
-                            <td colSpan={3}><Spinner size="sm" animation="grow"/></td>
+                            <td colSpan={6}><Spinner size="sm" animation="grow"/></td>
                         </tr>
                         : items
                     }

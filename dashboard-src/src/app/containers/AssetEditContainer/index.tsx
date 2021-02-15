@@ -270,6 +270,13 @@ export class AssetEditContainer extends React.Component<any, any> {
                         <Form.Group className="float-right">
                             <Button
                                 className="mr-2"
+                                variant="light"
+                                onClick={this.cancel}
+                            >
+                                Отменить
+                            </Button>
+                            <Button
+                                className="mr-2"
                                 variant="primary"
                                 onClick={this.save}
                             >
@@ -277,13 +284,6 @@ export class AssetEditContainer extends React.Component<any, any> {
                                 {this.data.isSaving &&
                                 <Spinner animation="grow" as="span" size="sm" role="status"/>
                                 }
-                            </Button>
-                            <Button
-                                className="mr-2"
-                                variant="light"
-                                onClick={this.cancel}
-                            >
-                                Отменить
                             </Button>
                         </Form.Group>
                     </Form>

@@ -7,7 +7,7 @@ import {Asset, Booking} from "app/api/api";
 import ReactDatePicker from "react-datepicker";
 import Col from "react-bootstrap/Col";
 import format from "date-fns/format";
-import {getStatusName, ru_RU} from "app/constants/locale_ru";
+import {getAssetTypeName, getStatusName, ru_RU} from "app/constants/locale_ru";
 import {MainMenu} from "app/components";
 
 class BookingData {
@@ -150,7 +150,7 @@ export class BookingContainer extends React.Component<any, any> {
         const items = this.data.booking.map((booking) =>
             <tr key={booking.pubId}>
                 <td className="text-nowrap">{booking.asset.name}</td>
-                <td className="text-nowrap">{booking.asset.type}</td>
+                <td className="text-nowrap">{getAssetTypeName(booking.asset.type)}</td>
                 <td className="text-nowrap">{booking.userData.name}</td>
                 <td className="text-nowrap">{booking.userData.phone}</td>
                 <td className="text-nowrap">{getStatusName(booking.status)}</td>

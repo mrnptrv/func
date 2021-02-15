@@ -62,5 +62,18 @@ export const getStatusName = (status: String) => {
 
 }
 
+export const getAssetTypeName = (status: String) => {
+    return [
+        {label: "Рабочее место", id: "WORK_PLACE"},
+        {label: "Готовый офис", id: "OFFICE"},
+        {label: "Переговорная", id: "MEETING_ROOM"},
+        {label: "Площадка для мероприятий", id: "EVENT_PLACE"},
+        {label: "Прочее", id: "OTHER"},
+    ].filter(s => s.id === status)
+        .map(s => s.label)
+        .pop()
+
+}
+
 
 

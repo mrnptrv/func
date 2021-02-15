@@ -5,6 +5,7 @@ import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-boo
 import {assetsApi} from "app/constants/api";
 import {Asset} from "app/api/api";
 import {MainMenu} from "app/components";
+import {getAssetTypeName} from "app/constants/locale_ru";
 
 class AssetListData {
     @observable isLoading = true
@@ -78,12 +79,12 @@ export class AssetListContainer extends React.Component<any, any> {
         const items = this.data.assets.map((asset) =>
             <tr key={asset.pubId}>
                 <td>{asset.name}</td>
-                <td>{asset.type}</td>
+                <td>{getAssetTypeName(asset.type)}</td>
                 <td>{asset.capacity}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editAsset(asset)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(asset)}>Delete</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editAsset(asset)}>Редактировать</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(asset)}>Удалить</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -100,16 +101,16 @@ export class AssetListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Capacity</th>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Вместимость</th>
                     <th/>
                     </tr>
                     </thead>
                     <tbody>
                     {this.data.isLoading ?
                         <tr>
-                            <td colSpan={3}><Spinner size="sm" animation="grow"/></td>
+                            <td colSpan={4}><Spinner size="sm" animation="grow"/></td>
                         </tr>
                         : items
                     }
@@ -117,19 +118,18 @@ export class AssetListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Delete asset</Modal.Title>
+                        <Modal.Title>Удаление ресурса</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                           All bookings will delete with the asset.
-                           Are you sure to want to delete it with all bookings?
+                            Продолжить удаление ресурса?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Not</Button>
-                        <Button variant="primary" onClick={this.deleteAsset}>Yes</Button>
+                        <Button variant="secondary" onClick={this.hideDeletionDialog}>Нет</Button>
+                        <Button variant="primary" onClick={this.deleteAsset}>Да</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

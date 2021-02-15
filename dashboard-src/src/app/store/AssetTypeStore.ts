@@ -17,9 +17,11 @@ class AssetTypeStore {
 
     loadUnits() {
         this.types = [
-            {label: "Meeting room", id: "MEETING_ROOM"},
-            {label: "Fixed work place", id: "FIXED_WORK_PLACE"},
-            {label: "Unfixed work place", id: "UNFIXED_WORK_PLACE"},
+            {label: "Рабочее место", id: "WORK_PLACE"},
+            {label: "Готовый офис", id: "OFFICE"},
+            {label: "Переговорная", id: "MEETING_ROOM"},
+            {label: "Площадка для мероприятий", id: "EVENT_PLACE"},
+            {label: "Прочее", id: "OTHER"},
         ]
         this.select("MEETING_ROOM")
     }
@@ -28,7 +30,7 @@ class AssetTypeStore {
         if (this.selected) {
             return this.selected.id
         }
-        return 'MEETING_ROOM'
+        return 'WORK_PLACE'
     }
 
     @action
