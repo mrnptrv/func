@@ -92,7 +92,7 @@ export class AssetListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Assets ({this.data.assets.length})
+                <h4>Ресурсы
                     <Button
                         variant="light"
                         onClick={this.newAsset}

@@ -35,7 +35,6 @@ const filterRowStyle = {
 export class BookingContainer extends React.Component<any, any> {
     private data = new BookingData()
 
-
     constructor(props: any, context: any) {
         super(props, context);
         this.load()

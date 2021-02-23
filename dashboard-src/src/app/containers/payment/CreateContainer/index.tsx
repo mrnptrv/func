@@ -411,10 +411,12 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
                 this.data.lastPaymentsLoading = true
                 paymentApi().getPaymentListUsingPOST({
-                    companyId: companyId
+                    companyId: companyId,
+                    offset: 0,
+                    limit: 5
                 }).then((r) => {
                     this.data.lastPaymentsLoading = false
-                    this.data.lastPayments = r.data
+                    this.data.lastPayments = r.data.list
                 })
             })
         }else{
@@ -439,10 +441,12 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
             this.data.lastPaymentsLoading = true
             paymentApi().getPaymentListUsingPOST({
-                userId: userId
+                userId: userId,
+                offset: 0,
+                limit : 5
             }).then((r) => {
                 this.data.lastPaymentsLoading = false
-                this.data.lastPayments = r.data
+                this.data.lastPayments = r.data.list
             })
         }
     }

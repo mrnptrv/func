@@ -986,13 +986,62 @@ export interface PaymentListRequest {
      * @type {string}
      * @memberof PaymentListRequest
      */
+    filter?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaymentListRequest
+     */
+    limit?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentListRequest
+     */
     locationPubId?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaymentListRequest
+     */
+    offset?: number;
     /**
      * 
      * @type {string}
      * @memberof PaymentListRequest
      */
     userId?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PaymentListResponse
+ */
+export interface PaymentListResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaymentListResponse
+     */
+    limit: number;
+    /**
+     * 
+     * @type {Array<Payment>}
+     * @memberof PaymentListResponse
+     */
+    list: Array<Payment>;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaymentListResponse
+     */
+    offset: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaymentListResponse
+     */
+    total: number;
 }
 /**
  * 
@@ -4485,7 +4534,7 @@ export const PaymentApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPaymentListUsingPOST(listRequest: PaymentListRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Payment>>> {
+        async getPaymentListUsingPOST(listRequest: PaymentListRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentListResponse>> {
             const localVarAxiosArgs = await PaymentApiAxiosParamCreator(configuration).getPaymentListUsingPOST(listRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -4556,7 +4605,7 @@ export const PaymentApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPaymentListUsingPOST(listRequest: PaymentListRequest, options?: any): AxiosPromise<Array<Payment>> {
+        getPaymentListUsingPOST(listRequest: PaymentListRequest, options?: any): AxiosPromise<PaymentListResponse> {
             return PaymentApiFp(configuration).getPaymentListUsingPOST(listRequest, options).then((request) => request(axios, basePath));
         },
         /**
