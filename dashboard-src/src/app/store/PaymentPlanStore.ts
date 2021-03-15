@@ -59,7 +59,6 @@ class PaymentPlanStore {
         if (locationPubId) {
             this.loadedLocationId = locationPubId
             this.loadedAssetId = assetPubId
-
             return paymentPlanApi().getPaymentPlanListUsingPOST({
                 locationPubId: this.loadedLocationId,
                 assetId: this.loadedAssetId
@@ -80,8 +79,9 @@ class PaymentPlanStore {
 
     @action
     select(pubId) {
-        if (this.selectedPaymentId !== pubId) {
+        if (this.selectedPaymentId !== pubId || this.selectedPaymentPlan?.pubId !== pubId) {
             let selected = this.paymentPlans.find(l => l.pubId === pubId)
+
             if (selected) {
                 this.selectedPaymentPlan = selected
             } else {

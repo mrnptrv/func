@@ -3,14 +3,15 @@ import * as style from "../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {assetsApi} from "app/constants/api";
-import {Asset, WorkTimeRange} from "app/api/api";
-import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
+import {Asset} from "app/api/api";
+import {Alert, Button, Form, InputGroup, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
-import {WORK_HOURS} from "app/constants/constants";
 import {AssetTypeSelect} from "app/components/AssetTypeSelect";
 import {ASSET_TYPE_STORE} from "app/store/AssetTypeStore";
 import {MainMenu} from "app/components";
+import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
+import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
 
 class AssetEditData {
     @observable isAssetLoading = true
@@ -25,6 +26,7 @@ export class AssetEditContainer extends React.Component<any, any> {
     private data = new AssetEditData()
     private locationStore = LOCATION_STORE
     private assetTypeStore = ASSET_TYPE_STORE
+    private paymentPlanStore = PAYMENT_PLAN_STORE
 
     cancel = () => {
         this.props.history.push("/dashboard/list")
@@ -40,10 +42,10 @@ export class AssetEditContainer extends React.Component<any, any> {
             type: this.assetTypeStore.selectedId(),
             name: this.data.asset.name,
             description: this.data.asset.description,
-            workTimeRanges: this.data.asset.workTimeRanges,
             imageUrls: this.data.asset.imageUrls,
             capacity: this.data.asset.capacity,
-            locationPubId: this.locationStore.selectedLocationPubId()
+            locationPubId: this.locationStore.selectedLocationPubId(),
+            paymentPlanId: this.paymentPlanStore.selectedId(),
         }).then(() => {
             this.data.isSaving = false
         }).catch((error) => {
@@ -57,15 +59,6 @@ export class AssetEditContainer extends React.Component<any, any> {
             if (error && error.response && error.response.data.errors) {
                 this.data.fieldErrors = error.response.data.errors.map(e => e.messages).flat()
             }
-        })
-    }
-
-    addWorkTimeRange = () => {
-        this.data.asset.workTimeRanges.push({
-            start: "00:00",
-            end: "00:00",
-            price: "0.00",
-            isWeekend: false
         })
     }
 
@@ -85,6 +78,7 @@ export class AssetEditContainer extends React.Component<any, any> {
 
                 this.locationStore.selectLocation(this.data.asset.location.pubId)
                 this.assetTypeStore.select(this.data.asset.type)
+                this.paymentPlanStore.select(this.data.asset.paymentPlanId)
             })
             .catch(error => {
                 this.data.isAssetLoading = false
@@ -93,30 +87,6 @@ export class AssetEditContainer extends React.Component<any, any> {
                     this.data.error = error.response.data.message
                 }
             })
-    }
-
-    private setStartWorkTime(wtr: WorkTimeRange, h: number) {
-        return () => {
-            wtr.start = (h < 10 ? "0" + h : h) + ":00"
-        }
-    }
-
-    private setWeekend(wtr: WorkTimeRange, isWeekend: boolean) {
-        return () => {
-            wtr.isWeekend = isWeekend
-        }
-    }
-
-    private setEndWorkTime(wtr: WorkTimeRange, h: number) {
-        return () => {
-            wtr.end = (h < 10 ? "0" + h : h) + ":00"
-        }
-    }
-
-    private deleteWorkTimeRange(wtr: WorkTimeRange) {
-        return () => {
-            this.data.asset.workTimeRanges = this.data.asset.workTimeRanges.filter(w => wtr != w)
-        };
     }
 
     private deleteImageUrl(index: number) {
@@ -171,65 +141,8 @@ export class AssetEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>
-                                Стоимость часа:
-                                <Button
-                                    variant="light"
-                                    onClick={this.addWorkTimeRange}
-                                > + </Button>
-                            </Form.Label>
-
-                            {this.data.asset.workTimeRanges.map(wtr =>
-                                <InputGroup className="mb-3">
-                                    <DropdownButton
-                                        className={style.hourType}
-                                        as={InputGroup.Prepend}
-                                        variant="outline-secondary"
-                                        title={wtr.isWeekend ? "выходные " : "рабочие "}
-                                    >
-                                        <Dropdown.Item onClick={this.setWeekend(wtr, false)}>
-                                            рабочие
-                                        </Dropdown.Item>
-                                        <Dropdown.Item onClick={this.setWeekend(wtr, true)}>
-                                            выходные
-                                        </Dropdown.Item>
-                                    </DropdownButton>
-                                    <DropdownButton
-                                        as={InputGroup.Prepend}
-                                        variant="outline-secondary"
-                                        title={wtr.start}
-                                    >
-                                        {WORK_HOURS.map(h =>
-                                            <Dropdown.Item onClick={this.setStartWorkTime(wtr, h)}>
-                                                {h < 10 ? "0" + h : h}:00
-                                            </Dropdown.Item>
-                                        )}
-                                    </DropdownButton>
-                                    <DropdownButton
-                                        as={InputGroup.Prepend}
-                                        variant="outline-secondary"
-                                        title={wtr.end}
-                                    >
-                                        {WORK_HOURS.map(h =>
-                                            <Dropdown.Item onClick={this.setEndWorkTime(wtr, h)}>
-                                                {h < 10 ? "0" + h : h}:00
-                                            </Dropdown.Item>
-                                        )}
-                                    </DropdownButton>
-                                    <Form.Control
-                                        aria-describedby="basic-addon1"
-                                        value={wtr.price}
-                                        onChange={(e) => {
-                                            wtr.price = e.target.value
-                                        }}
-                                    />
-                                    <InputGroup.Append>
-                                        <Button variant="outline-secondary"
-                                                onClick={this.deleteWorkTimeRange(wtr)}
-                                        >X</Button>
-                                    </InputGroup.Append>
-                                </InputGroup>
-                            )}
+                            <Form.Label>Платежный план:</Form.Label>
+                            <PaymentPlanSelect/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>
@@ -291,5 +204,4 @@ export class AssetEditContainer extends React.Component<any, any> {
             </div>
         );
     }
-
 }

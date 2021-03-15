@@ -7,8 +7,8 @@ import {authApi} from "app/constants/api";
 import {AssetListContainer} from "app/containers/AssetListContainer";
 import {AssetEditContainer} from "app/containers/AssetEditContainer";
 import {AssetCreateContainer} from "app/containers/AssetCreateContainer";
-import {BookingContainer} from "app/containers/BookingContainer";
-import {BookingEditContainer} from "app/containers/BookingEditContainer";
+import {BookingContainer} from "app/containers/booking/BookingContainer";
+import {BookingEditContainer} from "app/containers/booking/BookingEditContainer";
 import {LocationListContainer} from "app/containers/LocationListContainer";
 import {LocationCreateContainer} from "app/containers/LocationCreateContainer";
 import {LocationEditContainer} from "app/containers/LocationEditContainer";
@@ -24,6 +24,7 @@ import {UserEditContainer} from "app/containers/user/EditContainer";
 import {PaymentListContainer} from "app/containers/payment/ListContainer";
 import {PaymentEditContainer} from "app/containers/payment/EditContainer";
 import {PaymentCreateContainer} from "app/containers/payment/CreateContainer";
+import {BookingCreateContainer} from "app/containers/booking/BookingCreateContainer";
 
 // render react DOM
 export const App = hot(({history}) => {
@@ -47,6 +48,7 @@ export const App = hot(({history}) => {
                     <Route path="/dashboard/register" component={RegisterContainer}/>
                     <Route path="/dashboard/booking" component={BookingContainer}/>
                     <Route path="/dashboard/edit-booking/:id" component={BookingEditContainer}/>
+                    <Route path="/dashboard/create-booking/:locationId/:assetId/:day/:hour" component={BookingCreateContainer}/>
                     <Route path="/dashboard/list" component={AssetListContainer}/>
                     <Route path="/dashboard/asset/:id" exact component={AssetEditContainer}/>
                     <Route path="/dashboard/create-asset" exact component={AssetCreateContainer}/>

@@ -1,0 +1,39 @@
+.booking-table td
+{
+    padding: 0;
+}
+
+.booking-cell {
+    /*background-color: #a1be8c;*/
+    /*border: solid 1px #5c8041;*/
+    /*border-radius: 3px;*/
+    height: 28px;
+    padding: 2px 4px 6px;
+    color: #acacac;
+}
+
+.booking-popover{
+    max-width: 400px;
+}
+
+.booking-status-BOOKED {
+    background-color: #8f8f8f;
+    border: solid 1px #4a4949;
+    color: #4a4949;
+}
+
+.booking-status-PENDING {
+    background-color: #e7d98b;
+    border: solid 1px #a29863;
+    color: #a29863;
+}
+
+.booking-status-DECLINED {
+    background-color: #e78b8b;
+    border: solid 1px #865454;
+    color: #865454;
+}
+
+.booking-details-label {
+   max-width: 100px;
+}

@@ -18,7 +18,8 @@
     "baseUrl": "src",
     "paths": {
       "app/*": ["./app/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["dist", "build", "node_modules"]
 }

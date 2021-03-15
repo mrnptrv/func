@@ -432,7 +432,6 @@ export class PaymentEditContainer extends React.Component<any, any> {
                                     <InputGroup className="mb-3 start">
                                         <ReactDatePicker
                                             dateFormat="dd.MM.yyyy"
-                                            style={style.paymentDataPicker}
                                             className="top__input top__input--select input input--select"
                                             placeholderText=""
                                             selected={this.data.startDate}
@@ -463,7 +462,6 @@ export class PaymentEditContainer extends React.Component<any, any> {
                                         {this.timeUnitStore.selectedId() !== 'HOUR' ?
                                             <ReactDatePicker
                                                 dateFormat="dd.MM.yyyy"
-                                                style={style.paymentDataPicker}
                                                 className="top__input top__input--select input input--select"
                                                 placeholderText=""
                                                 selected={this.data.endDate}

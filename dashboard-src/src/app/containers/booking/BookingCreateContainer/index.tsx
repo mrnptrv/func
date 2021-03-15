@@ -1,29 +1,33 @@
 import * as React from 'react';
-import * as style from "../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import ReactDatePicker from "react-datepicker";
-import {Asset, BookedAsset, Booking} from "app/api/api";
-import {Alert, Button, Form, Spinner} from "react-bootstrap";
-import {assetsApi, bookingApi} from "app/constants";
-import format from "date-fns/format";
-import {getStatusName, ru_RU} from "app/constants/locale_ru";
 import {MainMenu} from "app/components";
+import {Alert, Button, Form, Spinner} from "react-bootstrap";
+import * as style from "app/containers/style.css";
+import {ru_RU} from "app/constants/locale_ru";
+import ReactDatePicker from "react-datepicker";
+import {AssetSelect} from "app/components/AssetSelect";
+import {bookingApi, paymentPlanApi} from "app/constants";
+import format from "date-fns/format";
+import {ASSET_STORE} from "app/store/AssetStore";
+import {Asset, BookedAsset, PaymentPlan, UserData} from "app/api";
+import {LOCATION_STORE} from "app/store/LocationStore";
 
 
-class BookingEditData {
+class BookingCreateData {
     @observable isBookingLoading = true
-    @observable error = ""
-    @observable bookingDate = new Date()
-    @observable booking: Booking = null
-    @observable assetList: Array<Asset> = new Array<Asset>()
-    @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
-
+    @observable bookingDate = new Date()
     @observable workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
-    @observable bookingHour = 0
+    @observable paymentPlan: PaymentPlan = null
+    @observable bookingHour:number = 0
     @observable bookingHourAmount = 0
     @observable bookingPrice = 0
+    @observable userData: UserData = {name: "", phone: ""}
+    @observable description = ""
+    @observable error = ""
+    @observable fieldErrors: Array<String> = new Array<String>()
+
 }
 
 class WorkTimeHour {
@@ -34,8 +38,40 @@ class WorkTimeHour {
 }
 
 @observer
-export class BookingEditContainer extends React.Component<any, any> {
-    private data = new BookingEditData()
+export class BookingCreateContainer extends React.Component<any, any> {
+    private data = new BookingCreateData()
+    private assetStore = ASSET_STORE
+    private locationStore = LOCATION_STORE
+
+    constructor(props: any, context: any) {
+        super(props, context);
+
+        this.data.bookingDate = new Date(this.props.match.params.day)
+        this.data.bookingHour = +(this.props.match.params.hour)
+        this.data.bookingHourAmount = 1
+        this.locationStore.selectLocation(this.props.match.params.locationId);
+        this.assetStore.selectAsset(this.props.match.params.assetId);
+
+        this.assetStore.loadAssets().then(() => {
+            if (this.assetStore.selectedAsset.paymentPlanId) {
+                return paymentPlanApi().getPaymentPlanUsingGET(this.assetStore.selectedAsset.paymentPlanId)
+            }
+            return null
+        }).then((res) => {
+            this.data.paymentPlan = res?.data
+        }).then(() => {
+            return this.loadBooked()
+        }).then(() => {
+            this.data.isBookingLoading = false
+        }).catch(error => {
+            this.data.isBookingLoading = false
+
+            if (error && error.response && error.response.data.message) {
+                this.data.error = error.response.data.message
+            }
+        })
+
+    }
 
     cancel = () => {
         this.props.history.push("/dashboard/booking")
@@ -49,18 +85,18 @@ export class BookingEditContainer extends React.Component<any, any> {
         let start = this.getStartHour();
         let end = this.getEndHour();
 
-        bookingApi().updateUsingPOST1({
-            bookingId: this.data.booking.pubId,
-            assetId: this.data.booking.asset.pubId,
+        bookingApi().bookUsingPOST({
+            assetId: this.assetStore.selectedAssetPubId(),
             date: format(this.data.bookingDate, "yyyy-MM-dd"),
+            name: this.data.userData.name,
+            phone: this.data.userData.phone,
+            description: this.data.description,
             start: start,
-            end: end,
-            phone: this.data.booking.userData.phone,
-            name: this.data.booking.userData.name,
-            description: this.data.booking.description
-
-        }).then(() => {
+            end: end
+        }).then((res) => {
             this.data.isSaving = false
+
+            this.props.history.push("/dashboard/edit-booking/" + res.data.pubId)
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -71,79 +107,33 @@ export class BookingEditContainer extends React.Component<any, any> {
             if (error && error.response && error.response.data.errors) {
                 this.data.fieldErrors = error.response.data.errors.map(e => e.messages).flat()
             }
+
+            console.error(error.response.data);
         })
     }
 
-    constructor(props: any, context: any) {
-        super(props, context);
+    private getEndHour() {
+        let endHour = this.data.bookingHour + this.data.bookingHourAmount
+        return (endHour < 10 ? ("0" + endHour) : "" + endHour) + ":00";
+    }
 
-        this.data.isBookingLoading = true
+    private getStartHour() {
+        return (this.data.bookingHour < 10 ? ("0" + this.data.bookingHour) : "" + this.data.bookingHour) + ":00";
+    }
 
-        bookingApi().getUsingGET2(this.props.match.params.id).then(res => {
-            this.data.booking = res.data
-            this.data.bookingDate = new Date(this.data.booking.date)
-            this.data.bookingHour = this.getHour(this.data.booking.start)
-            this.data.bookingHourAmount = this.getHour(this.data.booking.end) - this.data.bookingHour
-        }).then(() => {
-            return assetsApi().assetsListUsingPOST({})
-        }).then((res) => {
-            this.data.assetList = res.data
-        }).then(() => {
-            return this.loadBooked()
-        }).then(() => {
-            this.data.isBookingLoading = false
-        }).catch(error => {
-            this.data.isBookingLoading = false
-
-            if (error && error.response && error.response.data.message) {
-                this.data.error = error.response.data.message
-            }
-        })
+    private setDescription(description) {
+        this.data.description = description
     }
 
     private loadBooked() {
         return bookingApi().findBookedAssetsUsingPOST({
             date: format(this.data.bookingDate, "yyyy-MM-dd"),
-            assetId: this.data.booking.asset.pubId,
-            withoutBookingId: this.data.booking.pubId
+            assetId: this.assetStore.selectedAssetPubId(),
         }).then((r) => {
             this.data.workTimeHours = this.calculateWorkTimeHours()
             this.markWorkTimeHoursBooked(r.data)
             this.manageBookingHourAmount()
         })
-    }
-
-    private markWorkTimeHoursBooked(bookedAssets: Array<BookedAsset>) {
-        this.data.workTimeHours
-            .forEach(wth => {
-                wth.booked = false
-            })
-
-        bookedAssets.forEach(b => {
-            if (b.asset.pubId === this.data.booking.asset.pubId) {
-
-                let startHour = this.getHour(b.start)
-                let endHour = this.getHour(b.end)
-
-                this.data.workTimeHours
-                    .filter(wth => startHour <= wth.hour && wth.hour < endHour)
-                    .forEach(wth => {
-                        wth.booked = true
-                    })
-            }
-        })
-    }
-
-    private calculatePrice = () => {
-        let startHour = this.data.bookingHour
-        let endHour = this.data.bookingHour + this.data.bookingHourAmount
-
-        let prices = this.data.workTimeHours
-            .filter(wtr => wtr.hour >= startHour && wtr.hour < endHour)
-            .map(wtr => wtr.price);
-
-        this.data.bookingPrice = prices.length == 0 ? 0 :
-            prices.reduce((prevPrice, currentPrice) => prevPrice + currentPrice)
     }
 
     private manageBookingHourAmount() {
@@ -177,34 +167,36 @@ export class BookingEditContainer extends React.Component<any, any> {
         this.calculatePrice()
     }
 
-    private getEndHour() {
+    private calculatePrice = () => {
+        let startHour = this.data.bookingHour
         let endHour = this.data.bookingHour + this.data.bookingHourAmount
-        return (endHour < 10 ? ("0" + endHour) : "" + endHour) + ":00";
+
+        let prices = this.data.workTimeHours
+            .filter(wtr => wtr.hour >= startHour && wtr.hour < endHour)
+            .map(wtr => wtr.price);
+
+        this.data.bookingPrice = prices.length == 0 ? 0 :
+            prices.reduce((prevPrice, currentPrice) => prevPrice + currentPrice)
     }
 
-    private getStartHour() {
-        return (this.data.bookingHour < 10 ? ("0" + this.data.bookingHour) : "" + this.data.bookingHour) + ":00";
-    }
+    private markWorkTimeHoursBooked(bookedAssets: Array<BookedAsset>) {
+        this.data.workTimeHours
+            .forEach(wth => {
+                wth.booked = false
+            })
 
-    private selectAsset(pubId) {
-        this.data.booking.asset = this.data.assetList.filter(a => a.pubId === pubId)[0]
-        this.loadBooked().then(() => {
-        })
-    }
+        bookedAssets.forEach(b => {
+            if (b.asset.pubId === this.assetStore.selectedAssetPubId()) {
 
-    private selectHour(h) {
-        this.data.bookingHour = h
-        this.manageBookingHourAmount()
-    }
+                let startHour = this.getHour(b.start)
+                let endHour = this.getHour(b.end)
 
-    private setHourAmount(h) {
-        this.data.bookingHourAmount = h
-        this.manageBookingHourAmount()
-    }
-
-    private setBookingDate = (d: Date) => {
-        this.data.bookingDate = d;
-        this.loadBooked().then(() => {
+                this.data.workTimeHours
+                    .filter(wth => startHour <= wth.hour && wth.hour < endHour)
+                    .forEach(wth => {
+                        wth.booked = true
+                    })
+            }
         })
     }
 
@@ -213,47 +205,15 @@ export class BookingEditContainer extends React.Component<any, any> {
         return +(a[0] as number)
     }
 
-    private setName(name) {
-        this.data.booking.userData.name = name
-    }
-
-    private setPhone(phone) {
-        let newValue = phone
-        newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
-
-        let formattedValue = "+" + newValue.slice(0, 1)
-
-        if (newValue.length > 1) {
-            formattedValue += " (" + newValue.slice(1, 4)
-        }
-
-        if (newValue.length > 4) {
-            formattedValue += ") " + newValue.slice(4, 7)
-        }
-
-        if (newValue.length > 7) {
-            formattedValue += "-" + newValue.slice(7, 9)
-        }
-
-        if (newValue.length > 9) {
-            formattedValue += "-" + newValue.slice(9, 11)
-        }
-
-        this.data.booking.userData.phone = formattedValue
-    }
-
-    private setDescription(description) {
-        this.data.booking.description = description
-    }
-
     private calculateWorkTimeHours() {
         let workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
         let isWeekend = this.data.bookingDate.getDay() === 6 || this.data.bookingDate.getDay() === 0;
 
-        let a = this.data.booking.asset
-        let workTimeRanges = a.workTimeRanges.filter(wtr => wtr.isWeekend == isWeekend)
+        let a = this.assetStore.selectedAsset
+        let pp = this.data.paymentPlan
+        let workTimeRanges = pp?.assumption?.workTimeRanges?.filter(wtr => wtr.isWeekend == isWeekend)
 
-        if (workTimeRanges.length > 0) {
+        if (workTimeRanges?.length > 0) {
             let minStartHour = this.getHour(workTimeRanges[0].start);
             let maxEndHour = this.getHour(workTimeRanges[0].end);
 
@@ -292,6 +252,51 @@ export class BookingEditContainer extends React.Component<any, any> {
         return workTimeHours
     }
 
+    private setBookingDate = (d: Date) => {
+        this.data.bookingDate = d;
+        this.loadBooked().then(() => {
+        })
+    }
+
+    private selectHour(h) {
+        this.data.bookingHour = h
+        this.manageBookingHourAmount()
+    }
+
+    private setHourAmount(h) {
+        this.data.bookingHourAmount = h
+        this.manageBookingHourAmount()
+    }
+
+    private setName(name) {
+        this.data.userData.name = name
+    }
+
+    private setPhone(phone) {
+        let newValue = phone
+        newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
+
+        let formattedValue = "+" + newValue.slice(0, 1)
+
+        if (newValue.length > 1) {
+            formattedValue += " (" + newValue.slice(1, 4)
+        }
+
+        if (newValue.length > 4) {
+            formattedValue += ") " + newValue.slice(4, 7)
+        }
+
+        if (newValue.length > 7) {
+            formattedValue += "-" + newValue.slice(7, 9)
+        }
+
+        if (newValue.length > 9) {
+            formattedValue += "-" + newValue.slice(9, 11)
+        }
+
+        this.data.userData.phone = formattedValue
+    }
+
     render() {
         return (
             <div>
@@ -300,27 +305,8 @@ export class BookingEditContainer extends React.Component<any, any> {
                 {this.data.isBookingLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
-                            <Form.Label>Статус:</Form.Label>
-                            <Form.Control text readOnly
-                                          value={getStatusName(this.data.booking.status) + " (" + this.data.bookingPrice + "р)"}
-                                          onChange={(e) => {
-                                          }}
-                            />
-                        </Form.Group>
-                        <Form.Group>
                             <Form.Label>Ресурс:</Form.Label>
-                            <Form.Control
-                                as="select"
-                                value={this.data.booking.asset.pubId}
-                                onChange={(e) => this.selectAsset(e.target.value)}
-                            >
-                                {this.data.assetList.map(a => {
-                                    return <option
-                                        key={a.pubId}
-                                        value={a.pubId}
-                                    >{a.name}</option>
-                                })}
-                            </Form.Control>
+                            <AssetSelect withEmpty={false}/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Дата:</Form.Label>
@@ -363,7 +349,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                             <Form.Label>ФИО:</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={this.data.booking.userData.name}
+                                value={this.data.userData.name}
                                 onChange={(e) => this.setName(e.target.value)}
                             />
                         </Form.Group>
@@ -371,7 +357,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                             <Form.Label>Телефон:</Form.Label>
                             <Form.Control
                                 type="text"
-                                value={this.data.booking.userData.phone}
+                                value={this.data.userData.phone}
                                 onChange={(e) => this.setPhone(e.target.value)}
                             />
                         </Form.Group>
@@ -380,7 +366,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                             <Form.Control
                                 as="textarea"
                                 rows={3}
-                                value={this.data.booking.description}
+                                value={this.data.description}
                                 onChange={(e) => this.setDescription(e.target.value)}
                             />
                         </Form.Group>
@@ -388,8 +374,9 @@ export class BookingEditContainer extends React.Component<any, any> {
                             {this.data.error &&
                             <Alert variant="danger">
                                 {this.data.error}
-                                {this.data.fieldErrors.length &&
-                                (<ul>{this.data.fieldErrors.map(e => <li>{e}</li>)}</ul>)
+                                {this.data.fieldErrors.length ?
+                                    (<ul>{this.data.fieldErrors.map(e => <li>{e}</li>)}</ul>)
+                                    : (<></>)
                                 }
                             </Alert>
                             }

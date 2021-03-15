@@ -3,7 +3,7 @@ import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {paymentPlanApi} from "app/constants/api";
-import {AccessAssumptionReq, PaymentPlan, WorkTimeRange} from "app/api/api";
+import {AccessAssumptionReq, PaymentPlan, WorkTimeRangeReq} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
@@ -87,25 +87,25 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
         })
     }
 
-    private deleteWorkTimeRange(wtr: WorkTimeRange) {
+    private deleteWorkTimeRange(wtr: WorkTimeRangeReq) {
         return () => {
             this.data.paymentPlan.assumption.workTimeRanges = this.data.paymentPlan.assumption.workTimeRanges.filter(w => wtr != w)
         };
     }
 
-    private setStartWorkTime(wtr: WorkTimeRange, h: number) {
+    private setStartWorkTime(wtr: WorkTimeRangeReq, h: number) {
         return () => {
             wtr.start = (h < 10 ? "0" + h : h) + ":00"
         }
     }
 
-    private setEndWorkTime(wtr: WorkTimeRange, h: number) {
+    private setEndWorkTime(wtr: WorkTimeRangeReq, h: number) {
         return () => {
             wtr.end = (h < 10 ? "0" + h : h) + ":00"
         }
     }
 
-    private setWeekend(wtr: WorkTimeRange, isWeekend: boolean) {
+    private setWeekend(wtr: WorkTimeRangeReq, isWeekend: boolean) {
         return () => {
             wtr.isWeekend = isWeekend
         }

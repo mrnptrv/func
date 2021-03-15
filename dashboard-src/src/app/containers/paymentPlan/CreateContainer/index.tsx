@@ -14,7 +14,7 @@ import {TimeUnitSelect} from "app/components/TimeUnitSelect";
 import {TIME_UNIT_CHANGE_TOPIC, TIME_UNIT_STORE} from "app/store/TimeUnitStore";
 import {WORK_HOURS} from "app/constants/constants";
 import {eventBus, subscribe} from "mobx-event-bus2";
-import {AccessAssumptionReq, WorkTimeRange} from "app/api";
+import {AccessAssumptionReq, WorkTimeRangeReq} from "app/api";
 import {HasAccessAssumptionSelect} from "app/components/HasAccessAssumptionSelect";
 import {HAS_ACCESS_ASSUMPTION_STORE} from "app/store/HasAccessAssumptionStore";
 import {PaymentPlanMultiSelect} from "app/components/PaymentPlanMultiSelect";
@@ -22,7 +22,7 @@ import {PAYMENT_PLAN_MULTI_SELECT_STORE} from "app/store/PaymentPlanMultiSelectS
 import {MainMenu} from "app/components";
 
 class PaymentPlanCreateData {
-    @observable workTimeRanges: Array<WorkTimeRange> = new Array<WorkTimeRange>();
+    @observable workTimeRanges: Array<WorkTimeRangeReq> = new Array<WorkTimeRangeReq>();
     @observable error = ""
     @observable name = ""
     @observable description = ""
@@ -125,25 +125,25 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
         })
     }
 
-    private deleteWorkTimeRange(wtr: WorkTimeRange) {
+    private deleteWorkTimeRange(wtr: WorkTimeRangeReq) {
         return () => {
             this.data.workTimeRanges = this.data.workTimeRanges.filter(w => wtr != w)
         };
     }
 
-    private setStartWorkTime(wtr: WorkTimeRange, h: number) {
+    private setStartWorkTime(wtr: WorkTimeRangeReq, h: number) {
         return () => {
             wtr.start = (h < 10 ? "0" + h : h) + ":00"
         }
     }
 
-    private setEndWorkTime(wtr: WorkTimeRange, h: number) {
+    private setEndWorkTime(wtr: WorkTimeRangeReq, h: number) {
         return () => {
             wtr.end = (h < 10 ? "0" + h : h) + ":00"
         }
     }
 
-    private setWeekend(wtr: WorkTimeRange, isWeekend: boolean) {
+    private setWeekend(wtr: WorkTimeRangeReq, isWeekend: boolean) {
         return () => {
             wtr.isWeekend = isWeekend
         }
@@ -193,7 +193,7 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                     {TIME_UNIT_STORE.selectedId() !== "HOUR" ||
                     this.data.workTimeRanges.length == 0 ? (
                         <Form.Group>
-                            <Form.Label>Price:</Form.Label>
+                            <Form.Label>Цена:</Form.Label>
                             <Form.Control
                                 value={this.data.price}
                                 onChange={(e) => {
@@ -206,7 +206,7 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                     {TIME_UNIT_STORE.selectedId() === "HOUR" ? (
                         <Form.Group>
                             <Form.Label>
-                                Hour Price:
+                                Стоимость часа:
                                 <Button
                                     variant="light"
                                     onClick={this.addWorkTimeRange}

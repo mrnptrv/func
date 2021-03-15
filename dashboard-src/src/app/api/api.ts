@@ -98,6 +98,12 @@ export interface Asset {
      * @type {string}
      * @memberof Asset
      */
+    paymentPlanId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Asset
+     */
     pubId: string;
     /**
      * 
@@ -105,12 +111,6 @@ export interface Asset {
      * @memberof Asset
      */
     type: string;
-    /**
-     * 
-     * @type {Array<WorkTimeRange>}
-     * @memberof Asset
-     */
-    workTimeRanges: Array<WorkTimeRange>;
 }
 /**
  * 
@@ -130,6 +130,12 @@ export interface AssetListRequest {
      * @memberof AssetListRequest
      */
     locationPubId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssetListRequest
+     */
+    type?: string;
 }
 /**
  * 
@@ -374,13 +380,13 @@ export interface CreateAssetRequest {
      * @type {string}
      * @memberof CreateAssetRequest
      */
-    type: string;
+    paymentPlanId: string;
     /**
      * 
-     * @type {Array<WorkTimeRangeReq>}
+     * @type {string}
      * @memberof CreateAssetRequest
      */
-    workTimeRanges?: Array<WorkTimeRangeReq>;
+    type: string;
 }
 /**
  * 
@@ -742,6 +748,12 @@ export interface ListRequest {
      * @memberof ListRequest
      */
     from?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListRequest
+     */
+    locationId?: string;
     /**
      * 
      * @type {string}
@@ -1263,6 +1275,12 @@ export interface UpdateAssetRequest {
      * @type {string}
      * @memberof UpdateAssetRequest
      */
+    paymentPlanId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAssetRequest
+     */
     pubId: string;
     /**
      * 
@@ -1270,12 +1288,6 @@ export interface UpdateAssetRequest {
      * @memberof UpdateAssetRequest
      */
     type: string;
-    /**
-     * 
-     * @type {Array<WorkTimeRangeReq>}
-     * @memberof UpdateAssetRequest
-     */
-    workTimeRanges?: Array<WorkTimeRangeReq>;
 }
 /**
  * 
@@ -1833,37 +1845,6 @@ export interface UserWithCurrentAccess {
      * @memberof UserWithCurrentAccess
      */
     thirdName: string;
-}
-/**
- * 
- * @export
- * @interface WorkTimeRange
- */
-export interface WorkTimeRange {
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkTimeRange
-     */
-    end: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof WorkTimeRange
-     */
-    isWeekend: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkTimeRange
-     */
-    price: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof WorkTimeRange
-     */
-    start: string;
 }
 /**
  * 

@@ -10,6 +10,7 @@ class AssetStore {
     @observable selectedAssetId = ""
     private loadedLocationId: string = ""
     private init = false;
+    private loadPromise: Promise<void> = null;
 
     constructor() {
         eventBus.register(this)
@@ -30,7 +31,7 @@ class AssetStore {
         if (locationPubId && locationPubId !== this.loadedLocationId) {
             this.loadedLocationId = locationPubId
 
-            assetsApi().assetsListUsingPOST({
+            this.loadPromise = assetsApi().assetsListUsingPOST({
                 locationPubId: locationPubId
             }).then(r => {
                 this.assets = r.data
@@ -39,8 +40,10 @@ class AssetStore {
                     this.selectedAssetId = null
                 }
                 this.selectAsset(this.selectedAssetId, false)
+                this.loadPromise = null
             })
         }
+        return this.loadPromise ? this.loadPromise : Promise.resolve();
     }
 
 

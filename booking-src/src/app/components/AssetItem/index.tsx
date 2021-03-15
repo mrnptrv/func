@@ -1,27 +1,20 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {Asset, BookedAsset} from "../../../api";
 import Carousel from '@brainhubeu/react-carousel';
-import Modal from 'react-modal';
+import ReactModal from 'react-modal';
 import ReactDatePicker from "react-datepicker";
-import {bookingApi} from "app/constants";
+import {bookingApi, paymentPlanApi} from "app/constants";
 import * as moment from "moment";
 import {numberFormat} from "app/constants/numberFormat";
 import {ru_RU} from "app/constants/locale_ru";
 import format from "date-fns/format";
+import {Asset, BookedAsset, PaymentPlan} from "app/api";
 
 class AssetItemData {
     @observable carouselValue = 0
-    @observable asset: { workTimeRanges: any[]; imageUrls: string[]; pubId: string; name: string; description: string; type: string; capacity: number } = {
-        pubId: "",
-        name: "",
-        description: "",
-        capacity: 0,
-        type: "",
-        imageUrls: ["1", "2"],
-        workTimeRanges: []
-    }
+    @observable asset: Asset = null
+    @observable paymentPlan: PaymentPlan = null
     @observable date = new Date()
     @observable workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
     @observable isOpenBookingModal = false
@@ -67,12 +60,25 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         this.data.date = this.props.bookingDate
         this.data.bookingDate = this.props.bookingDate
 
+        if (this.data.asset.paymentPlanId) {
+            paymentPlanApi().getPaymentPlanUsingGET(this.data.asset.paymentPlanId)
+                .then((res) => {
+                    this.data.paymentPlan = res.data
+                    this.calcHoursAndPrice(this.props.bookedAsset);
+                })
+        } else {
+            this.calcHoursAndPrice(this.props.bookedAsset)
+        }
+
+    }
+
+    private calcHoursAndPrice(bookedAssets: Array<BookedAsset>) {
         let workTimeHours: Array<WorkTimeHour> = this.calculateWorkTimeHours();
         this.data.workTimeHours = workTimeHours
         this.data.bookingWorkTimeHours = workTimeHours
 
 
-        this.markWorkTimeHoursBooked(this.props.bookedAsset)
+        this.markWorkTimeHoursBooked(bookedAssets)
         this.calculatePrice()
     }
 
@@ -85,9 +91,10 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         let workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
         let isWeekend = this.data.bookingDate.getDay() === 6 || this.data.bookingDate.getDay() === 0;
         let a = this.data.asset
-        let workTimeRanges = a.workTimeRanges.filter(wtr => wtr.isWeekend == isWeekend)
+        let workTimeRanges = this.data.paymentPlan?.assumption?.workTimeRanges
+            ?.filter(wtr => wtr.isWeekend == isWeekend)
 
-        if (workTimeRanges.length > 0) {
+        if (workTimeRanges?.length > 0) {
             let minStartHour = this.getHour(workTimeRanges[0].start)
             let maxEndHour = this.getHour(workTimeRanges[0].end)
 
@@ -361,8 +368,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             assetId: this.data.asset.pubId
         }).then(r => {
             let bookedAssets = r.data;
-            this.markWorkTimeHoursBooked(bookedAssets)
-            this.calculatePrice()
+            this.calcHoursAndPrice(bookedAssets)
         }).catch(e => {
             console.error(e.response.data);
         })
@@ -379,13 +385,13 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                         {this.data.asset.name}
                     </h2>
                     <div dangerouslySetInnerHTML={{ __html: this.data.asset.description }}/><p className="space__text">{this.data.asset.description}</p>
-                    {this.data.asset.workTimeRanges.length > 0 ?
+                    {this.data.paymentPlan?.assumption?.workTimeRanges.length > 0 ?
                         <div
                             className="space__accordion space__accordion--price ">
                             <button className="space__button unbutton" type="button">Стоимость</button>
                             <table className="space__table space__accordion-content">
                                 <tbody>
-                                {this.data.asset.workTimeRanges
+                                {this.data.paymentPlan?.assumption?.workTimeRanges
                                     .filter(wtr => !wtr.isWeekend)
                                     .map((wtr, index) =>
                                         <tr key={index} className="space__row">
@@ -397,7 +403,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                         </tr>
                                     )
                                 }
-                                {this.data.asset.workTimeRanges
+                                {this.data.paymentPlan?.assumption?.workTimeRanges
                                     .filter(wtr => wtr.isWeekend)
                                     .map((wtr, index) =>
                                         <tr key={index + 1000} className="space__row">
@@ -485,7 +491,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                         </div>
                     </div>
                     : <div/>}
-                <Modal
+                <ReactModal
                     isOpen={this.data.isOpenBookingModal}
                     onRequestClose={() => this.data.isOpenBookingModal = false}
                     contentLabel="Example Modal"
@@ -678,7 +684,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                             }
                         </div>
                     </div>
-                </Modal>
+                </ReactModal>
             </article>
         );
     }
