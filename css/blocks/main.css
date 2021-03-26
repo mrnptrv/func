@@ -147,6 +147,10 @@
   margin-top: 80px;
 }
 
+.location .rooms__slider {
+  margin-top: 0;
+}
+
 .rooms__slider .rooms__track {
   position: relative;
   overflow: visible;

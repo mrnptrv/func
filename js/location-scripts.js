@@ -317,7 +317,7 @@ anchorLinks.forEach((item) => {
         event.preventDefault();
 
         const sectionId = item.getAttribute('href');
-        const scrollAmount = document.querySelector(sectionId).offsetTop - topBar.offsetHeight;
+        const scrollAmount = (window.pageYOffset + document.querySelector(sectionId).getBoundingClientRect().top) - topBar.offsetHeight;
 
         window.scrollTo({
             top: scrollAmount,
