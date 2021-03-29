@@ -56,7 +56,6 @@ const closeForm = form => {
     document.body.classList.remove('no-scroll-ios');
     document.querySelector('html').classList.remove('no-scroll');
     form.classList.remove('popup--shown');
-    form.classList.remove('popup--location');
     document.removeEventListener('keyup', closeFormOnEscape);
     window.location.hash = '';
 };
@@ -75,7 +74,6 @@ document.querySelectorAll('.apply-button').forEach((item) => {
         document.querySelector('.popup__subtitle').innerText = ' ';
         if (item.dataset.goal === 'try') {
             document.querySelector('.popup__headline').innerText = 'Запишись на экскурсию';
-            document.querySelector('.popup').classList.add('popup--location');
         } else if (item.dataset.goal === 'demo') {
             document.querySelector('.popup__headline').innerText = 'Запишись на демо-день';
             document.querySelector('.popup__subtitle').innerText = 'стоимость демо-дня 100 руб';
