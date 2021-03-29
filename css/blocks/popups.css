@@ -177,8 +177,24 @@
   margin-bottom: 16px;
 }
 
-.popup__group:nth-of-type(even) {
+.popup:not(.popup--location) .popup__group:nth-of-type(even) {
   margin-right: 0;
+}
+
+.popup--location .popup__group:nth-of-type(odd) {
+  margin-right: 0;
+}
+
+.popup--location .popup__group--name {
+  width: 100%;
+}
+
+.popup__group--location {
+  display: none;
+}
+
+.popup--location .popup__group--location {
+  display: block;
 }
 
 .popup__group--message {

@@ -346,7 +346,7 @@
             <svg width="16" height="16"><use xlink:href="#arrow-left"></use></svg>
             На главную
           </a>
-          <h1 class="city-nav__headline headline">fun(c) Ижевск</h1>
+          <h1 class="city-nav__headline headline">fun(c) Казань</h1>
         </div>
         <ul class="city-nav__list list">
           <li class="city-nav__item">
@@ -375,7 +375,7 @@
         <div class="intro__content abstract__content">
           <p class="intro__text text">fun(c) Казань располагается в историческом районе города по адресу проезд Тимирбулатахметова 3/4. Коворкинг занимает всё здание (около 2750 м<sup>2</sup>), имеет около 320 фиксированных рабочих мест, и здесь одновременно может работать до 400 человек.</p>
           <p class="intro__text text">Кроме комфорта рабочих мест, вы здесь также найдёте хаб / кафетерий (320 м<sup>2</sup>), несколько зон отдыха, спортзал, игровую комнату, душевые, парковку на 100 автомобилей.</p>
-          <p class="intro__text text">fun(c)&nbsp;&mdash; идеальное место для фрилансера, а также небольших компаний (от 2 до 40 человек). Среди наших резидентов вы найдёте программистов, дизайнеров, проектировщиков, маркетологов и прочих профессионалов, производящих "цифровые продукты".</p>
+          <p class="intro__text text">fun(c)&nbsp;&mdash; идеальное место для фрилансера, а также небольших компаний (от 2 до 40 человек). Среди наших резидентов вы найдёте программистов, дизайнеров, проектировщиков, маркетологов и прочих профессионалов, производящих «цифровые продукты».</p>
         </div>
       </div>
     </section>
@@ -888,13 +888,20 @@
       <h3 class="popup__subtitle"></h3>
       <div class="popup__wrapper">
         <input id="apply-goal" name="apply-goal" type="hidden" value="general">
-        <p class="popup__group group">
+        <p class="popup__group popup__group--name group">
           <input class="popup__input input" id="apply-name" name="apply-name" type="text" placeholder="&nbsp;" required>
           <label class="popup__label label" for="apply-name">Имя</label>
         </p>
         <p class="popup__group group">
           <input class="popup__input input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;" maxlength="18" required>
           <label class="popup__label label" for="apply-phone">Номер телефона</label>
+        </p>
+        <p class="popup__group popup__group--location group">
+          <select class="popup__input input" id="apply-location" name="apply-location" required>
+            <option value="IJK">Ижевск</option>
+            <option value="KZN" selected>Казань</option>
+          </select>
+          <label class="popup__label label" for="apply-location">Локация</label>
         </p>
         <p class="popup__group popup__group--message group group--message">
           <textarea class="popup__input popup__input--message input input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;" required></textarea>
