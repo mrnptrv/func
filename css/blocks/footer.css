@@ -58,7 +58,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 160px;
+  min-height: 88px;
   padding: 24px 0;
 }
 
@@ -172,10 +172,6 @@
 /* responsive */
 
 @media (max-width: 1279px) {
-  .footer__container {
-    min-height: 120px;
-  }
-
   .footer__container--bottom {
     flex-wrap: wrap;
   }

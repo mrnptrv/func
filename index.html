@@ -337,45 +337,41 @@
           <div class="intro__abstract abstract">
             <h2 class="intro__headline headline abstract__headline">О нас</h2>
             <div class="intro__content abstract__content">
-              <p class="intro__text text">
-			  fun(c)&nbsp;&mdash; это гибкое многофункциональное пространство с готовыми офисами и рабочими местами в опенспейс, переговорными комнатами и зонами отдыха, оптимизированное для продуктивной работы, творчества и общения.
-              <p class="intro__text text">fun(c) идеально подходит для фрилансеров и небольших компаний от 2 до 40 человек. У нас вы сможете бросить якорь и сосредоточиться на работе, встретиться с клиентом, провести собрание или мероприятие, а также пообщаться со своими коллегами. 
-			  </p>
-			  <p class="intro__text text">
-				Среди резидентов fun(c) вы найдете программистов, дизайнеров, проектировщиков, маркетологов и прочих профессионалов производящих «цифровые продукты».
-			  </p>
+              <p class="intro__text text">fun(c)&nbsp;&mdash; это гибкое многофункциональное пространство с готовыми офисами и рабочими местами в опенспейс, переговорными комнатами и зонами отдыха, оптимизированное для продуктивной работы, творчества и общения.</p>
+              <p class="intro__text text">fun(c) идеально подходит для фрилансеров и небольших компаний от 2 до 40 человек. У нас вы сможете бросить якорь и сосредоточиться на работе, встретиться с клиентом, провести собрание или мероприятие, а также пообщаться со своими коллегами.</p>
+              <p class="intro__text text">Среди резидентов fun(c) вы найдете программистов, дизайнеров, проектировщиков, маркетологов и прочих профессионалов, производящих «цифровые продукты».</p>
             </div>
           </div>
           <div class="intro__slider glide">
             <div class="intro__track glide__track" data-glide-el="track">
-              <ul class="intro__slides-list list glide__slides">
-                <li class="intro__slide glide__slide">
+              <div class="intro__slides-list list glide__slides">
+                <a class="intro__slide glide__slide" href="location-izhevsk.html">
                   <figure class="intro__pic-wrapper">
                     <img class="intro__pic" src="img/top-slider-work.jpg" width="600" height="356" alt="fun(c) в Ижевске">
                     <figcaption class="intro__caption caption">
                       <span class="intro__caption-text caption__text">fun(c) Ижевск</span>
-                      <a class="intro__link circle-button caption__button" href="location-izhevsk.html">
+                      <span class="intro__link circle-button caption__button">
                         <svg width="16" height="16">
                           <use xlink:href="#arrow-right"></use>
                         </svg>
-                      </a>
+                      </span>
                     </figcaption>
                   </figure>
-                </li>
-                <li class="intro__slide glide__slide">
-                  <img class="intro__pic" src="img/top-slider-work.jpg" width="600" height="356" alt="fun(c) в Казани">
+                </a>
+                <a class="intro__slide glide__slide" href="location-kazan.html">
                   <figure class="intro__pic-wrapper">
+                    <img class="intro__pic" src="img/top-slider-work.jpg" width="600" height="356" alt="fun(c) в Казани">
                     <figcaption class="intro__caption caption">
                       <span class="intro__caption-text caption__text">fun(c) Казань</span>
-                      <a class="intro__link circle-button caption__button" href="location-kazan.html">
+                      <span class="intro__link circle-button caption__button">
                         <svg width="16" height="16">
                           <use xlink:href="#arrow-right"></use>
                         </svg>
-                      </a>
+                      </span>
                     </figcaption>
                   </figure>
-                </li>
-              </ul>
+                </a>
+              </div>
             </div>
             <div class="intro__bullets glide__bullets" data-glide-el="controls[nav]">
               <button class="intro__bullet glide__bullet unbutton" type="button" data-glide-dir="=0"></button>
@@ -468,7 +464,7 @@
           <div class="events__abstract abstract">
             <div class="abstract__content">
               <h2 class="events__headline headline">Наша атмосфера</h2>
-              <p class="events__text text">fun(c) - это пространство, которое вдохновляет! Окунитесь в нашу атмосферу, окружите себя увлеченными своим делом людьми и почувствуйте преимущество работы в fun(c).</p>
+              <p class="events__text text">fun(c)&nbsp;&mdash; это пространство, которое вдохновляет! Окунитесь в нашу атмосферу, окружите себя увлечёнными своим делом людьми и почувствуйте преимущество работы в fun(c).</p>
             </div>
           </div>
           <div class="events__slider glide">
@@ -652,7 +648,7 @@
                 </svg>
                 <div class="amenities__description">
                   <b class="amenities__name">Ресепшн с администратором</b>
-                  <p class="amenities__text text">Услуги ресепшн (прием почты, встреча гостей)</p>
+                  <p class="amenities__text text">Услуги ресепшн (приём почты, встреча гостей)</p>
                 </div>
               </li>
             </ul>
@@ -759,13 +755,21 @@
           <h3 class="popup__subtitle"></h3>
           <div class="popup__wrapper">
             <input id="apply-goal" name="apply-goal" type="hidden" value="general">
-            <p class="popup__group group">
+            <p class="popup__group popup__group--name group">
               <input class="popup__input input" id="apply-name" name="apply-name" type="text" placeholder="&nbsp;" required>
               <label class="popup__label label" for="apply-name">Имя</label>
             </p>
             <p class="popup__group group">
               <input class="popup__input input" id="apply-phone" name="apply-phone" type="tel" placeholder="&nbsp;" maxlength="18" required>
               <label class="popup__label label" for="apply-phone">Номер телефона</label>
+            </p>
+            <p class="popup__group popup__group--location group">
+              <select class="popup__input input" id="apply-location" name="apply-location" required>
+                <option value="" disabled selected hidden>Выбери город</option>
+                <option value="IJK">Ижевск</option>
+                <option value="KZN">Казань</option>
+              </select>
+              <label class="popup__label label" for="apply-location">Локация</label>
             </p>
             <p class="popup__group popup__group--message group group--message">
               <textarea class="popup__input popup__input--message input input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;" required></textarea>
