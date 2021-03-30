@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
+import Select from 'react-select'
 import {paymentPlanApi} from "app/constants/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
@@ -14,11 +15,7 @@ import {TimeUnitSelect} from "app/components/TimeUnitSelect";
 import {TIME_UNIT_CHANGE_TOPIC, TIME_UNIT_STORE} from "app/store/TimeUnitStore";
 import {WORK_HOURS} from "app/constants/constants";
 import {eventBus, subscribe} from "mobx-event-bus2";
-import {AccessAssumptionReq, WorkTimeRangeReq} from "app/api";
-import {HasAccessAssumptionSelect} from "app/components/HasAccessAssumptionSelect";
-import {HAS_ACCESS_ASSUMPTION_STORE} from "app/store/HasAccessAssumptionStore";
-import {PaymentPlanMultiSelect} from "app/components/PaymentPlanMultiSelect";
-import {PAYMENT_PLAN_MULTI_SELECT_STORE} from "app/store/PaymentPlanMultiSelectStore";
+import {AccessAssumptionReq, Asset, AssetAssumptionReq, WorkTimeRangeReq} from "app/api";
 import {MainMenu} from "app/components";
 
 class PaymentPlanCreateData {
@@ -33,6 +30,8 @@ class PaymentPlanCreateData {
     @observable isSaving = false
     @observable beginDisabled = false;
     @observable endDisabled = false;
+    @observable selectedAccessAssumptionAssets: Array<Asset> = new Array<Asset>();
+    @observable selectedAssetAssumptionAssets: Array<Asset> = new Array<Asset>();
 }
 
 @observer
@@ -42,14 +41,13 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
     private assetStore = ASSET_STORE
     private companyStore = COMPANY_STORE
     private timeUnitStore = TIME_UNIT_STORE
-    private hasAccessAssumptionStore = HAS_ACCESS_ASSUMPTION_STORE
-    private paymentPlanStore = PAYMENT_PLAN_MULTI_SELECT_STORE
 
     constructor(props: any, context: any) {
         super(props, context);
         eventBus.register(this)
         this.changeTimeUnit()
-        this.assetStore.loadAssets()
+        this.assetStore.loadAssets().then(() => {
+        })
     }
 
     @subscribe(TIME_UNIT_CHANGE_TOPIC)
@@ -72,14 +70,20 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
     }
 
     private getAccessAssumptionReq(): AccessAssumptionReq {
-        if (this.hasAccessAssumptionStore.selectedId() == "NA" &&
-            this.paymentPlanStore.selectedPaymentPlans.length == 0
-        ) {
+        if (this.data.selectedAccessAssumptionAssets.length == 0) {
             return null
         }
         return {
-            paymentPlanIds: this.paymentPlanStore.selectedPaymentPlans.map(it => it.pubId),
-            access: this.hasAccessAssumptionStore.selectedId()
+            assetsIds: this.data.selectedAccessAssumptionAssets.map(it => it.pubId),
+        }
+    }
+
+    private getAssetAssumptionReq(): AssetAssumptionReq {
+        if (this.data.selectedAssetAssumptionAssets.length == 0) {
+            return null
+        }
+        return {
+            assetsIds: this.data.selectedAssetAssumptionAssets.map(it => it.pubId),
         }
     }
 
@@ -98,7 +102,8 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
             companyPubId: this.companyStore.selectedCompanyPubId(),
             assumption: {
                 workTimeRanges: this.data.workTimeRanges,
-                access: this.getAccessAssumptionReq()
+                access: this.getAccessAssumptionReq(),
+                asset: this.getAssetAssumptionReq()
             }
         }).then((r) => {
             this.data.isSaving = false
@@ -148,6 +153,63 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
             wtr.isWeekend = isWeekend
         }
     }
+
+    private accessAssumptionDefaultValue() {
+        if (this.data.selectedAccessAssumptionAssets) {
+            return this.data.selectedAccessAssumptionAssets.map(it => ({
+                label: it.name,
+                value: it.pubId
+            }));
+        }
+
+        return [];
+    }
+
+    private accessAssumptionOptions() {
+        return this.assetStore.assets.map(l => ({"label": l.name, "value": l.pubId}))
+    }
+
+    private accessAssumptionSelect(selected) {
+        this.data.selectedAccessAssumptionAssets = []
+        if (selected) {
+            selected.forEach(it => {
+                let selected = this.assetStore.assets.find(l => l.pubId === it.value)
+
+                if (selected) {
+                    this.data.selectedAccessAssumptionAssets.push(selected)
+                }
+            })
+        }
+    }
+
+    private assetAssumptionDefaultValue() {
+        if (this.data.selectedAssetAssumptionAssets) {
+            return this.data.selectedAssetAssumptionAssets.map(it => ({
+                label: it.name,
+                value: it.pubId
+            }));
+        }
+
+        return [];
+    }
+
+    private assetAssumptionOptions() {
+        return this.assetStore.assets.map(l => ({"label": l.name, "value": l.pubId}))
+    }
+
+    private assetAssumptionSelect(selected) {
+        this.data.selectedAssetAssumptionAssets = []
+        if (selected) {
+            selected.forEach(it => {
+                let selected = this.assetStore.assets.find(l => l.pubId === it.value)
+
+                if (selected) {
+                    this.data.selectedAssetAssumptionAssets.push(selected)
+                }
+            })
+        }
+    }
+
 
     render() {
         return (
@@ -269,12 +331,22 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                         </Form.Group>
                     ) : (<></>)}
                     <Form.Group>
-                        <Form.Label>Есть доступ:</Form.Label>
-                        <HasAccessAssumptionSelect/>
+                        <Form.Label>Будет применяться к:</Form.Label>
+                        <Select
+                            isMulti
+                            value={this.assetAssumptionDefaultValue()}
+                            options={this.assetAssumptionOptions()}
+                            onChange={e => this.assetAssumptionSelect(e)}
+                        />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Есть доступ по платежному плану:</Form.Label>
-                        <PaymentPlanMultiSelect/>
+                        <Form.Label>Есть доступ к:</Form.Label>
+                        <Select
+                            isMulti
+                            value={this.accessAssumptionDefaultValue()}
+                            options={this.accessAssumptionOptions()}
+                            onChange={e => this.accessAssumptionSelect(e)}
+                        />
                     </Form.Group>
                     <Form.Group>
                         {this.data.error &&

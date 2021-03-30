@@ -7,13 +7,18 @@ class LocationStore {
     @observable locations: Array<Location> = new Array<Location>();
     @observable selectedLocation: Location = null
     @observable selectedLocationId: string = ""
+    private loadPromise: Promise<void> = null;
 
     constructor() {
     }
 
     @action
     loadLocations() {
-        locationApi().getLocationListUsingPOST(null).then(r => {
+        if (this.loadPromise) {
+            return this.loadPromise
+        }
+
+        this.loadPromise = locationApi().getLocationListUsingPOST(null).then(r => {
             this.locations = r.data
 
             if (this.selectedLocationId) {
@@ -21,7 +26,10 @@ class LocationStore {
             } else if (r.data.length > 0) {
                 this.selectLocation(r.data[0].pubId)
             }
+            this.loadPromise = null
         })
+
+        return this.loadPromise
     }
 
     @action

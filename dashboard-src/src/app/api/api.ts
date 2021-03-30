@@ -27,16 +27,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface AccessAssumptionReq {
     /**
      * 
-     * @type {string}
-     * @memberof AccessAssumptionReq
-     */
-    access: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof AccessAssumptionReq
      */
-    paymentPlanIds?: Array<string>;
+    assetsIds?: Array<string>;
 }
 /**
  * 
@@ -46,16 +40,10 @@ export interface AccessAssumptionReq {
 export interface AccessAssumptionRes {
     /**
      * 
-     * @type {string}
-     * @memberof AccessAssumptionRes
-     */
-    access: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof AccessAssumptionRes
      */
-    paymentPlanIds: Array<string>;
+    assetsIds: Array<string>;
 }
 /**
  * 
@@ -111,6 +99,32 @@ export interface Asset {
      * @memberof Asset
      */
     type: string;
+}
+/**
+ * 
+ * @export
+ * @interface AssetAssumptionReq
+ */
+export interface AssetAssumptionReq {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AssetAssumptionReq
+     */
+    assetsIds?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface AssetAssumptionRes
+ */
+export interface AssetAssumptionRes {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AssetAssumptionRes
+     */
+    assetsIds: Array<string>;
 }
 /**
  * 
@@ -230,10 +244,16 @@ export interface Booking {
     status: string;
     /**
      * 
-     * @type {UserData}
+     * @type {string}
      * @memberof Booking
      */
-    userData: UserData;
+    uid: string;
+    /**
+     * 
+     * @type {UserDataRes}
+     * @memberof Booking
+     */
+    userData: UserDataRes;
 }
 /**
  * 
@@ -270,19 +290,19 @@ export interface BookingRequest {
      * @type {string}
      * @memberof BookingRequest
      */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BookingRequest
-     */
-    phone: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BookingRequest
-     */
     start: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BookingRequest
+     */
+    uid?: string;
+    /**
+     * 
+     * @type {UserDataReq}
+     * @memberof BookingRequest
+     */
+    userData?: UserDataReq;
 }
 /**
  * 
@@ -702,6 +722,25 @@ export interface DeleteUserRequest {
 /**
  * 
  * @export
+ * @interface ExchangeCodeRequest
+ */
+export interface ExchangeCodeRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExchangeCodeRequest
+     */
+    code?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExchangeCodeRequest
+     */
+    mobile?: string;
+}
+/**
+ * 
+ * @export
  * @interface FindBookedAssetsRequest
  */
 export interface FindBookedAssetsRequest {
@@ -841,6 +880,31 @@ export interface LoginResponse {
      * @memberof LoginResponse
      */
     accessToken: string;
+}
+/**
+ * 
+ * @export
+ * @interface MinPaymentPlanRequest
+ */
+export interface MinPaymentPlanRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MinPaymentPlanRequest
+     */
+    assetId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MinPaymentPlanRequest
+     */
+    date?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MinPaymentPlanRequest
+     */
+    uid?: string;
 }
 /**
  * 
@@ -1154,6 +1218,12 @@ export interface PaymentPlanAssumptionReq {
     access?: AccessAssumptionReq;
     /**
      * 
+     * @type {AssetAssumptionReq}
+     * @memberof PaymentPlanAssumptionReq
+     */
+    asset?: AssetAssumptionReq;
+    /**
+     * 
      * @type {Array<WorkTimeRangeReq>}
      * @memberof PaymentPlanAssumptionReq
      */
@@ -1171,6 +1241,12 @@ export interface PaymentPlanAssumptionRes {
      * @memberof PaymentPlanAssumptionRes
      */
     access?: AccessAssumptionRes;
+    /**
+     * 
+     * @type {AssetAssumptionRes}
+     * @memberof PaymentPlanAssumptionRes
+     */
+    asset?: AssetAssumptionRes;
     /**
      * 
      * @type {Array<WorkTimeRangeRes>}
@@ -1233,6 +1309,19 @@ export interface RegisterRequest {
      * @memberof RegisterRequest
      */
     password?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SendCodeRequest
+ */
+export interface SendCodeRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof SendCodeRequest
+     */
+    mobile?: string;
 }
 /**
  * 
@@ -1526,19 +1615,19 @@ export interface UpdateRequest {
      * @type {string}
      * @memberof UpdateRequest
      */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateRequest
-     */
-    phone: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateRequest
-     */
     start: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    uid?: string;
+    /**
+     * 
+     * @type {UserDataReq}
+     * @memberof UpdateRequest
+     */
+    userData?: UserDataReq;
 }
 /**
  * 
@@ -1701,19 +1790,38 @@ export interface User {
 /**
  * 
  * @export
- * @interface UserData
+ * @interface UserDataReq
  */
-export interface UserData {
+export interface UserDataReq {
     /**
      * 
      * @type {string}
-     * @memberof UserData
+     * @memberof UserDataReq
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof UserData
+     * @memberof UserDataReq
+     */
+    phone: string;
+}
+/**
+ * 
+ * @export
+ * @interface UserDataRes
+ */
+export interface UserDataRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataRes
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataRes
      */
     phone: string;
 }
@@ -2443,6 +2551,54 @@ export const AuthAPIApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @summary Login with mobile and password
+         * @param {ExchangeCodeRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exchangeCodeUsingPOST: async (request: ExchangeCodeRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'request' is not null or undefined
+            if (request === null || request === undefined) {
+                throw new RequiredError('request','Required parameter request was null or undefined when calling exchangeCodeUsingPOST.');
+            }
+            const localVarPath = `/api/auth/exchangeCode`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof request !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(request !== undefined ? request : {}) : (request || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary get asset
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2576,6 +2732,54 @@ export const AuthAPIApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary sendCode
+         * @param {SendCodeRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendCodeUsingPOST: async (request: SendCodeRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'request' is not null or undefined
+            if (request === null || request === undefined) {
+                throw new RequiredError('request','Required parameter request was null or undefined when calling sendCodeUsingPOST.');
+            }
+            const localVarPath = `/api/auth/sendCode`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof request !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(request !== undefined ? request : {}) : (request || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2585,6 +2789,20 @@ export const AuthAPIApiAxiosParamCreator = function (configuration?: Configurati
  */
 export const AuthAPIApiFp = function(configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary Login with mobile and password
+         * @param {ExchangeCodeRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async exchangeCodeUsingPOST(request: ExchangeCodeRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponse>> {
+            const localVarAxiosArgs = await AuthAPIApiAxiosParamCreator(configuration).exchangeCodeUsingPOST(request, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
         /**
          * 
          * @summary get asset
@@ -2626,6 +2844,20 @@ export const AuthAPIApiFp = function(configuration?: Configuration) {
                 return axios.request(axiosRequestArgs);
             };
         },
+        /**
+         * 
+         * @summary sendCode
+         * @param {SendCodeRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendCodeUsingPOST(request: SendCodeRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await AuthAPIApiAxiosParamCreator(configuration).sendCodeUsingPOST(request, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
     }
 };
 
@@ -2635,6 +2867,16 @@ export const AuthAPIApiFp = function(configuration?: Configuration) {
  */
 export const AuthAPIApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
+        /**
+         * 
+         * @summary Login with mobile and password
+         * @param {ExchangeCodeRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exchangeCodeUsingPOST(request: ExchangeCodeRequest, options?: any): AxiosPromise<LoginResponse> {
+            return AuthAPIApiFp(configuration).exchangeCodeUsingPOST(request, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @summary get asset
@@ -2664,6 +2906,16 @@ export const AuthAPIApiFactory = function (configuration?: Configuration, basePa
         registerUsingPOST(registerRequest: RegisterRequest, options?: any): AxiosPromise<void> {
             return AuthAPIApiFp(configuration).registerUsingPOST(registerRequest, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary sendCode
+         * @param {SendCodeRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendCodeUsingPOST(request: SendCodeRequest, options?: any): AxiosPromise<void> {
+            return AuthAPIApiFp(configuration).sendCodeUsingPOST(request, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -2674,6 +2926,18 @@ export const AuthAPIApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class AuthAPIApi extends BaseAPI {
+    /**
+     * 
+     * @summary Login with mobile and password
+     * @param {ExchangeCodeRequest} request request
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthAPIApi
+     */
+    public exchangeCodeUsingPOST(request: ExchangeCodeRequest, options?: any) {
+        return AuthAPIApiFp(this.configuration).exchangeCodeUsingPOST(request, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary get asset
@@ -2707,6 +2971,18 @@ export class AuthAPIApi extends BaseAPI {
      */
     public registerUsingPOST(registerRequest: RegisterRequest, options?: any) {
         return AuthAPIApiFp(this.configuration).registerUsingPOST(registerRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary sendCode
+     * @param {SendCodeRequest} request request
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthAPIApi
+     */
+    public sendCodeUsingPOST(request: SendCodeRequest, options?: any) {
+        return AuthAPIApiFp(this.configuration).sendCodeUsingPOST(request, options).then((request) => request(this.axios, this.basePath));
     }
 
 }
@@ -4879,6 +5155,54 @@ export const PaymentPlanApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @summary Find booked assets
+         * @param {MinPaymentPlanRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        minPaymentPlanUsingPOST: async (request: MinPaymentPlanRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'request' is not null or undefined
+            if (request === null || request === undefined) {
+                throw new RequiredError('request','Required parameter request was null or undefined when calling minPaymentPlanUsingPOST.');
+            }
+            const localVarPath = `/api/paymentplan/minPaymentPlan`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof request !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(request !== undefined ? request : {}) : (request || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update payment plan
          * @param {UpdatePaymentPlanRequest} updateRequest updateRequest
          * @param {*} [options] Override http request option.
@@ -4992,6 +5316,20 @@ export const PaymentPlanApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Find booked assets
+         * @param {MinPaymentPlanRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async minPaymentPlanUsingPOST(request: MinPaymentPlanRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPlan>> {
+            const localVarAxiosArgs = await PaymentPlanApiAxiosParamCreator(configuration).minPaymentPlanUsingPOST(request, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Update payment plan
          * @param {UpdatePaymentPlanRequest} updateRequest updateRequest
          * @param {*} [options] Override http request option.
@@ -5052,6 +5390,16 @@ export const PaymentPlanApiFactory = function (configuration?: Configuration, ba
          */
         getPaymentPlanUsingGET(pubId: string, options?: any): AxiosPromise<PaymentPlan> {
             return PaymentPlanApiFp(configuration).getPaymentPlanUsingGET(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Find booked assets
+         * @param {MinPaymentPlanRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        minPaymentPlanUsingPOST(request: MinPaymentPlanRequest, options?: any): AxiosPromise<PaymentPlan> {
+            return PaymentPlanApiFp(configuration).minPaymentPlanUsingPOST(request, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5119,6 +5467,18 @@ export class PaymentPlanApi extends BaseAPI {
      */
     public getPaymentPlanUsingGET(pubId: string, options?: any) {
         return PaymentPlanApiFp(this.configuration).getPaymentPlanUsingGET(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Find booked assets
+     * @param {MinPaymentPlanRequest} request request
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentPlanApi
+     */
+    public minPaymentPlanUsingPOST(request: MinPaymentPlanRequest, options?: any) {
+        return PaymentPlanApiFp(this.configuration).minPaymentPlanUsingPOST(request, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

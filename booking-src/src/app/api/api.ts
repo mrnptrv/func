@@ -27,16 +27,10 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 export interface AccessAssumptionReq {
     /**
      * 
-     * @type {string}
-     * @memberof AccessAssumptionReq
-     */
-    access: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof AccessAssumptionReq
      */
-    paymentPlanIds?: Array<string>;
+    assetsIds?: Array<string>;
 }
 /**
  * 
@@ -46,16 +40,10 @@ export interface AccessAssumptionReq {
 export interface AccessAssumptionRes {
     /**
      * 
-     * @type {string}
-     * @memberof AccessAssumptionRes
-     */
-    access: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof AccessAssumptionRes
      */
-    paymentPlanIds: Array<string>;
+    assetsIds: Array<string>;
 }
 /**
  * 
@@ -111,6 +99,32 @@ export interface Asset {
      * @memberof Asset
      */
     type: string;
+}
+/**
+ * 
+ * @export
+ * @interface AssetAssumptionReq
+ */
+export interface AssetAssumptionReq {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AssetAssumptionReq
+     */
+    assetsIds?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface AssetAssumptionRes
+ */
+export interface AssetAssumptionRes {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AssetAssumptionRes
+     */
+    assetsIds: Array<string>;
 }
 /**
  * 
@@ -230,10 +244,10 @@ export interface Booking {
     status: string;
     /**
      * 
-     * @type {UserData}
+     * @type {UserDataRes}
      * @memberof Booking
      */
-    userData: UserData;
+    userData: UserDataRes;
 }
 /**
  * 
@@ -270,19 +284,19 @@ export interface BookingRequest {
      * @type {string}
      * @memberof BookingRequest
      */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BookingRequest
-     */
-    phone: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof BookingRequest
-     */
     start: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BookingRequest
+     */
+    uid?: string;
+    /**
+     * 
+     * @type {UserDataReq}
+     * @memberof BookingRequest
+     */
+    userData?: UserDataReq;
 }
 /**
  * 
@@ -753,6 +767,12 @@ export interface ListRequest {
      * @type {string}
      * @memberof ListRequest
      */
+    locationId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ListRequest
+     */
     status?: string;
     /**
      * 
@@ -1148,6 +1168,12 @@ export interface PaymentPlanAssumptionReq {
     access?: AccessAssumptionReq;
     /**
      * 
+     * @type {AssetAssumptionReq}
+     * @memberof PaymentPlanAssumptionReq
+     */
+    asset?: AssetAssumptionReq;
+    /**
+     * 
      * @type {Array<WorkTimeRangeReq>}
      * @memberof PaymentPlanAssumptionReq
      */
@@ -1165,6 +1191,12 @@ export interface PaymentPlanAssumptionRes {
      * @memberof PaymentPlanAssumptionRes
      */
     access?: AccessAssumptionRes;
+    /**
+     * 
+     * @type {AssetAssumptionRes}
+     * @memberof PaymentPlanAssumptionRes
+     */
+    asset?: AssetAssumptionRes;
     /**
      * 
      * @type {Array<WorkTimeRangeRes>}
@@ -1520,19 +1552,19 @@ export interface UpdateRequest {
      * @type {string}
      * @memberof UpdateRequest
      */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateRequest
-     */
-    phone: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateRequest
-     */
     start: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateRequest
+     */
+    uid?: string;
+    /**
+     * 
+     * @type {UserDataReq}
+     * @memberof UpdateRequest
+     */
+    userData?: UserDataReq;
 }
 /**
  * 
@@ -1695,19 +1727,38 @@ export interface User {
 /**
  * 
  * @export
- * @interface UserData
+ * @interface UserDataReq
  */
-export interface UserData {
+export interface UserDataReq {
     /**
      * 
      * @type {string}
-     * @memberof UserData
+     * @memberof UserDataReq
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof UserData
+     * @memberof UserDataReq
+     */
+    phone: string;
+}
+/**
+ * 
+ * @export
+ * @interface UserDataRes
+ */
+export interface UserDataRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataRes
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataRes
      */
     phone: string;
 }

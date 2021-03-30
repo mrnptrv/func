@@ -3,11 +3,13 @@ import {observer} from 'mobx-react';
 import {Alert, Button, Form, Modal, Spinner} from "react-bootstrap";
 import {observable} from "mobx";
 import {authApi, saveAccessToken} from "app/constants/api";
+import {formatPhone} from "app/constants/utils";
 
 class LoginData {
-    @observable login = ""
-    @observable password = ""
+    @observable mobile = ""
+    @observable code = ""
     @observable error = ""
+    @observable codeSent = false
     @observable isLoading = false
 
 }
@@ -16,21 +18,45 @@ class LoginData {
 export class LoginContainer extends React.Component<any, any> {
     private data = new LoginData()
 
-    register = () => {
-        this.props.history.push("/dashboard/register")
+    private setMobile = (e) => {
+        this.data.mobile = formatPhone(e.target.value)
     }
 
-    login = () => {
+    private setCode = (e) => {
+        this.data.code = e.target.value
+    }
+
+    sendCode = () => {
         this.data.error = ""
         this.data.isLoading = true
-        authApi().loginUsingPOST({
-            mobile: this.data.login,
-            password: this.data.password
+        authApi().sendCodeUsingPOST({
+            mobile: this.data.mobile
         }).then((response) => {
+            this.data.isLoading = false;
+            this.data.codeSent = true;
+        }).catch(error => {
+            if (error && error.response && error.response.data.message) {
+                this.data.error = error.response.data.message
+            }
+
+            this.data.isLoading = false;
+        })
+    }
+
+    exchangeCode = () => {
+        this.data.error = ""
+        this.data.isLoading = true
+
+        authApi().exchangeCodeUsingPOST({
+            mobile: this.data.mobile,
+            code: this.data.code
+        }).then((response) => {
+            this.data.isLoading = false;
+            this.data.codeSent = false;
+
             saveAccessToken(response.data.accessToken)
 
             this.props.history.push("/dashboard/list")
-            this.data.isLoading = false;
         }).catch(error => {
             if (error && error.response && error.response.data.message) {
                 this.data.error = error.response.data.message
@@ -43,41 +69,64 @@ export class LoginContainer extends React.Component<any, any> {
     render() {
         return (
             <Modal.Dialog>
-                <Modal.Header>Войти</Modal.Header>
+                <Modal.Header>
+                    {this.data.codeSent ? "Введите код" : "Войти"}
+                </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group>
-                            <Form.Control type="text" placeholder="Логин"
-                                          value={this.data.login}
-                                          onChange={(e) => this.data.login = e.target.value}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Control type="password" placeholder="Пароль"
-                                          value={this.data.password}
-                                          onChange={(e) => this.data.password = e.target.value}
-                            />
-                        </Form.Group>
+                        {this.data.codeSent ?
+                            <Form.Group>
+                                <Form.Control type="text" placeholder="Sms код"
+                                              value={this.data.code}
+                                              onChange={this.setCode}
+                                />
+                            </Form.Group>
+                            : <Form.Group>
+                                <Form.Control type="text" placeholder="Телефон"
+                                              value={this.data.mobile}
+                                              onChange={this.setMobile}
+                                />
+                            </Form.Group>
+
+                        }
                         {this.data.error &&
                         <Form.Group><Alert variant="danger">{this.data.error}</Alert></Form.Group>}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary"
-                            onClick={this.login}
-                            disabled={this.data.isLoading}
-                    >
-                        Войти
-                        {
-                            this.data.isLoading &&
-                            <Spinner as="span"
-                                     animation="grow"
-                                     size="sm"
-                                     role="status"
-                                     aria-hidden="true"
-                            />
-                        }
-                    </Button>
+                    {this.data.codeSent ?
+                        <Button variant="primary"
+                                onClick={this.exchangeCode}
+                                disabled={this.data.isLoading}
+                        >
+                            Войти
+                            {
+                                this.data.isLoading &&
+                                <Spinner as="span"
+                                         animation="grow"
+                                         size="sm"
+                                         role="status"
+                                         aria-hidden="true"
+                                />
+                            }
+                        </Button>
+                        :
+                        <Button variant="primary"
+                                onClick={this.sendCode}
+                                disabled={this.data.isLoading}
+                        >
+                            Войти
+                            {
+                                this.data.isLoading &&
+                                <Spinner as="span"
+                                         animation="grow"
+                                         size="sm"
+                                         role="status"
+                                         aria-hidden="true"
+                                />
+                            }
+                        </Button>
+                    }
                 </Modal.Footer>
             </Modal.Dialog>
         );

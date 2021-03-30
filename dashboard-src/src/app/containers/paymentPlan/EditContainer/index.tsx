@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as style from "../../style.css"
 import {observer} from 'mobx-react';
-import {observable} from "mobx";
+import {action, observable} from "mobx";
 import {paymentPlanApi} from "app/constants/api";
-import {AccessAssumptionReq, PaymentPlan, WorkTimeRangeReq} from "app/api/api";
+import {AccessAssumptionReq, Asset, AssetAssumptionReq, PaymentPlan, WorkTimeRangeReq} from "app/api/api";
 import {Alert, Button, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
@@ -15,11 +15,8 @@ import {TimeUnitSelect} from "app/components/TimeUnitSelect";
 import {TIME_UNIT_CHANGE_TOPIC, TIME_UNIT_STORE} from "app/store/TimeUnitStore";
 import {WORK_HOURS} from "app/constants/constants";
 import {eventBus, subscribe} from "mobx-event-bus2";
-import {HasAccessAssumptionSelect} from "app/components/HasAccessAssumptionSelect";
-import {HAS_ACCESS_ASSUMPTION_STORE} from "app/store/HasAccessAssumptionStore";
-import {PaymentPlanMultiSelect} from "app/components/PaymentPlanMultiSelect";
-import {PAYMENT_PLAN_MULTI_SELECT_STORE} from "app/store/PaymentPlanMultiSelectStore";
 import {MainMenu} from "app/components";
+import Select from "react-select";
 
 class PaymentPlanEditData {
     @observable isPaymentPlanLoading = true
@@ -29,6 +26,26 @@ class PaymentPlanEditData {
     @observable paymentPlan: PaymentPlan = null
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
+    @observable selectedAccessAssumptionAssets: Array<Asset> = new Array<Asset>();
+    @observable selectedAssetAssumptionAssets: Array<Asset> = new Array<Asset>();
+
+    @action
+    selectAccessAssumptionAsset(pubId) {
+        let selected = ASSET_STORE.assets.find(l => l.pubId === pubId)
+
+        if (selected) {
+            this.selectedAccessAssumptionAssets.push(selected)
+        }
+    }
+
+    @action
+    selectAssetAssumptionAsset(pubId) {
+        let selected = ASSET_STORE.assets.find(l => l.pubId === pubId)
+
+        if (selected) {
+            this.selectedAssetAssumptionAssets.push(selected)
+        }
+    }
 }
 
 @observer
@@ -38,8 +55,6 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
     private assetStore = ASSET_STORE
     private companyStore = COMPANY_STORE
     private timeUnitStore = TIME_UNIT_STORE
-    private hasAccessAssumptionStore = HAS_ACCESS_ASSUMPTION_STORE;
-    private paymentPlanStore = PAYMENT_PLAN_MULTI_SELECT_STORE
 
     cancel = () => {
         this.props.history.push("/dashboard/payment-plan-list")
@@ -61,7 +76,8 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
             companyPubId: this.companyStore.selectedCompanyPubId(),
             assumption: {
                 workTimeRanges: this.data.paymentPlan.assumption.workTimeRanges,
-                access: this.getAccessAssumptionReq()
+                access: this.getAccessAssumptionReq(),
+                asset: this.getAssetAssumptionReq()
             }
         }).then(() => {
             this.data.isSaving = false
@@ -116,35 +132,39 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
         super(props, context);
 
         this.data.isPaymentPlanLoading = true
-        this.assetStore.loadAssets()
 
-        paymentPlanApi().getPaymentPlanUsingGET(this.props.match.params.id)
-            .then(res => {
-                this.data.paymentPlan = res.data
-                this.data.isPaymentPlanLoading = false
+        this.locationStore.loadLocations().then(() => {
+            return this.assetStore.loadAssets()
+        }).then((r) => {
+            paymentPlanApi().getPaymentPlanUsingGET(this.props.match.params.id)
+                .then(res => {
+                    this.data.paymentPlan = res.data
+                    this.data.isPaymentPlanLoading = false
 
-                this.locationStore.selectLocation(this.data.paymentPlan.locationPubId)
-                this.assetStore.selectAsset(this.data.paymentPlan.assetPubId)
-                this.companyStore.select(this.data.paymentPlan.companyPubId)
-                this.timeUnitStore.selectUnit(this.data.paymentPlan.unit)
-                this.hasAccessAssumptionStore.select(
-                    this.data.paymentPlan?.assumption?.access?.access ?? "NA"
-                )
-                this.paymentPlanStore.exceptPaymentPlanId = this.data.paymentPlan.pubId
-                this.paymentPlanStore.loadPaymentPlans(true).then(() => {
-                    this.paymentPlanStore.clear();
-                    //
-                    (this.data.paymentPlan?.assumption?.access?.paymentPlanIds ?? []).forEach(id => {
-                       this.paymentPlanStore.select(id)
+                    this.locationStore.selectLocation(this.data.paymentPlan.locationPubId)
+                    this.assetStore.selectAsset(this.data.paymentPlan.assetPubId)
+                    this.companyStore.select(this.data.paymentPlan.companyPubId)
+                    this.timeUnitStore.selectUnit(this.data.paymentPlan.unit)
+
+                    this.data.selectedAccessAssumptionAssets = [];
+
+                    (this.data.paymentPlan?.assumption?.access?.assetsIds ?? []).forEach(id => {
+                        this.data.selectAccessAssumptionAsset(id);
+                    })
+
+                    this.data.selectedAssetAssumptionAssets = [];
+
+                    (this.data.paymentPlan?.assumption?.asset?.assetsIds ?? []).forEach(id => {
+                        this.data.selectAssetAssumptionAsset(id);
                     })
                 })
-            })
-            .catch(error => {
-                this.data.isPaymentPlanLoading = false
+                .catch(error => {
+                    this.data.isPaymentPlanLoading = false
 
-                if (error && error.response && error.response.data.message) {
-                    this.data.error = error.response.data.message
-                }
+                    if (error && error.response && error.response.data.message) {
+                        this.data.error = error.response.data.message
+                    }
+                })
             })
 
         eventBus.register(this)
@@ -163,16 +183,74 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
     }
 
     private getAccessAssumptionReq(): AccessAssumptionReq {
-        if (this.hasAccessAssumptionStore.selectedId() == "NA" &&
-            this.paymentPlanStore.selectedPaymentPlans.length == 0
-        ) {
+        if (this.data.selectedAccessAssumptionAssets.length == 0) {
+            return null
+        }
+
+        return {
+            assetsIds: this.data.selectedAccessAssumptionAssets.map(it => it.pubId),
+        }
+    }
+
+    private getAssetAssumptionReq(): AssetAssumptionReq {
+        if (this.data.selectedAssetAssumptionAssets.length == 0) {
             return null
         }
         return {
-            paymentPlanIds: this.paymentPlanStore.selectedPaymentPlans.map(it => it.pubId),
-            access: this.hasAccessAssumptionStore.selectedId()
+            assetsIds: this.data.selectedAssetAssumptionAssets.map(it => it.pubId),
         }
     }
+
+    private accessAssumptionDefaultValue() {
+        if (this.data.selectedAccessAssumptionAssets) {
+            return this.data.selectedAccessAssumptionAssets.map(it => ({
+                label: it.name,
+                value: it.pubId
+            }));
+        }
+
+        return [];
+    }
+
+    private accessAssumptionOptions() {
+        return this.assetStore.assets.map(l => ({"label": l.name, "value": l.pubId}))
+    }
+
+    private accessAssumptionSelect(selected) {
+        this.data.selectedAccessAssumptionAssets = []
+        if (selected) {
+            selected.forEach(it => {
+                let pubId = it.value;
+                this.data.selectAccessAssumptionAsset(pubId);
+            })
+        }
+    }
+
+
+    private assetAssumptionDefaultValue() {
+        if (this.data.selectedAssetAssumptionAssets) {
+            return this.data.selectedAssetAssumptionAssets.map(it => ({
+                label: it.name,
+                value: it.pubId
+            }));
+        }
+
+        return [];
+    }
+
+    private assetAssumptionOptions() {
+        return this.assetStore.assets.map(l => ({"label": l.name, "value": l.pubId}))
+    }
+
+    private assetAssumptionSelect(selected) {
+        this.data.selectedAssetAssumptionAssets = []
+        if (selected) {
+            selected.forEach(it => {
+                this.data.selectAssetAssumptionAsset(it.value)
+            })
+        }
+    }
+
 
     render() {
         return (
@@ -292,12 +370,22 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                             </Form.Group>
                         ) : (<></>)}
                         <Form.Group>
-                            <Form.Label>Наличие доступа:</Form.Label>
-                            <HasAccessAssumptionSelect/>
+                            <Form.Label>Будет применяться к:</Form.Label>
+                            <Select
+                                isMulti
+                                value={this.assetAssumptionDefaultValue()}
+                                options={this.assetAssumptionOptions()}
+                                onChange={e => this.assetAssumptionSelect(e)}
+                            />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Наличие доступа по платежным планам:</Form.Label>
-                            <PaymentPlanMultiSelect/>
+                            <Form.Label>Есть доступ к:</Form.Label>
+                            <Select
+                                isMulti
+                                value={this.accessAssumptionDefaultValue()}
+                                options={this.accessAssumptionOptions()}
+                                onChange={e => this.accessAssumptionSelect(e)}
+                            />
                         </Form.Group>
                         <Form.Group>
                             {this.data.error &&

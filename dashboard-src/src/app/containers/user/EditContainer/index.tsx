@@ -13,6 +13,7 @@ import {CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, PAYMENT_PLAN_STORE} from "app/store/
 import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
 import {eventBus, subscribe} from "mobx-event-bus2";
 import {MainMenu} from "app/components";
+import {formatPhone} from "app/constants/utils";
 
 class UserEditData {
     @observable isUserLoading = true
@@ -109,29 +110,7 @@ export class UserEditContainer extends React.Component<any, any> {
     }
 
     private setPhone = (e) => {
-        let newValue = e.target.value
-        newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
-
-
-        let formattedValue = "+" + newValue.slice(0, 1)
-
-        if (newValue.length > 1) {
-            formattedValue += " (" + newValue.slice(1, 4)
-        }
-
-        if (newValue.length > 4) {
-            formattedValue += ") " + newValue.slice(4, 7)
-        }
-
-        if (newValue.length > 7) {
-            formattedValue += "-" + newValue.slice(7, 9)
-        }
-
-        if (newValue.length > 9) {
-            formattedValue += "-" + newValue.slice(9, 11)
-        }
-
-        this.data.user.mobile = formattedValue
+        this.data.user.mobile = formatPhone(e.target.value)
     }
 
     render() {

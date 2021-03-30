@@ -12,6 +12,7 @@ import {eventBus, subscribe} from "mobx-event-bus2";
 import {CompanySelect} from "app/components/CompanySelect";
 import * as style from "app/containers/style.css";
 import {MainMenu} from "app/components";
+import {formatPhone} from "app/constants/utils";
 
 
 class UserCreateData {
@@ -88,30 +89,9 @@ export class UserCreateContainer extends React.Component<any, any> {
     }
 
     private setPhone = (e) => {
-        let newValue = e.target.value
-        newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
-
-
-        let formattedValue = "+" + newValue.slice(0, 1)
-
-        if (newValue.length > 1) {
-            formattedValue += " (" + newValue.slice(1, 4)
-        }
-
-        if (newValue.length > 4) {
-            formattedValue += ") " + newValue.slice(4, 7)
-        }
-
-        if (newValue.length > 7) {
-            formattedValue += "-" + newValue.slice(7, 9)
-        }
-
-        if (newValue.length > 9) {
-            formattedValue += "-" + newValue.slice(9, 11)
-        }
-
-        this.data.phone = formattedValue
+        this.data.phone = formatPhone(e.target.value)
     }
+
 
     render() {
         return (

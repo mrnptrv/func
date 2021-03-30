@@ -10,8 +10,11 @@ import {AssetSelect} from "app/components/AssetSelect";
 import {bookingApi, paymentPlanApi} from "app/constants";
 import format from "date-fns/format";
 import {ASSET_STORE} from "app/store/AssetStore";
-import {Asset, BookedAsset, PaymentPlan, UserData} from "app/api";
+import {Asset, BookedAsset, PaymentPlan} from "app/api";
 import {LOCATION_STORE} from "app/store/LocationStore";
+import {UserSelect} from "app/components/UserSelect";
+import {CHANGE_SELECTED_USER_TOPIC, USER_STORE} from "app/store/UserStore";
+import {eventBus, subscribe} from "mobx-event-bus2";
 
 
 class BookingCreateData {
@@ -20,14 +23,12 @@ class BookingCreateData {
     @observable bookingDate = new Date()
     @observable workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
     @observable paymentPlan: PaymentPlan = null
-    @observable bookingHour:number = 0
+    @observable bookingHour: number = 0
     @observable bookingHourAmount = 0
     @observable bookingPrice = 0
-    @observable userData: UserData = {name: "", phone: ""}
     @observable description = ""
     @observable error = ""
     @observable fieldErrors: Array<String> = new Array<String>()
-
 }
 
 class WorkTimeHour {
@@ -42,9 +43,12 @@ export class BookingCreateContainer extends React.Component<any, any> {
     private data = new BookingCreateData()
     private assetStore = ASSET_STORE
     private locationStore = LOCATION_STORE
+    private userStore = USER_STORE
 
     constructor(props: any, context: any) {
         super(props, context);
+
+        eventBus.register(this)
 
         this.data.bookingDate = new Date(this.props.match.params.day)
         this.data.bookingHour = +(this.props.match.params.hour)
@@ -53,14 +57,9 @@ export class BookingCreateContainer extends React.Component<any, any> {
         this.assetStore.selectAsset(this.props.match.params.assetId);
 
         this.assetStore.loadAssets().then(() => {
-            if (this.assetStore.selectedAsset.paymentPlanId) {
-                return paymentPlanApi().getPaymentPlanUsingGET(this.assetStore.selectedAsset.paymentPlanId)
-            }
-            return null
-        }).then((res) => {
-            this.data.paymentPlan = res?.data
+            return this.loadPaymentPlan()
         }).then(() => {
-            return this.loadBooked()
+            return this.userStore.loadUsers()
         }).then(() => {
             this.data.isBookingLoading = false
         }).catch(error => {
@@ -70,7 +69,41 @@ export class BookingCreateContainer extends React.Component<any, any> {
                 this.data.error = error.response.data.message
             }
         })
+    }
 
+    @subscribe(CHANGE_SELECTED_USER_TOPIC)
+    onChangeSelectedUserListener() {
+        let selectedUser = this.userStore.selectedUser;
+
+        if (selectedUser) {
+           this.loadPaymentPlan()
+        }
+    }
+
+    private loadPaymentPlan() {
+        const f = () => {
+            if (this.userStore.selectedId() && this.assetStore.selectedAsset.paymentPlanId) {
+                return paymentPlanApi()
+                    .minPaymentPlanUsingPOST({
+                        assetId: this.assetStore.selectedAssetPubId(),
+                        uid: this.userStore.selectedId(),
+                        date: format(this.data.bookingDate, "yyyy-MM-dd")
+                    })
+            }
+
+            if (this.assetStore.selectedAsset.paymentPlanId) {
+                return paymentPlanApi()
+                    .getPaymentPlanUsingGET(this.assetStore.selectedAsset.paymentPlanId)
+            }
+
+            return Promise.resolve(null)
+        };
+
+        return f().then((res) => {
+            this.data.paymentPlan = res?.data
+        }).then(() => {
+            return this.loadBooked()
+        })
     }
 
     cancel = () => {
@@ -88,8 +121,8 @@ export class BookingCreateContainer extends React.Component<any, any> {
         bookingApi().bookUsingPOST({
             assetId: this.assetStore.selectedAssetPubId(),
             date: format(this.data.bookingDate, "yyyy-MM-dd"),
-            name: this.data.userData.name,
-            phone: this.data.userData.phone,
+            uid: this.userStore.selectedId(),
+            userData: null,
             description: this.data.description,
             start: start,
             end: end
@@ -268,34 +301,6 @@ export class BookingCreateContainer extends React.Component<any, any> {
         this.manageBookingHourAmount()
     }
 
-    private setName(name) {
-        this.data.userData.name = name
-    }
-
-    private setPhone(phone) {
-        let newValue = phone
-        newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
-
-        let formattedValue = "+" + newValue.slice(0, 1)
-
-        if (newValue.length > 1) {
-            formattedValue += " (" + newValue.slice(1, 4)
-        }
-
-        if (newValue.length > 4) {
-            formattedValue += ") " + newValue.slice(4, 7)
-        }
-
-        if (newValue.length > 7) {
-            formattedValue += "-" + newValue.slice(7, 9)
-        }
-
-        if (newValue.length > 9) {
-            formattedValue += "-" + newValue.slice(9, 11)
-        }
-
-        this.data.userData.phone = formattedValue
-    }
 
     render() {
         return (
@@ -346,20 +351,8 @@ export class BookingCreateContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>ФИО:</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={this.data.userData.name}
-                                onChange={(e) => this.setName(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Телефон:</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={this.data.userData.phone}
-                                onChange={(e) => this.setPhone(e.target.value)}
-                            />
+                            <Form.Label>Резидент:</Form.Label>
+                            <UserSelect/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Описание:</Form.Label>
@@ -368,6 +361,14 @@ export class BookingCreateContainer extends React.Component<any, any> {
                                 rows={3}
                                 value={this.data.description}
                                 onChange={(e) => this.setDescription(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Стоимость:</Form.Label>
+                            <Form.Control readOnly
+                                          value={this.data.bookingPrice + "р"}
+                                          onChange={(e) => {
+                                          }}
                             />
                         </Form.Group>
                         <Form.Group>

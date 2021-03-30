@@ -5,10 +5,15 @@ import {observable} from "mobx";
 import ReactDatePicker from "react-datepicker";
 import {Asset, BookedAsset, Booking, PaymentPlan} from "app/api/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
-import {assetsApi, bookingApi, paymentPlanApi} from "app/constants";
+import {bookingApi, paymentPlanApi} from "app/constants";
 import format from "date-fns/format";
 import {getStatusName, ru_RU} from "app/constants/locale_ru";
 import {MainMenu} from "app/components";
+import {USER_STORE} from "app/store/UserStore";
+import {UserSelect} from "app/components/UserSelect";
+import {AssetSelect} from "app/components/AssetSelect";
+import {ASSET_STORE} from "app/store/AssetStore";
+import {LOCATION_STORE} from "app/store/LocationStore";
 
 
 class BookingEditData {
@@ -18,7 +23,6 @@ class BookingEditData {
     @observable bookingDate = new Date()
     @observable booking: Booking = null
     @observable paymentPlan: PaymentPlan = null
-    @observable assetList: Array<Asset> = new Array<Asset>()
     @observable isSaving = false
 
     @observable workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
@@ -37,6 +41,9 @@ class WorkTimeHour {
 @observer
 export class BookingEditContainer extends React.Component<any, any> {
     private data = new BookingEditData()
+    private userStore = USER_STORE
+    private assetStore = ASSET_STORE
+    private locationStore = LOCATION_STORE
 
     cancel = () => {
         this.props.history.push("/dashboard/booking")
@@ -56,8 +63,7 @@ export class BookingEditContainer extends React.Component<any, any> {
             date: format(this.data.bookingDate, "yyyy-MM-dd"),
             start: start,
             end: end,
-            phone: this.data.booking.userData.phone,
-            name: this.data.booking.userData.name,
+            uid: this.userStore.selectedId(),
             description: this.data.booking.description
         }).then(() => {
             this.data.isSaving = false
@@ -84,19 +90,17 @@ export class BookingEditContainer extends React.Component<any, any> {
             this.data.bookingDate = new Date(this.data.booking.date)
             this.data.bookingHour = this.getHour(this.data.booking.start)
             this.data.bookingHourAmount = this.getHour(this.data.booking.end) - this.data.bookingHour
+            this.locationStore.selectLocation(this.data.booking.asset.location.pubId)
         }).then(() => {
-            return assetsApi().assetsListUsingPOST({})
-        }).then((res) => {
-            this.data.assetList = res.data
-        }).then((res) => {
-            if (this.data.booking.asset.paymentPlanId) {
-                return paymentPlanApi().getPaymentPlanUsingGET(this.data.booking.asset.paymentPlanId)
-            }
-            return null
-        }).then((res) => {
-            this.data.paymentPlan = res?.data
+            return this.userStore.loadUsers();
         }).then(() => {
-            return this.loadBooked()
+            this.userStore.select(this.data.booking.uid)
+        }).then(() => {
+            return this.assetStore.loadAssets()
+        }).then((res) => {
+            return this.assetStore.selectAsset(this.data.booking.asset.pubId)
+        }).then(() => {
+            return this.loadPaymentPlan()
         }).then(() => {
             this.data.isBookingLoading = false
         }).catch(error => {
@@ -193,12 +197,6 @@ export class BookingEditContainer extends React.Component<any, any> {
         return (this.data.bookingHour < 10 ? ("0" + this.data.bookingHour) : "" + this.data.bookingHour) + ":00";
     }
 
-    private selectAsset(pubId) {
-        this.data.booking.asset = this.data.assetList.filter(a => a.pubId === pubId)[0]
-        this.loadBooked().then(() => {
-        })
-    }
-
     private selectHour(h) {
         this.data.bookingHour = h
         this.manageBookingHourAmount()
@@ -218,35 +216,6 @@ export class BookingEditContainer extends React.Component<any, any> {
     private getHour(s) {
         let a = s.split(":")
         return +(a[0] as number)
-    }
-
-    private setName(name) {
-        this.data.booking.userData.name = name
-    }
-
-    private setPhone(phone) {
-        let newValue = phone
-        newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
-
-        let formattedValue = "+" + newValue.slice(0, 1)
-
-        if (newValue.length > 1) {
-            formattedValue += " (" + newValue.slice(1, 4)
-        }
-
-        if (newValue.length > 4) {
-            formattedValue += ") " + newValue.slice(4, 7)
-        }
-
-        if (newValue.length > 7) {
-            formattedValue += "-" + newValue.slice(7, 9)
-        }
-
-        if (newValue.length > 9) {
-            formattedValue += "-" + newValue.slice(9, 11)
-        }
-
-        this.data.booking.userData.phone = formattedValue
     }
 
     private setDescription(description) {
@@ -300,6 +269,33 @@ export class BookingEditContainer extends React.Component<any, any> {
         return workTimeHours
     }
 
+    private loadPaymentPlan() {
+        const f = () => {
+            if (this.userStore.selectedId() && this.assetStore.selectedAsset.paymentPlanId) {
+                return paymentPlanApi()
+                    .minPaymentPlanUsingPOST({
+                        assetId: this.assetStore.selectedAssetPubId(),
+                        uid: this.userStore.selectedId(),
+                        date: format(this.data.bookingDate, "yyyy-MM-dd")
+                    })
+            }
+
+            if (this.assetStore.selectedAsset.paymentPlanId) {
+                return paymentPlanApi()
+                    .getPaymentPlanUsingGET(this.assetStore.selectedAsset.paymentPlanId)
+            }
+
+            return Promise.resolve(null)
+        };
+
+        return f().then((res) => {
+            this.data.paymentPlan = res?.data
+        }).then(() => {
+            return this.loadBooked()
+        })
+    }
+
+
     render() {
         return (
             <div>
@@ -317,18 +313,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Ресурс:</Form.Label>
-                            <Form.Control
-                                as="select"
-                                value={this.data.booking.asset.pubId}
-                                onChange={(e) => this.selectAsset(e.target.value)}
-                            >
-                                {this.data.assetList.map(a => {
-                                    return <option
-                                        key={a.pubId}
-                                        value={a.pubId}
-                                    >{a.name}</option>
-                                })}
-                            </Form.Control>
+                            <AssetSelect withEmpty={false}/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Дата:</Form.Label>
@@ -368,20 +353,8 @@ export class BookingEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>ФИО:</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={this.data.booking.userData.name}
-                                onChange={(e) => this.setName(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Телефон:</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={this.data.booking.userData.phone}
-                                onChange={(e) => this.setPhone(e.target.value)}
-                            />
+                            <Form.Label>Резидент:</Form.Label>
+                            <UserSelect/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Описание:</Form.Label>

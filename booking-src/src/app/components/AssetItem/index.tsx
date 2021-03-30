@@ -10,6 +10,7 @@ import {numberFormat} from "app/constants/numberFormat";
 import {ru_RU} from "app/constants/locale_ru";
 import format from "date-fns/format";
 import {Asset, BookedAsset, PaymentPlan} from "app/api";
+import {formatPhone} from "../../../../../dashboard-src/src/app/constants/utils";
 
 class AssetItemData {
     @observable carouselValue = 0
@@ -176,8 +177,10 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         bookingApi().bookUsingPOST({
             assetId: this.data.asset.pubId,
             date: (moment(this.data.bookingDate)).format("yyyy-MM-DD"),
-            name: this.data.bookingName,
-            phone: this.data.bookingPhone,
+            userData: {
+                name: this.data.bookingName,
+                phone: this.data.bookingPhone,
+            },
             description: this.data.bookingDescription,
             start: start,
             end: end
@@ -325,29 +328,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
     }
 
     private setBookingPhone = (e) => {
-        let newValue = e.target.value
-        newValue = newValue.replace(new RegExp("[^0-9]", "g"), "")
-
-
-        let formattedValue = "+" + newValue.slice(0, 1)
-
-        if (newValue.length > 1) {
-            formattedValue += " (" + newValue.slice(1, 4)
-        }
-
-        if (newValue.length > 4) {
-            formattedValue += ") " + newValue.slice(4, 7)
-        }
-
-        if (newValue.length > 7) {
-            formattedValue += "-" + newValue.slice(7, 9)
-        }
-
-        if (newValue.length > 9) {
-            formattedValue += "-" + newValue.slice(9, 11)
-        }
-
-        this.data.bookingPhone = formattedValue
+        this.data.bookingPhone = formatPhone(e.target.value)
 
         this.enableBookingButton()
     }
