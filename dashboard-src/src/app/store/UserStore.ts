@@ -31,8 +31,10 @@ class UserStore {
         this.locationId = LOCATION_STORE.selectedLocationPubId();
         return userApi().getUserListUsingPOST({
             locationPubId: this.locationId,
+            offset: 0,
+            limit: 1000
         }).then(r => {
-            this.users = r.data
+            this.users = r.data.list
             this.select(this.selectedUserId, false)
         })
 

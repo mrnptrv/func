@@ -1,11 +1,17 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
-import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
+import {Button, Dropdown, DropdownButton, Form, Modal, Spinner, Table} from "react-bootstrap";
 import {userApi} from "app/constants/api";
 import {UserWithCurrentAccess} from "app/api/api";
 import {MainMenu} from "app/components";
 import {formatDate} from "app/constants/utils";
+import Col from "react-bootstrap/Col";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+const filterRowStyle = {
+    paddingBottom: 10
+}
 
 class UserListData {
     @observable isLoading = true
@@ -13,6 +19,12 @@ class UserListData {
     @observable users: Array<UserWithCurrentAccess> = new Array<UserWithCurrentAccess>()
     @observable isShowDeletionDialog = false;
     @observable deletionUser: UserWithCurrentAccess = null;
+
+    @observable filter = ""
+    @observable limit = 50
+    @observable offset = 0
+    @observable total = 0
+    @observable hasMore = false
 
     @action
     deleteUser(user) {
@@ -24,6 +36,38 @@ class UserListData {
             console.log(error);
         })
     }
+
+    @action
+    next() {
+        this.offset = this.offset + 20;
+        this.load()
+    }
+
+    @action
+    load() {
+        this.isLoading = true
+        userApi().getUserListUsingPOST({
+            filter: this.filter,
+            offset: this.offset,
+            limit: this.limit
+        }).then(
+            response => {
+                this.total = response.data.total
+                response.data.list.forEach(it => this.users.push(it))
+                this.calcHasMore()
+                this.isLoading = false
+            }).catch(error => {
+            if (error && error.response && error.response.data.message) {
+                this.error = error.response.data.message
+            }
+
+            this.isLoading = false;
+        })
+    }
+
+    private calcHasMore() {
+        this.hasMore = this.users.length < this.total
+    }
 }
 
 @observer
@@ -33,18 +77,7 @@ export class UserListContainer extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
 
-        this.data.isLoading = true
-        userApi().getUserListUsingPOST({}).then(
-            (response) => {
-                this.data.users = response.data
-                this.data.isLoading = false
-            }).catch(error => {
-            if (error && error.response && error.response.data.message) {
-                this.data.error = error.response.data.message
-            }
-
-            this.data.isLoading = false;
-        })
+        this.data.load()
     }
 
     deleteUser = () => {
@@ -76,16 +109,36 @@ export class UserListContainer extends React.Component<any, any> {
         }
     }
 
+    private fetchMoreData = () => {
+        this.data.next()
+    }
+
     private newUser = () => {
         this.props.history.push("/dashboard/create-user")
+    }
+
+    private setFilter(v) {
+        this.data.filter = v
+    }
+
+    private handleKeyPress(target) {
+        if (target.charCode === 13) {
+            this.data.limit = 50
+            this.data.offset = 0
+            this.data.users = []
+            this.data.load()
+            target.preventDefault()
+        }
     }
 
     render() {
         const items = this.data.users.map((user) =>
             <tr key={user.pubId}>
-                <td>{user.firstName} {user.lastName} {user.thirdName}</td>
+                <td>{user.firstName} </td>
+                <td>{user.lastName} </td>
+                <td>{user.thirdName}</td>
                 <td>{user.phone}</td>
-                <td className="text-nowrap text-right">{user.currentAccessAsset}</td>
+                <td className="text-nowrap">{user.currentAccessAsset}</td>
                 <td className="text-nowrap">{formatDate(user.currentAccessFrom)}</td>
                 <td className="text-nowrap">{formatDate(user.currentAccessTo)}</td>
                 <td className="text-right">
@@ -107,26 +160,46 @@ export class UserListContainer extends React.Component<any, any> {
                         onClick={this.newUser}
                     > + </Button>
                 </h4>
-                <Table striped={true} bordered={true} hover>
-                    <thead>
-                    <tr>
-                        <th>ФИО</th>
-                        <th>Телефон</th>
-                        <th>Доступ</th>
-                        <th>C</th>
-                        <th>До</th>
-                        <th/>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.data.isLoading ?
-                        <tr>
-                            <td colSpan={6}><Spinner size="sm" animation="grow"/></td>
-                        </tr>
-                        : items
+                <Form>
+                    <Form.Row className="align-items-center" style={filterRowStyle}>
+                        <Col>
+                            <Form.Control
+                                type="select"
+                                size="sm"
+                                value={this.data.filter}
+                                onChange={(e) => this.setFilter(e.target.value)}
+                                onKeyPress={(e) => this.handleKeyPress(e)}
+                            >
+                            </Form.Control>
+                        </Col>
+                    </Form.Row>
+                </Form>
+                <InfiniteScroll
+                    dataLength={this.data.users.length}
+                    next={this.fetchMoreData}
+                    hasMore={this.data.hasMore}
+                    loader={
+                        <Spinner size="sm" animation="grow"/>
                     }
-                    </tbody>
-                </Table>
+                >
+                    <Table striped={true} bordered={true} hover>
+                        <thead>
+                        <tr>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Телефон</th>
+                            <th>Доступ</th>
+                            <th>От</th>
+                            <th>До</th>
+                            <th/>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {items}
+                        </tbody>
+                    </Table>
+                </InfiniteScroll>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
                         <Modal.Title>Удаление резидента</Modal.Title>
