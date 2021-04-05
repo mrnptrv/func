@@ -1313,6 +1313,25 @@ export interface RegisterRequest {
 /**
  * 
  * @export
+ * @interface SaveAccountRequest
+ */
+export interface SaveAccountRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof SaveAccountRequest
+     */
+    firstName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SaveAccountRequest
+     */
+    lastName: string;
+}
+/**
+ * 
+ * @export
  * @interface SendCodeRequest
  */
 export interface SendCodeRequest {
@@ -1322,6 +1341,31 @@ export interface SendCodeRequest {
      * @memberof SendCodeRequest
      */
     mobile?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SendCodeRequest
+     */
+    recaptchaTokenV2?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SendCodeRequest
+     */
+    recaptchaTokenV3?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SendCodeResponse
+ */
+export interface SendCodeResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof SendCodeResponse
+     */
+    status: string;
 }
 /**
  * 
@@ -2851,7 +2895,7 @@ export const AuthAPIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sendCodeUsingPOST(request: SendCodeRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async sendCodeUsingPOST(request: SendCodeRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SendCodeResponse>> {
             const localVarAxiosArgs = await AuthAPIApiAxiosParamCreator(configuration).sendCodeUsingPOST(request, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -2913,7 +2957,7 @@ export const AuthAPIApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendCodeUsingPOST(request: SendCodeRequest, options?: any): AxiosPromise<void> {
+        sendCodeUsingPOST(request: SendCodeRequest, options?: any): AxiosPromise<SendCodeResponse> {
             return AuthAPIApiFp(configuration).sendCodeUsingPOST(request, options).then((request) => request(axios, basePath));
         },
     };
@@ -4164,7 +4208,7 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         getLocationListUsingPOST: async (name?: string, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/location/list/`;
+            const localVarPath = `/api/location/list`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -5693,6 +5737,54 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @summary Save account
+         * @param {SaveAccountRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAccountUsingPOST: async (request: SaveAccountRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'request' is not null or undefined
+            if (request === null || request === undefined) {
+                throw new RequiredError('request','Required parameter request was null or undefined when calling saveAccountUsingPOST.');
+            }
+            const localVarPath = `/api/user/save-account`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof request !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(request !== undefined ? request : {}) : (request || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Update the user
          * @param {UpdateUserRequest} updateRequest updateRequest
          * @param {*} [options] Override http request option.
@@ -5806,6 +5898,20 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Save account
+         * @param {SaveAccountRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async saveAccountUsingPOST(request: SaveAccountRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserLite>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).saveAccountUsingPOST(request, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Update the user
          * @param {UpdateUserRequest} updateRequest updateRequest
          * @param {*} [options] Override http request option.
@@ -5866,6 +5972,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         getUserUsingGET(pubId: string, options?: any): AxiosPromise<User> {
             return UserApiFp(configuration).getUserUsingGET(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Save account
+         * @param {SaveAccountRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAccountUsingPOST(request: SaveAccountRequest, options?: any): AxiosPromise<UserLite> {
+            return UserApiFp(configuration).saveAccountUsingPOST(request, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5933,6 +6049,18 @@ export class UserApi extends BaseAPI {
      */
     public getUserUsingGET(pubId: string, options?: any) {
         return UserApiFp(this.configuration).getUserUsingGET(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Save account
+     * @param {SaveAccountRequest} request request
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public saveAccountUsingPOST(request: SaveAccountRequest, options?: any) {
+        return UserApiFp(this.configuration).saveAccountUsingPOST(request, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

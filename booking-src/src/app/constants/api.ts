@@ -1,10 +1,18 @@
 import * as Cookies from "js-cookie";
-import {AssetsApi, AuthAPIApi, BookingApi, PaymentPlanApi} from "app/api";
+import {AssetsApi, AuthAPIApi, BookingApi, LocationApi, PaymentPlanApi, UserApi} from "app/api";
 
 const BASE_URL = ""
 
 export const authApi = () => {
     return new AuthAPIApi(getConfiguration())
+}
+
+export const userApi = () => {
+    return new UserApi(getConfiguration())
+}
+
+export const locationApi = () => {
+    return new LocationApi(getConfiguration())
 }
 
 export const assetsApi = () => {
@@ -37,4 +45,12 @@ const getAccessToken = () => {
 
 export const saveAccessToken = (accessToken) => {
     Cookies.set("func_ut", accessToken)
+}
+
+export const getLocation = () => {
+    return Cookies.get("func_location")
+}
+
+export const saveLocation = (location) => {
+    Cookies.set("func_location", location)
 }

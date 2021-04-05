@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {assetsApi, bookingApi} from "app/constants/api";
+import {assetsApi, authApi, bookingApi} from "app/constants/api";
 import ReactDatePicker from "react-datepicker";
 import {AssetItem} from "app/components/AssetItem";
 import * as moment from 'moment';
 import {ru_RU} from "app/constants/locale_ru";
-import {Asset, BookedAsset} from "app/api";
+import {Asset, BookedAsset, UserLite} from "app/api";
 
 
 class AssetListData {
@@ -16,6 +16,7 @@ class AssetListData {
     @observable error = ""
     @observable assets: Array<Asset> = new Array<Asset>()
     @observable bookedAssets: Array<BookedAsset> = new Array<BookedAsset>()
+    @observable userLite: UserLite = null
 }
 
 
@@ -34,7 +35,9 @@ export class AssetListContainer extends React.Component<any, any> {
         this.data.bookedAssets = []
         this.data.assets = []
 
-        let assets : Array<Asset> = new Array<Asset>()
+        let assets: Array<Asset> = new Array<Asset>()
+        let bookedAssets: Array<BookedAsset> = new Array<BookedAsset>()
+        let userLite: UserLite = null
 
         assetsApi().assetsListUsingPOST({
             locationPubId: 'IZHEVSK',
@@ -42,25 +45,34 @@ export class AssetListContainer extends React.Component<any, any> {
             capacityFilter: this.data.capacityFilter
         }).then((response) => {
             assets = response.data
+        }).then(() => {
+            return bookingApi().findBookedAssetsUsingPOST({
+                date: (moment(this.data.bookingDate)).format("yyyy-MM-DD")
+            })
+        }).then(r => {
+            bookedAssets = r.data
+        }).then(() => {
+            return authApi().getUsingGET1().then((r) => {
+                userLite = r.data
+            }).catch(error => {
+                userLite = null
+            })
+        }).then(r => {
+            this.data.userLite = userLite
+            this.data.bookedAssets = bookedAssets
+            this.data.assets = assets
+            this.data.isLoading = false
         }).catch(error => {
+            this.data.userLite = userLite
+            this.data.bookedAssets = bookedAssets
+            this.data.assets = assets
+            this.data.isLoading = false
+
             if (error && error.response && error.response.data.message) {
                 this.data.error = error.response.data.message
             }
-            this.data.isLoading = false;
-        }).then(() => {
-            bookingApi().findBookedAssetsUsingPOST({
-                date: (moment(this.data.bookingDate)).format("yyyy-MM-DD")
-            }).then(r => {
-                this.data.isLoading = false
-                this.data.bookedAssets = r.data
-                this.data.assets = assets
-            }).catch(error => {
-                if (error && error.response && error.response.data.message) {
-                    this.data.error = error.response.data.message
-                }
 
-                this.data.isLoading = false;
-            })
+            this.data.isLoading = false;
         })
     }
 
@@ -119,6 +131,7 @@ export class AssetListContainer extends React.Component<any, any> {
                     <AssetItem
                         key={a.pubId}
                         asset={a}
+                        user={this.data.userLite}
                         bookingDate={this.data.bookingDate}
                         bookedAsset={this.data.bookedAssets}
                     />

@@ -4,18 +4,20 @@ import {observable} from "mobx";
 import Carousel from '@brainhubeu/react-carousel';
 import ReactModal from 'react-modal';
 import ReactDatePicker from "react-datepicker";
-import {bookingApi, paymentPlanApi} from "app/constants";
+import {authApi, bookingApi, paymentPlanApi, saveAccessToken} from "app/constants";
 import * as moment from "moment";
 import {numberFormat} from "app/constants/numberFormat";
 import {ru_RU} from "app/constants/locale_ru";
 import format from "date-fns/format";
-import {Asset, BookedAsset, PaymentPlan} from "app/api";
-import {formatPhone} from "../../../../../dashboard-src/src/app/constants/utils";
+import {Asset, BookedAsset, PaymentPlan, UserLite} from "app/api";
+import {formatPhone} from "app/constants/phone";
+import {grecaptcha, RECAPTCHA_V2_SITE_KEY, RECAPTCHA_V3_SITE_KEY} from "app/constants/recaptcha";
 
 class AssetItemData {
     @observable carouselValue = 0
     @observable asset: Asset = null
     @observable paymentPlan: PaymentPlan = null
+    @observable minPaymentPlan: PaymentPlan = null
     @observable date = new Date()
     @observable workTimeHours: Array<WorkTimeHour> = new Array<WorkTimeHour>()
     @observable isOpenBookingModal = false
@@ -33,11 +35,16 @@ class AssetItemData {
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isBooking = false
     @observable isSuccessfullyBooked = false
+    @observable isCodeSent = false
+    @observable code = ""
+    @observable needV2 = false
+    @observable v2Token = "";
 }
 
 interface AssetItemProps {
     asset: Asset,
     bookingDate: Date
+    user: UserLite,
     bookedAsset: Array<BookedAsset>
 }
 
@@ -62,11 +69,27 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         this.data.bookingDate = this.props.bookingDate
 
         if (this.data.asset.paymentPlanId) {
-            paymentPlanApi().getPaymentPlanUsingGET(this.data.asset.paymentPlanId)
-                .then((res) => {
-                    this.data.paymentPlan = res.data
-                    this.calcHoursAndPrice(this.props.bookedAsset);
-                })
+            paymentPlanApi().getPaymentPlanUsingGET(this.data.asset.paymentPlanId).then((res) => {
+                this.data.paymentPlan = res.data
+                this.calcHoursAndPrice(this.props.bookedAsset);
+            }).then(() => {
+                if (props.user) {
+                    return paymentPlanApi().minPaymentPlanUsingPOST({
+                        assetId: this.data.asset.pubId,
+                        uid: props.user.pubId,
+                        date: (moment(this.data.bookingDate)).format("yyyy-MM-DD")
+
+                    })
+                }
+            }).then((res) => {
+                if (res) {
+                    this.data.minPaymentPlan = res.data
+                } else {
+                    this.data.minPaymentPlan = this.data.paymentPlan
+                }
+
+                this.calcHoursAndPrice(this.props.bookedAsset);
+            })
         } else {
             this.calcHoursAndPrice(this.props.bookedAsset)
         }
@@ -95,6 +118,9 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         let workTimeRanges = this.data.paymentPlan?.assumption?.workTimeRanges
             ?.filter(wtr => wtr.isWeekend == isWeekend)
 
+        let minPriceWorkTimeRanges = this.data.minPaymentPlan?.assumption?.workTimeRanges
+            ?.filter(wtr => wtr.isWeekend == isWeekend)
+
         if (workTimeRanges?.length > 0) {
             let minStartHour = this.getHour(workTimeRanges[0].start)
             let maxEndHour = this.getHour(workTimeRanges[0].end)
@@ -119,13 +145,13 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                 wth.asset = a
                 wth.hour = h
 
-                let workTimeRangesPr1 = workTimeRanges.filter(wtr => {
+                let workTimeRangesPr1 = minPriceWorkTimeRanges?.filter(wtr => {
                     let startHour: number = this.getHour(wtr.start)
                     let endHour = this.getHour(wtr.end)
                     return startHour <= h && h < endHour
                 });
 
-                wth.price = workTimeRangesPr1.length == 0 ? 0 : +workTimeRangesPr1[0].price
+                wth.price = workTimeRangesPr1?.length ? +workTimeRangesPr1[0].price : 0
 
                 workTimeHours.push(wth);
             }
@@ -156,14 +182,107 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                 .map(h => h.hour)
                 .shift()
             this.data.bookingHourAmount = 1
-            this.data.bookingName = ""
-            this.data.bookingPhone = "+7 ("
+
+            if (this.props.user) {
+                this.data.bookingName = this.props.user.lastName + " " + this.props.user.firstName + " " + this.props.user.thirdName
+                this.data.bookingPhone = formatPhone(this.props.user.phone)
+            } else {
+                this.data.bookingName = ""
+                this.data.bookingPhone = "+7 ("
+            }
+
             this.data.bookingDescription = ""
             this.data.bookingAgreementCheck = false
             this.data.isSuccessfullyBooked = false
             this.calculatePrice()
             this.enableBookingButton()
         }
+    }
+
+    private exchangeCodeAndBook = () => {
+        authApi().exchangeCodeUsingPOST({
+            mobile: this.data.bookingPhone,
+            code: this.data.code
+        }).then((r) => {
+            saveAccessToken(r.data.accessToken)
+            return this.bookAsset()
+        }).catch(error => {
+
+            if (error && error.response && error.response.data && error.response.data.message) {
+                this.data.error = error.response.data.message
+            }
+
+            if (error && error.response && error.response.data.errors) {
+                this.data.fieldErrors = error.response.data.errors.map(e => e.messages).flat()
+            }
+        })
+    }
+
+    private bookAssetOrSendCode = () => {
+        let me = this
+        if (this.props.user) {
+            this.bookAsset();
+        } else {
+            this.data.isBooking = true
+
+            grecaptcha.ready(function () {
+                grecaptcha.execute(RECAPTCHA_V3_SITE_KEY, {action: 'submit'}).then(function (tokenV3) {
+                    if (me.data.needV2) {
+                        me.doSendCode(tokenV3, me.data.v2Token)
+                    }
+
+                    me.doSendCode(tokenV3, "");
+                });
+            });
+
+        }
+    }
+
+    private doSendCode(tokenV3, tokenV2){
+        authApi().sendCodeUsingPOST({
+            mobile: this.data.bookingPhone,
+            recaptchaTokenV3: tokenV3,
+            recaptchaTokenV2: tokenV2
+        }).then((r) => {
+            this.data.isBooking = false
+
+            if (r.data.status == "NEED_V2") {
+                this.renderV2();
+                this.data.needV2 = true
+                this.data.error = "Пройдите капчу."
+            }
+            if (r.data.status == "FAIL") {
+                this.renderV2();
+                this.data.needV2 = true
+                this.data.error = "Неверная капча"
+            }
+            if (r.data.status == "OK") {
+                this.data.needV2 = false
+                this.data.isCodeSent = true
+                this.data.error = ""
+                this.data.fieldErrors = new Array<String>()
+            }
+        }).catch(error => {
+            this.data.isBooking = false
+            if (error && error.response && error.response.data && error.response.data.message) {
+                this.data.error = error.response.data.message
+            }
+
+            if (error && error.response && error.response.data.errors) {
+                this.data.fieldErrors = error.response.data.errors.map(e => e.messages).flat()
+            }
+        })
+    }
+
+    private renderV2() {
+        this.data.isBooking = true
+        grecaptcha.render('recaptcha-v2', {
+            sitekey: RECAPTCHA_V2_SITE_KEY,
+            callback: (r) => {
+                this.data.v2Token = r
+                this.data.isBooking = false
+            }
+        });
     }
 
     private bookAsset = () => {
@@ -174,9 +293,10 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         this.data.fieldErrors = new Array<String>()
         this.data.isBooking = true
 
-        bookingApi().bookUsingPOST({
+        return bookingApi().bookUsingPOST({
             assetId: this.data.asset.pubId,
             date: (moment(this.data.bookingDate)).format("yyyy-MM-DD"),
+            uid: this.props?.user?.pubId,
             userData: {
                 name: this.data.bookingName,
                 phone: this.data.bookingPhone,
@@ -187,6 +307,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         }).then(() => {
             this.data.isBooking = false
             this.data.isSuccessfullyBooked = true
+            this.data.isCodeSent = false
 
             bookingApi().findBookedAssetsUsingPOST({
                 date: (moment(this.data.date)).format("yyyy-MM-DD"),
@@ -475,7 +596,6 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                 <ReactModal
                     isOpen={this.data.isOpenBookingModal}
                     onRequestClose={() => this.data.isOpenBookingModal = false}
-                    contentLabel="Example Modal"
                 >
                     <div className="popup popup--shown">
                         <div className="popup__form pageclip-form "
@@ -492,64 +612,82 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                     </svg>
                                 </button>
                             </div>
-                            {this.data.isSuccessfullyBooked ? <div className="popup__content successfully-booked" >
+                            {this.data.isSuccessfullyBooked ? <div className="popup__content successfully-booked">
                                     <div>Спасибо! <br/>Совсем скоро мы свяжемся с тобой.</div>
                                 </div>
-                                : <>
-                                    <div className="popup__info">
-                                        <div className="popup__summary">
-                                            <img className="popup__pic" src={
-                                                this.data.asset.imageUrls.length > 0 ?
-                                                    this.data.asset.imageUrls[0] : null
+                                : this.data.isCodeSent ?
+                                    <div className="popup__content successfully-booked">
+                                        <input
+                                            value={this.data.code}
+                                            onChange={(e) => this.data.code = e.target.value}
+                                        />
+                                        {this.data.error &&
+                                        <div className="popup__footer popup__errors">
+                                            {this.data.error}
+                                            {this.data.fieldErrors.length > 0 &&
+                                            (<ul>{this.data.fieldErrors.map(e => <li>{e}</li>)}</ul>)
                                             }
-                                                 width={65}
-                                                 height={44}
-                                                 alt=""/>
-                                            <div className="popup__description">
-                                                <p className="popup__accent">{this.data.asset.name}</p>
-                                                <p className="popup__text">
+
+                                        </div>
+                                        }
+                                        <button onClick={this.exchangeCodeAndBook}>Подтвердить</button>
+                                    </div>
+                                    : <>
+                                        <div className="popup__info">
+                                            <div className="popup__summary">
+                                                <img className="popup__pic" src={
+                                                    this.data.asset.imageUrls.length > 0 ?
+                                                        this.data.asset.imageUrls[0] : null
+                                                }
+                                                     width={65}
+                                                     height={44}
+                                                     alt=""/>
+                                                <div className="popup__description">
+                                                    <p className="popup__accent">{this.data.asset.name}</p>
+                                                    <p className="popup__text">
                                             <span
                                                 id="popup-selected-date">
-                                                {format(this.data.bookingDate, "dd MMMM, yyyy", {locale:ru_RU})}
+                                                {format(this.data.bookingDate, "dd MMMM, yyyy", {locale: ru_RU})}
                                             </span>,
-                                                    <span
-                                                        id="popup-selected-time"> {this.getStartHour()} - {this.getEndHour()}</span>
-                                                </p>
+                                                        <span
+                                                            id="popup-selected-time"> {this.getStartHour()} - {this.getEndHour()}</span>
+                                                    </p>
+                                                </div>
+                                                <div className="popup__price">
+                                                    <p className="popup__text">К оплате:</p>
+                                                    <p className="popup__accent">{this.data.bookingPrice}₽</p>
+                                                </div>
                                             </div>
-                                            <div className="popup__price">
-                                                <p className="popup__text">К оплате:</p>
-                                                <p className="popup__accent">{this.data.bookingPrice}₽</p>
-                                            </div>
-                                        </div>
-                                        <div className="popup__selects">
-                                            <div className="popup__group group">
-                                                <ReactDatePicker
-                                                    dateFormat="dd/MM/yyyy"
-                                                    className="top__input top__input--select input input--select"
-                                                    placeholderText="Дата"
-                                                    locale={ru_RU}
-                                                    selected={this.data.bookingDate}
-                                                    onChange={this.setBookingDate}/>
+                                            <div className="popup__selects">
+                                                <div className="popup__group group">
+                                                    <ReactDatePicker
+                                                        dateFormat="dd/MM/yyyy"
+                                                        className="top__input top__input--select input input--select"
+                                                        placeholderText="Дата"
+                                                        locale={ru_RU}
+                                                        selected={this.data.bookingDate}
+                                                        onChange={this.setBookingDate}/>
 
-                                                <label className="popup__label label" htmlFor="popup-date">Дата</label>
-                                                <svg width="16" height="16" fill="none">
-                                                    <use xlinkHref="#angle-arrow-down"/>
-                                                </svg>
-                                            </div>
-                                            <div className="popup__group group">
-                                                <select
-                                                    className="popup__input popup__input--select input input--select"
-                                                    id="popup-time"
-                                                    value={this.data.bookingHour}
-                                                    onChange={this.setBookingHour}
-                                                >
-                                                    {this.data.bookingWorkTimeHours.map(wtr =>
-                                                        (wtr.booked ?
-                                                                <option disabled key={wtr.hour}
-                                                                        value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
-                                                                :
-                                                                <option
-                                                                    key={wtr.hour}
+                                                    <label className="popup__label label"
+                                                           htmlFor="popup-date">Дата</label>
+                                                    <svg width="16" height="16" fill="none">
+                                                        <use xlinkHref="#angle-arrow-down"/>
+                                                    </svg>
+                                                </div>
+                                                <div className="popup__group group">
+                                                    <select
+                                                        className="popup__input popup__input--select input input--select"
+                                                        id="popup-time"
+                                                        value={this.data.bookingHour}
+                                                        onChange={this.setBookingHour}
+                                                    >
+                                                        {this.data.bookingWorkTimeHours.map(wtr =>
+                                                            (wtr.booked ?
+                                                                    <option disabled key={wtr.hour}
+                                                                            value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
+                                                                    :
+                                                                    <option
+                                                                        key={wtr.hour}
                                                                     value={wtr.hour}>{wtr.hour < 10 ? "0" + wtr.hour : wtr.hour}:00</option>
                                                         )
                                                     )}
@@ -589,6 +727,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                        type="text" placeholder="&nbsp;"
                                                        value={this.data.bookingName}
                                                        onChange={this.setBookingName}
+                                                       readOnly={!!this.props.user}
                                                        required/>
                                                 <label className="popup__label label" htmlFor="apply-name">Имя</label>
                                             </div>
@@ -596,6 +735,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                 <input className="popup__input input"
                                                        type="text" placeholder="&nbsp;" maxLength={18} required
                                                        value={this.data.bookingPhone}
+                                                       readOnly={!!this.props.user}
                                                        onChange={this.setBookingPhone}
                                                 />
                                                 <label className="popup__label label" htmlFor="apply-phone">Номер
@@ -629,6 +769,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                                 target="_blank">условия
                                                         обработки персональных&nbsp;данных</a></label>
                                             </div>
+                                            <div className="popup__footer" id="recaptcha-v2"/>
                                             {this.data.error &&
                                             <div className="popup__footer popup__errors">
                                                 {this.data.error}
@@ -651,7 +792,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                                 <button className="popup__button pageclip-form__submit button unbutton"
                                                         id="apply-submit" type="button"
                                                         disabled={this.data.bookingButtonDisabled || this.data.isBooking}
-                                                        onClick={this.bookAsset}
+                                                        onClick={this.bookAssetOrSendCode}
                                                 >
                                                     <span>Отправить</span>
                                                     <svg width="20" height="16">
