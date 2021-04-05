@@ -345,6 +345,11 @@ export class PaymentCreateContainer extends React.Component<any, any> {
             this.data.payment.price = selectedPaymentPlan.price
             this.data.payment.length = 1;
             this.timeUnitStore.selectUnit(selectedPaymentPlan.unit)
+
+            if (selectedPaymentPlan.assetPubId) {
+                this.assetStore.selectAsset(selectedPaymentPlan.assetPubId, false)
+            }
+
             this.calcTotal()
         }
     }
