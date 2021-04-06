@@ -310,7 +310,7 @@ document.querySelectorAll('.nav__item').forEach((item) => {
 
 // Скроллим к секции по клику в меню
 
-const anchorLinks = document.querySelectorAll('.city-nav__link');
+const anchorLinks = document.querySelectorAll('.city-nav__link--anchor');
 
 anchorLinks.forEach((item) => {
     item.addEventListener('click', (event) => {

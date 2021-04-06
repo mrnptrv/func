@@ -148,6 +148,8 @@ a.nav__logo:active {
 }
 
 .nav__user {
+  /* временно скрываем иконку юзера */
+  display: none;
   padding: 16px 16px;
   background-color: #f9f9f9;
 }
@@ -283,6 +285,8 @@ a.nav__logo:active {
 
 .city-nav__link {
   position: relative;
+  display: inline-block;
+  line-height: 1.4em;
   color: #ffffff;
 }
 
@@ -684,6 +688,11 @@ a.nav__logo:active {
   }
 
   .page-header .contacts__list {
+    display: none;
+  }
+
+  .city-nav__item--location,
+  .city-nav__link span {
     display: none;
   }
 }
