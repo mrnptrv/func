@@ -160,7 +160,7 @@ export class PaymentListContainer extends React.Component<any, any> {
                         <thead>
                         <tr>
                             <th>Организация/ФИО</th>
-                            <th>Ресурс</th>
+                            <th>Объект аренды</th>
                             <th>Платеж</th>
                             <th>Сумма</th>
                             <th>От</th>

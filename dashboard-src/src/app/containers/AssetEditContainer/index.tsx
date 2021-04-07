@@ -101,7 +101,7 @@ export class AssetEditContainer extends React.Component<any, any> {
         return (
             <div >
                 <MainMenu/>
-                <h4>Ресурс</h4>
+                <h4>Объект аренды</h4>
                 {this.data.isAssetLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
@@ -141,7 +141,7 @@ export class AssetEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Платежный план:</Form.Label>
+                            <Form.Label>Тариф:</Form.Label>
                             <PaymentPlanSelect/>
                         </Form.Group>
                         <Form.Group>

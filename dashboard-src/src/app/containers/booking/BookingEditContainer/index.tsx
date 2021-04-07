@@ -312,7 +312,7 @@ export class BookingEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Ресурс:</Form.Label>
+                            <Form.Label>Объект аренды:</Form.Label>
                             <AssetSelect withEmpty={false}/>
                         </Form.Group>
                         <Form.Group>

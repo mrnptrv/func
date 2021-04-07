@@ -348,7 +348,7 @@ export class BookingContainer extends React.Component<any, any> {
                 <Table className="booking-table" bordered={true} striped={true}>
                     <thead>
                     <tr>
-                        <th className="text-lg-center">Ресурс</th>
+                        <th className="text-lg-center">Объект аренды</th>
                         {headers}
                     </tr>
                     </thead>

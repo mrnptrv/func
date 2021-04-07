@@ -256,7 +256,7 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Платежный план</h4>
+                <h4>Тариф</h4>
                 {this.data.isPaymentPlanLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
@@ -264,7 +264,7 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                             <LocationSelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Ресурс:</Form.Label>
+                            <Form.Label>Объект аренды:</Form.Label>
                             <AssetSelect withEmpty={false}/>
                         </Form.Group>
                         <Form.Group>

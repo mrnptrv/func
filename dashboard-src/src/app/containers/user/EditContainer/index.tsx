@@ -183,7 +183,7 @@ export class UserEditContainer extends React.Component<any, any> {
                             <CompanySelect/>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Платежный план:</Form.Label>
+                            <Form.Label>Тариф:</Form.Label>
                             <PaymentPlanSelect/>
                         </Form.Group>
                         <Form.Group>

@@ -92,7 +92,7 @@ export class AssetListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Ресурсы
+                <h4> Объекты аренды
                     <Button
                         variant="light"
                         onClick={this.newAsset}
@@ -118,12 +118,12 @@ export class AssetListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Удаление ресурса</Modal.Title>
+                        <Modal.Title>Удаление</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                            Продолжить удаление ресурса?
+                            Продолжить удаление объекта аренды?
                         </p>
                     </Modal.Body>
 

@@ -89,7 +89,7 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
             <div>
                 <MainMenu/>
                 <h4>
-                    Платежные планы
+                   Тарифы
                     <Button
                         variant="light"
                         onClick={this.newPaymentPlan}
@@ -113,12 +113,12 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                 </Table>
                 <Modal show={this.data.isShowDeletionDialog} onHide={this.hideDeletionDialog}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Удаление платежного плана</Modal.Title>
+                        <Modal.Title>Удаление</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
                         <p>
-                            Платежный план будет удален. Продолжить?
+                            Тариф будет удален. Продолжить?
                         </p>
                     </Modal.Body>
 

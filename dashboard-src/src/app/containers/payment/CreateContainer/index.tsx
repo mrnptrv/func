@@ -505,7 +505,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                                     <LocationSelect/>
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Label>Ресурс:</Form.Label>
+                                    <Form.Label>Объект аренды:</Form.Label>
                                     <AssetSelect withEmpty={false}/>
                                 </Form.Group>
                                 <Form.Group>
@@ -517,7 +517,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                                     <CompanySelect/>
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Label>Платежный план:</Form.Label>
+                                    <Form.Label>Тариф:</Form.Label>
                                     <PaymentPlanSelect/>
                                 </Form.Group>
                                 <Form.Row>
@@ -691,7 +691,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                                 ? <Table striped={true} bordered={true} hover>
                                     <thead>
                                     <tr>
-                                        <th>Ресурс</th>
+                                        <th>Объект аренды</th>
                                         <th>Платеж</th>
                                         <th>Сумма</th>
                                         <th>От</th>

@@ -310,7 +310,7 @@ export class BookingCreateContainer extends React.Component<any, any> {
                 {this.data.isBookingLoading ? <Spinner animation="grow"/> :
                     <Form className={style.editForm}>
                         <Form.Group>
-                            <Form.Label>Ресурс:</Form.Label>
+                            <Form.Label>Объект аренды:</Form.Label>
                             <AssetSelect withEmpty={false}/>
                         </Form.Group>
                         <Form.Group>

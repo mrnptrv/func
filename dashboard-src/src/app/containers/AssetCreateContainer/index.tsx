@@ -115,7 +115,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4>Создание ресурса</h4>
+                <h4>Создание объекта аренды</h4>
 
                 <Form className={style.editForm}>
                     <Form.Group>
@@ -156,7 +156,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Платежный план:</Form.Label>
+                        <Form.Label>Тариф:</Form.Label>
                         <PaymentPlanSelect/>
                     </Form.Group>
                     <Form.Group>
