@@ -447,11 +447,8 @@ body {
   box-shadow: 0 25px 40px 0 rgba(51, 51, 51, 0.1);
 }
 
-.dropdown-menu__item {
-  padding: 20px 24px;
-}
-
 .dropdown-menu__link {
+  padding: 20px 24px;
   font: inherit;
   color: inherit;
   transition: color 0.2s ease-out;
