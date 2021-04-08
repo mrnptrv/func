@@ -16,12 +16,16 @@ const android = /Android/.test(userAgent);
 
 const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 
+let scrollPositionY;
+
 const openForm = form => {
     document.body.classList.add('no-scroll');
     document.querySelector('html').classList.add('no-scroll');
     form.classList.add('popup--shown');
 
     window.location.hash = 'zapolnenie-formy';
+
+    scrollPositionY = window.scrollY;
 
     if (iOS && iOS11) {
         document.body.classList.add('no-scroll-ios');
@@ -58,6 +62,7 @@ const closeForm = form => {
     form.classList.remove('popup--shown');
     document.removeEventListener('keyup', closeFormOnEscape);
     window.location.hash = '';
+    window.scrollTo(0, scrollPositionY);
 };
 
 const closeFormOnEscape = event => {

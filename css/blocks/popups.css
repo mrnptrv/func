@@ -9,6 +9,7 @@
   align-items: center;
   width: 100%;
   height: calc(100% + 48px);
+  text-align: center;
   z-index: 31;
   transform: translateY(-100vh);
   transition: transform 0.3s cubic-bezier(0.34, 0, 0, 1.22);
@@ -307,7 +308,7 @@
   }
 
   .popup__content {
-    padding-bottom: 64px;
+    padding-bottom: 104px;
   }
 
   .popup__group {
