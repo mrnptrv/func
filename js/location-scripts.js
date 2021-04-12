@@ -77,7 +77,7 @@ const eventsSlider = new Glide('.events__slider', {
     perView: 3,
     gap: 24,
     breakpoints: {
-        959: {
+        1279: {
             perView: 2
         },
         767: {

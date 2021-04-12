@@ -448,6 +448,7 @@ body {
 }
 
 .dropdown-menu__link {
+  display: block;
   padding: 20px 24px;
   font: inherit;
   color: inherit;

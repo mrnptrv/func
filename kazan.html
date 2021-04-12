@@ -338,7 +338,7 @@
     </div>
   </nav>
 
-  <nav class="city-nav">
+  <nav class="city-nav city-nav--kazan">
     <div class="city-nav__content">
       <div class="city-nav__container container">
         <div class="city-nav__headline-wrapper">
@@ -391,41 +391,41 @@
             <ul class="rooms__slides-list list glide__slides">
               <li class="rooms__slide glide__slide">
                 <figure class="rooms__pic-wrapper">
-                  <img class="rooms__pic" src="img/top-slider-work.jpg" width="1120" height="640" alt="Хаб / Кафетерий (Ижевск)">
+                  <img class="rooms__pic" src="img/loc-top-slider-room.jpg" width="1120" height="640" alt="Провести встречу">
                   <figcaption class="rooms__caption caption">
-                    <span class="rooms__caption-text caption__text">Хаб / Кафетерий</span>
+                    <span class="rooms__caption-text rooms__caption-text--room caption__text">Провести встречу</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="rooms__slide glide__slide">
                 <figure class="rooms__pic-wrapper">
-                  <img class="rooms__pic" src="img/top-slider-meet.jpg" width="1120" height="640" alt="Провести встречу">
+                  <img class="rooms__pic" src="img/loc-top-slider-work.jpg" width="1120" height="640" alt="Продуктивно поработать">
                   <figcaption class="rooms__caption caption">
-                    <span class="rooms__caption-text caption__text">Провести встречу</span>
+                    <span class="rooms__caption-text rooms__caption-text--work caption__text">Продуктивно поработать</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="rooms__slide glide__slide">
                 <figure class="rooms__pic-wrapper">
-                  <img class="rooms__pic" src="img/top-slider-chill.jpg" width="1120" height="640" alt="Выпить кофе в фанк-хабе">
+                  <img class="rooms__pic" src="img/loc-top-slider-hub.jpg" width="1120" height="640" alt="Выпить кофе в фанк-хабе">
                   <figcaption class="rooms__caption caption">
-                    <span class="rooms__caption-text caption__text">Выпить кофе в фанк-хабе</span>
+                    <span class="rooms__caption-text rooms__caption-text--hub caption__text">Выпить кофе в фанк-хабе</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="rooms__slide glide__slide">
                 <figure class="rooms__pic-wrapper">
-                  <img class="rooms__pic" src="img/top-slider-gym.jpg" width="1120" height="640" alt="Потренироваться в спортзале">
+                  <img class="rooms__pic" src="img/loc-top-slider-cabins.jpg" width="1120" height="640" alt="Уединиться для важного звонка">
                   <figcaption class="rooms__caption caption">
-                    <span class="rooms__caption-text caption__text">Потренироваться в спортзале</span>
+                    <span class="rooms__caption-text rooms__caption-text--cabins caption__text">Уединиться для важного звонка</span>
                   </figcaption>
                 </figure>
               </li>
               <li class="rooms__slide glide__slide">
                 <figure class="rooms__pic-wrapper">
-                  <img class="rooms__pic" src="img/top-slider-recreation.jpg" width="1120" height="640" alt="Отдохнуть в лаунж-зоне">
+                  <img class="rooms__pic" src="img/loc-top-slider-chill.jpg" width="1120" height="640" alt="Отдохнуть в лаунж-зоне">
                   <figcaption class="rooms__caption caption">
-                    <span class="rooms__caption-text caption__text">Отдохнуть в лаунж-зоне</span>
+                    <span class="rooms__caption-text rooms__caption-text--chill caption__text">Отдохнуть в лаунж-зоне</span>
                   </figcaption>
                 </figure>
               </li>
@@ -484,10 +484,6 @@
                   </button>
                 </figcaption>
               </figure>
-              <!-- <div class="events__content">
-                <span class="events__tag">Работа</span>
-                <span class="events__tag events__tag--pics">7</span>
-              </div> -->
             </li>
             <li class="events__slide">
               <figure class="events__pic-wrapper">
@@ -502,14 +498,24 @@
                   </button>
                 </figcaption>
               </figure>
-              <!-- <div class="events__content">
-                <span class="events__tag">Общение</span>
-                <span class="events__tag events__tag--pics">7</span>
-              </div> -->
             </li>
             <li class="events__slide">
               <figure class="events__pic-wrapper">
-                <img class="events__pic" src="img/parties/events-parties-4.jpg" width="496" height="396" alt="">
+                <img class="events__pic" src="img/chill/events-chill-3.jpg" width="496" height="396" alt="">
+                <figcaption class="events__caption caption">
+                  <span class="events__caption-text events__caption-text--rooms caption__text">Отдых</span>
+                  <button class="events__button circle-button caption__button unbutton" type="button">
+                    <span class="visually-hidden">Открыть слайдер с фотографиями зон отдыха</span>
+                    <svg width="16" height="16">
+                      <use xlink:href="#arrow-right"></use>
+                    </svg>
+                  </button>
+                </figcaption>
+              </figure>
+            </li>
+            <li class="events__slide">
+              <figure class="events__pic-wrapper">
+                <img class="events__pic" src="img/parties/events-parties-1.jpg" width="496" height="396" alt="">
                 <figcaption class="events__caption caption">
                   <span class="events__caption-text events__caption-text--events caption__text">Мероприятия</span>
                   <button class="events__button circle-button caption__button unbutton" type="button">
@@ -520,28 +526,20 @@
                   </button>
                 </figcaption>
               </figure>
-              <!-- <div class="events__content">
-                <span class="events__tag">Вечеринки</span>
-                <span class="events__tag events__tag--pics">6</span>
-              </div> -->
             </li>
             <li class="events__slide">
               <figure class="events__pic-wrapper">
                 <img class="events__pic" src="img/func-kitchen.jpg" width="496" height="396" alt="">
                 <figcaption class="events__caption caption">
-                  <span class="events__caption-text events__caption-text--lounge caption__text">Кафетерий</span>
+                  <span class="events__caption-text events__caption-text--lounge caption__text">Кафетерий и лаунжи</span>
                   <button class="events__button circle-button caption__button unbutton" type="button">
-                    <span class="visually-hidden">Открыть слайдер с фотографиями рабочей атмосферы</span>
+                    <span class="visually-hidden">Открыть слайдер с фотографиями кафетерия</span>
                     <svg width="16" height="16">
                       <use xlink:href="#arrow-right"></use>
                     </svg>
                   </button>
                 </figcaption>
               </figure>
-              <!-- <div class="events__content">
-                <span class="events__tag">Отдых</span>
-                <span class="events__tag events__tag--pics">1</span>
-              </div> -->
             </li>
           </ul>
         </div>
@@ -549,8 +547,9 @@
           <p class="slider-footer__bullets glide__bullets" data-glide-el="controls[nav]">
             <button class="slider-footer__bullet glide__bullet unbutton" type="button" data-glide-dir="=0"></button>
             <button class="slider-footer__bullet glide__bullet unbutton" type="button" data-glide-dir="=1"></button>
-            <button class="slider-footer__bullet slider-footer__bullet--mobile glide__bullet unbutton" type="button" data-glide-dir="=2"></button>
-            <button class="slider-footer__bullet slider-footer__bullet--mobile glide__bullet unbutton" type="button" data-glide-dir="=3"></button>
+            <button class="slider-footer__bullet glide__bullet unbutton" type="button" data-glide-dir="=2"></button>
+            <button class="slider-footer__bullet slider-footer__bullet--tablet glide__bullet unbutton" type="button" data-glide-dir="=3"></button>
+            <button class="slider-footer__bullet slider-footer__bullet--mobile glide__bullet unbutton" type="button" data-glide-dir="=4"></button>
           </p>
           <p class="slider-footer__controls" data-glide-el="controls">
             <button class="slider-footer__arrow slider-control slider-control--left unbutton" data-glide-dir="<">
@@ -1054,29 +1053,43 @@
   <img class="popup-slider__pic" src="img/work/events-work-4.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/work/events-work-5.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/work/events-work-6.jpg" width="1120" height="640" alt="">
-  <img class="popup-slider__pic" src="img/work/events-work-7.jpg" width="1120" height="640" alt="">
 </template>
 
 <template id="popup-slider-event-2">
-  <img class="popup-slider__pic" src="img/meetings/events-meetings-1.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/meetings/events-meetings-2.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/meetings/events-meetings-3.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/meetings/events-meetings-4.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/meetings/events-meetings-5.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/meetings/events-meetings-6.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/meetings/events-meetings-7.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/meetings/events-meetings-8.jpg" width="1120" height="640" alt="">
 </template>
 
 <template id="popup-slider-event-3">
-  <img class="popup-slider__pic" src="img/parties/events-parties-1.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/chill/events-chill-1.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/chill/events-chill-2.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/chill/events-chill-3.jpg" width="1120" height="640" alt="">
+</template>
+
+<template id="popup-slider-event-4">
   <img class="popup-slider__pic" src="img/parties/events-parties-2.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/parties/events-parties-3.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/parties/events-parties-4.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/parties/events-parties-5.jpg" width="1120" height="640" alt="">
   <img class="popup-slider__pic" src="img/parties/events-parties-6.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/parties/events-parties-7.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/parties/events-parties-8.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/parties/events-parties-9.jpg" width="1120" height="640" alt="">
 </template>
 
-<template id="popup-slider-event-4">
+<template id="popup-slider-event-5">
+  <img class="popup-slider__pic" src="img/hub/events-hub-1.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/hub/events-hub-2.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/hub/events-hub-3.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/hub/events-hub-4.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/hub/events-hub-5.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/hub/events-hub-6.jpg" width="1120" height="640" alt="">
+  <img class="popup-slider__pic" src="img/hub/events-hub-7.jpg" width="1120" height="640" alt="">
   <video class="popup-slider__pic" width="1120" height="640" preload="metadata" autoplay muted loop>
     <source src="movies/func-hall-360.mp4" type="video/mp4">
   </video>

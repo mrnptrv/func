@@ -203,10 +203,14 @@ a.nav__logo:active {
 .city-nav {
   position: relative;
   padding-top: 324px;
-  background-image: url("../../img/work/events-work-4.jpg");
+  background-image: url("../../img/func-kitchen.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+.city-nav--kazan {
+  background-image: url("../../img/location-top-kazan.jpg");
 }
 
 .city-nav__content {
