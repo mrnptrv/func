@@ -502,10 +502,6 @@ body {
   fill: var(--feature-color);
 }
 
-div[data-glide-el="track"] ul {
-  cursor: grab;
-}
-
 /* responsive */
 
 @media (max-width: 1279px) {
