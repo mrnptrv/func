@@ -251,16 +251,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#current-year').innerText = date.getFullYear();
 });
 
-// Назначаем кнопки для скроллирования
-
-document.querySelector('.footer__up').addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-    });
-});
-
 // Приклеиваем меню
 
 const topBar = document.querySelector('.nav');
