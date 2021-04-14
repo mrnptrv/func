@@ -51,7 +51,7 @@
   display: flex;
   align-items: center;
   height: 88px;
-  padding-right: 300px;
+  padding-right: 232px;
 }
 
 .nav__logo {
@@ -143,7 +143,7 @@ a.nav__logo:active {
 }
 
 .nav__button {
-  min-width: 280px;
+  min-width: 212px;
   padding: 16px 24px;
 }
 
@@ -316,7 +316,7 @@ a.nav__logo:active {
 
 .description {
   position: relative;
-  padding: 153px 0 252px;
+  padding: 153px 0 292px;
   background-color: #e4f4fe;
   overflow: hidden;
 }
@@ -351,7 +351,7 @@ a.nav__logo:active {
 }
 
 .description__button {
-  min-width: 288px;
+  min-width: 236px;
   margin-top: 52px;
 }
 
@@ -378,6 +378,10 @@ a.nav__logo:active {
   margin-right: 16px;
   padding: 6px;
   opacity: 0.5;
+}
+
+.social__button:last-child {
+  margin-right: 0;
 }
 
 .social__button:hover,

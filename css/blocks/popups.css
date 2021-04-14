@@ -9,7 +9,7 @@
   align-items: center;
   width: 100%;
   height: calc(100% + 48px);
-  text-align: center;
+  text-align: left;
   z-index: 31;
   transform: translateY(-100vh);
   transition: transform 0.3s cubic-bezier(0.34, 0, 0, 1.22);
