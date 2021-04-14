@@ -16,6 +16,10 @@
   background-size: cover;
 }
 
+.footer__map--kazan {
+  background-image: url("../../img/mock-map-kazan.jpg");
+}
+
 .footer__map-widget {
   position: absolute;
   top: 0;

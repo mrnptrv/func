@@ -2,7 +2,7 @@ ymaps.ready(init);
 
 function init() {
     const myMap = new ymaps.Map('map', {
-            center: [55.7881624, 49.1146236],
+            center: [55.788140, 49.116799],
             zoom: 16,
             controls: [],
             type: 'yandex#satellite'
@@ -75,7 +75,7 @@ function init() {
 
     myMap.controls.get('routeButtonControl').routePanel.state.set('to', 'Казань, улица Островского, 27');
 
-    const placemark = new ymaps.Placemark([55.7881624, 49.1146236]);
+    const placemark = new ymaps.Placemark([55.788140, 49.116799]);
 
     myMap.geoObjects.add(funcPlacemark);
     myMap.behaviors.disable('scrollZoom');
