@@ -19,6 +19,10 @@
 
 /* MAIN -> intro */
 
+.location .intro {
+  padding-bottom: 0;
+}
+
 .intro__text {
   margin-bottom: var(--basic-gap);
 }
