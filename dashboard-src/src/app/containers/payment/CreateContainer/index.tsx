@@ -454,7 +454,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
             this.paymentPlanStore.select(payment.paymentPlanId)
             this.data.payment.price = payment.price
             this.data.payment.length = payment.length
-            this.locationStore.selectLocation(payment.locationId)
+            this.locationStore.selectLocation(payment.location.pubId)
             this.timeUnitStore.selectUnit(payment.unit)
             this.assetStore.selectAsset(payment.assetId, false)
             this.userStore.select(payment.userId, false)

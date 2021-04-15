@@ -160,6 +160,7 @@ export class PaymentListContainer extends React.Component<any, any> {
                     <Table striped={true} bordered={true} hover>
                         <thead>
                         <tr>
+                            <th>Локация</th>
                             <th>Организация/ФИО</th>
                             <th>Объект аренды</th>
                             <th>Платеж</th>
@@ -172,6 +173,7 @@ export class PaymentListContainer extends React.Component<any, any> {
                         <tbody>
                         {this.data.payments.map((payment, index) => (
                             <tr key={payment.pubId}>
+                                <td onClick={this.editPayment(payment)}>{payment?.location?.name}</td>
                                 <td onClick={this.editPayment(payment)}>{payment.companyName} {payment.userName}</td>
                                 <td onClick={this.editPayment(payment)}>{payment.assetName}</td>
                                 <td onClick={this.editPayment(payment)} >{payment.paymentPlanName}</td>

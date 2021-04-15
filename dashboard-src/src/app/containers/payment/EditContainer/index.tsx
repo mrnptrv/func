@@ -71,7 +71,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
                 this.data.endDate = new Date(this.data.payment.end)
                 this.data.endHour = parseInt(format(this.data.endDate, "HH"))
 
-                this.locationStore.selectLocation(this.data.payment.locationId)
+                this.locationStore.selectLocation(this.data.payment.location.pubId)
                 this.timeUnitStore.selectUnit(this.data.payment.unit)
                 this.assetStore.selectAsset(this.data.payment.assetId, false)
                 this.userStore.select(this.data.payment.userId, false)

@@ -78,6 +78,7 @@ export class AssetListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.assets.map((asset) =>
             <tr key={asset.pubId}>
+                <td onClick={this.editAsset(asset)}>{asset.location.name}</td>
                 <td onClick={this.editAsset(asset)}>{asset.name}</td>
                 <td onClick={this.editAsset(asset)}>{getAssetTypeName(asset.type)}</td>
                 <td onClick={this.editAsset(asset)}>{asset.capacity}</td>
@@ -101,6 +102,7 @@ export class AssetListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
+                    <th>Локация</th>
                     <th>Название</th>
                     <th>Тип</th>
                     <th>Вместимость</th>
@@ -110,7 +112,7 @@ export class AssetListContainer extends React.Component<any, any> {
                     <tbody>
                     {this.data.isLoading ?
                         <tr>
-                            <td colSpan={4}><Spinner size="sm" animation="grow"/></td>
+                            <td colSpan={5}><Spinner size="sm" animation="grow"/></td>
                         </tr>
                         : items
                     }

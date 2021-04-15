@@ -134,12 +134,12 @@ export class UserListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.users.map((user) =>
             <tr key={user.pubId}>
-                <td>{user.firstName} {user.lastName} {user.thirdName}</td>
-                <td>{user.phone}</td>
-                <td>{user.locationName}</td>
-                <td className="text-nowrap">{user.currentAccessAsset}</td>
-                <td className="text-nowrap">{formatDate(user.currentAccessFrom)}</td>
-                <td className="text-nowrap">{formatDate(user.currentAccessTo)}</td>
+                <td onClick={this.editUser(user)}>{user.firstName} {user.lastName} {user.thirdName}</td>
+                <td onClick={this.editUser(user)}>{user.phone}</td>
+                <td onClick={this.editUser(user)}>{user.locationName}</td>
+                <td onClick={this.editUser(user)} className="text-nowrap">{user.currentAccessAsset}</td>
+                <td onClick={this.editUser(user)} className="text-nowrap">{formatDate(user.currentAccessFrom)}</td>
+                <td onClick={this.editUser(user)} className="text-nowrap">{formatDate(user.currentAccessTo)}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.createPayment(user)}>Оплатить</Dropdown.Item>

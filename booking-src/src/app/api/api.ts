@@ -968,10 +968,10 @@ export interface Payment {
     length: number;
     /**
      * 
-     * @type {string}
+     * @type {Location}
      * @memberof Payment
      */
-    locationId: string;
+    location: Location;
     /**
      * 
      * @type {string}
@@ -1167,6 +1167,12 @@ export interface PaymentPlan {
      * @memberof PaymentPlan
      */
     description: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
+    locationName: string;
     /**
      * 
      * @type {string}

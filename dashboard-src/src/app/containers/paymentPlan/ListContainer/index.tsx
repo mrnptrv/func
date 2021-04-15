@@ -78,6 +78,7 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.list.map((paymentPlan) =>
             <tr key={paymentPlan.pubId}>
+                <td onClick={this.editPaymentPlan(paymentPlan)}>{paymentPlan.locationName}</td>
                 <td onClick={this.editPaymentPlan(paymentPlan)}>{paymentPlan.name}</td>
                 <td onClick={this.editPaymentPlan(paymentPlan)}>{paymentPlan.assetName}</td>
                 <td onClick={this.editPaymentPlan(paymentPlan)}>{getTimeUnitName(paymentPlan.unit)}</td>
@@ -130,6 +131,7 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
+                        <th>Локация</th>
                         <th>Название</th>
                         <th>Объект аренды</th>
                         <th>Длительность</th>
@@ -140,7 +142,7 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                     <tbody>
                     {this.data.isLoading ?
                         <tr>
-                            <td colSpan={3}><Spinner size="sm" animation="grow"/></td>
+                            <td colSpan={6}><Spinner size="sm" animation="grow"/></td>
                         </tr>
                         : items
                     }
