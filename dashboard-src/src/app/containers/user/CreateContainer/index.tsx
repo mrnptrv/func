@@ -73,7 +73,7 @@ export class UserCreateContainer extends React.Component<any, any> {
             paymentPlanId: this.paymentPlanStore.selectedId()
         }).then((r) => {
             this.data.isSaving = false
-            this.props.history.push("/dashboard/edit-user/" + r.data.pubId)
+            this.props.history.push("/dashboard/user-list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -189,7 +189,7 @@ export class UserCreateContainer extends React.Component<any, any> {
                             variant="primary"
                             onClick={this.save}
                         >
-                            Сохранить
+                            Создать
                             {this.data.isSaving &&
                             <Spinner animation="grow" as="span" size="sm" role="status"/>
                             }

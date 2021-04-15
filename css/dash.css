@@ -1,5 +1,28 @@
-.booking-table td
-{
+.infinite-scroll-component {
+    overflow: visible !important;
+}
+
+.z-index-one, .z-index-one .input-group-append .btn {
+    z-index: -1;
+}
+
+.payment-form.container {
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    min-width: 100%;
+}
+
+.payment-form .container {
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+    min-width: 100%;
+}
+
+.booking-table td {
     padding: 0;
 }
 

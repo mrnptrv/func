@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {userApi} from "app/constants/api";
-import {User} from "app/api/api";
-import {Alert, Button, Col, Form, Spinner} from "react-bootstrap";
+import {paymentApi, userApi} from "app/constants/api";
+import {Payment, User} from "app/api/api";
+import {Alert, Button, Col, Form, Spinner, Table} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {CHANGE_SELECTED_COMPANY_TOPIC, COMPANY_STORE} from "app/store/CompanyStore";
 import {LocationSelect} from "app/components/LocationSelect";
@@ -13,7 +13,7 @@ import {CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, PAYMENT_PLAN_STORE} from "app/store/
 import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
 import {eventBus, subscribe} from "mobx-event-bus2";
 import {MainMenu} from "app/components";
-import {formatPhone} from "app/constants/utils";
+import {formatDate, formatPhone} from "app/constants/utils";
 
 class UserEditData {
     @observable isUserLoading = true
@@ -21,6 +21,9 @@ class UserEditData {
     @observable user: User = null
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
+
+    @observable lastPayments: Array<Payment> = new Array<Payment>()
+    @observable lastPaymentsLoading = false
 }
 
 @observer
@@ -31,12 +34,13 @@ export class UserEditContainer extends React.Component<any, any> {
     private paymentPlanStore = PAYMENT_PLAN_STORE
 
 
-
     constructor(props: any, context: any) {
         super(props, context);
 
         eventBus.register(this)
         this.data.isUserLoading = true
+
+        this.loadLastPaymentsByUser(this.props.match.params.id)
 
         userApi().getUserUsingGET(this.props.match.params.id)
             .then(res => {
@@ -95,6 +99,7 @@ export class UserEditContainer extends React.Component<any, any> {
             paymentPlanId: this.paymentPlanStore.selectedId()
         }).then(() => {
             this.data.isSaving = false
+            this.props.history.push("/dashboard/user-list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -113,23 +118,59 @@ export class UserEditContainer extends React.Component<any, any> {
         this.data.user.mobile = formatPhone(e.target.value)
     }
 
+    private editPayment = (payment) => {
+        return () => {
+            this.props.history.push("/dashboard/edit-payment/" + payment.pubId)
+        }
+    }
+
+    private loadLastPaymentsByUser(selectedUserPubId: string) {
+        if (selectedUserPubId) {
+            this.data.lastPaymentsLoading = true
+            this.data.lastPayments = []
+            paymentApi().getPaymentListUsingPOST({
+                userId: selectedUserPubId,
+                offset: 0,
+                limit: 5
+            }).then((r) => {
+                this.data.lastPaymentsLoading = false
+                this.data.lastPayments = r.data.list
+            })
+        }
+    }
+
     render() {
+        const lastPayments = this.data.lastPayments.map((payment) =>
+            <tr key={payment.pubId}>
+                <td>{payment.assetName}</td>
+                <td>{payment.paymentPlanName}</td>
+                <td className="text-nowrap text-right">{payment.total}</td>
+                <td className="text-nowrap"> {formatDate(payment.start)} </td>
+                <td className="text-nowrap">{formatDate(payment.end)}</td>
+                <td className="text-right">
+                    <Button variant="light"
+                            onClick={this.editPayment(payment)}
+                    >Платеж</Button>
+                </td>
+            </tr>
+        );
         return (
             <div>
                 <MainMenu/>
                 <h4>User</h4>
                 {this.data.isUserLoading ? <Spinner animation="grow"/> :
-                    <Form className={style.userForm}>
-                        <Form.Group>
-                            <Form.Label>Локация:</Form.Label>
-                            <LocationSelect/>
-                        </Form.Group>
-                        <Form.Row>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Фамилия:</Form.Label>
-                                    <Form.Control
-                                        type="text"
+                    <>
+                        <Form className={style.userForm}>
+                            <Form.Group>
+                                <Form.Label>Локация:</Form.Label>
+                                <LocationSelect/>
+                            </Form.Group>
+                            <Form.Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Фамилия:</Form.Label>
+                                        <Form.Control
+                                            type="text"
                                         value={this.data.user.lastName}
                                         onChange={(e) => this.data.user.lastName = e.target.value}
                                     />
@@ -215,7 +256,30 @@ export class UserEditContainer extends React.Component<any, any> {
                                 }
                             </Button>
                         </Form.Group>
-                    </Form>
+                        </Form>
+
+                        <Table striped={true} bordered={true} hover>
+                            <thead>
+                            <tr>
+                                <th>Объект аренды</th>
+                                <th>Тариф</th>
+                                <th>Сумма</th>
+                                <th>От</th>
+                                <th>До</th>
+                                <th/>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {this.data.lastPaymentsLoading ?
+                                <tr>
+                                    <td colSpan={7}><Spinner size="sm" animation="grow"/></td>
+                                </tr>
+                                : lastPayments
+                            }
+                            </tbody>
+                        </Table>
+                    </>
                 }
             </div>
         );

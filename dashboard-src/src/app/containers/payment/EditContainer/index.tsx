@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {paymentApi, paymentPlanApi, userApi} from "app/constants/api";
 import {Payment} from "app/api/api";
-import {Alert, Button, Col, Dropdown, DropdownButton, Form, InputGroup, Spinner} from "react-bootstrap";
+import {Alert, Button, Col, Dropdown, DropdownButton, Form, InputGroup, Spinner, Table} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
 import {eventBus, subscribe} from "mobx-event-bus2";
@@ -30,6 +30,7 @@ import {CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, PAYMENT_PLAN_STORE} from "app/store/
 import {PaymentPlanSelect} from "app/components/PaymentPlanSelect";
 import {numberFormat} from "../../../../../../booking-src/src/app/constants/numberFormat";
 import {MainMenu} from "app/components";
+import {formatDate} from "app/constants/utils";
 
 class PaymentEditData {
     @observable isPaymentLoading = true
@@ -41,6 +42,9 @@ class PaymentEditData {
     @observable payment: Payment = null
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
+
+    @observable lastPayments: Array<Payment> = new Array<Payment>()
+    @observable lastPaymentsLoading = false
 }
 
 @observer
@@ -73,6 +77,9 @@ export class PaymentEditContainer extends React.Component<any, any> {
                 this.userStore.select(this.data.payment.userId, false)
                 this.companyStore.select(this.data.payment.companyId, false)
                 this.paymentPlanStore.select(this.data.payment.paymentPlanId)
+
+                this.loadLastPaymentsByUser(this.data.payment.userId)
+                this.loadLastPaymentsByCompany(this.data.payment.companyId)
 
                 this.data.isPaymentLoading = false
             })
@@ -146,6 +153,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
             paymentPlanId: this.paymentPlanStore.selectedId()
         }).then(() => {
             this.data.isSaving = false
+            this.props.history.push("/dashboard/payment-list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -183,16 +191,16 @@ export class PaymentEditContainer extends React.Component<any, any> {
 
     private calcLength() {
         if (this.timeUnitStore.selectedId() === "HOUR") {
-            this.data.payment.length = this.data.endHour - this.data.startHour
+            this.data.payment.length = this.data.endHour - this.data.startHour + 1
         }
         if (this.timeUnitStore.selectedId() === "DAY") {
-            this.data.payment.length = differenceInCalendarDays(this.data.endDate, this.data.startDate)
+            this.data.payment.length = differenceInCalendarDays(this.data.endDate, this.data.startDate) + 1
         }
         if (this.timeUnitStore.selectedId() === "MONTH") {
-            this.data.payment.length = differenceInCalendarMonths(this.data.endDate, this.data.startDate)
+            this.data.payment.length = differenceInCalendarMonths(this.data.endDate, this.data.startDate) + 1
         }
         if (this.timeUnitStore.selectedId() === "YEAR") {
-            this.data.payment.length = differenceInCalendarYears(this.data.endDate, this.data.startDate)
+            this.data.payment.length = differenceInCalendarYears(this.data.endDate, this.data.startDate) + 1
         }
 
         if (this.data.payment.length < 1) {
@@ -203,17 +211,17 @@ export class PaymentEditContainer extends React.Component<any, any> {
 
     private calcEndDate() {
         if (this.timeUnitStore.selectedId() === "HOUR") {
-            this.data.endHour = this.data.startHour + this.data.payment.length
+            this.data.endHour = this.data.startHour + this.data.payment.length - 1
             if (this.data.endHour > 24) {
                 this.data.endHour = 24;
                 this.data.payment.length = 24 - this.data.startHour
             }
         } else if (this.timeUnitStore.selectedId() === "DAY") {
-            this.data.endDate = addDays(this.data.startDate, this.data.payment.length)
+            this.data.endDate = addDays(addDays(this.data.startDate, this.data.payment.length), -1)
         } else if (this.timeUnitStore.selectedId() === "MONTH") {
-            this.data.endDate = addMonths(this.data.startDate, this.data.payment.length)
+            this.data.endDate = addDays(addMonths(this.data.startDate, this.data.payment.length), -1)
         } else if (this.timeUnitStore.selectedId() === "YEAR") {
-            this.data.endDate = addYears(this.data.startDate, this.data.payment.length)
+            this.data.endDate = addDays(addYears(this.data.startDate, this.data.payment.length), -1)
         }
     }
 
@@ -359,11 +367,12 @@ export class PaymentEditContainer extends React.Component<any, any> {
     @subscribe(CHANGE_SELECTED_COMPANY_TOPIC)
     onChangeSelectedCompanyListener() {
         let selectedCompany = this.companyStore.selectedCompany;
+        let selectedCompanyPubId = selectedCompany?.pubId
         if (selectedCompany) {
             this.userStore.select(null)
 
             paymentPlanApi().getPaymentPlanListUsingPOST({
-                companyId: selectedCompany.pubId,
+                companyId: selectedCompanyPubId,
                 locationPubId: this.locationStore.selectedLocationId
             }).then((r) => {
                 if (r.data.length && r.data.length > 0) {
@@ -373,7 +382,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
 
                     if (selectedPaymentPlan) {
                         if (selectedPaymentPlan.companyPubId
-                            && selectedPaymentPlan.companyPubId !== selectedCompany.pubId
+                            && selectedPaymentPlan.companyPubId !== selectedCompanyPubId
                         ) {
                             this.paymentPlanStore.select(null)
                         }
@@ -381,215 +390,295 @@ export class PaymentEditContainer extends React.Component<any, any> {
                 }
             })
         }
+        this.loadLastPaymentsByCompany(selectedCompanyPubId);
+    }
+
+    private loadLastPaymentsByCompany(selectedCompanyPubId: string) {
+        if (selectedCompanyPubId) {
+            this.data.lastPaymentsLoading = true
+            this.data.lastPayments = []
+            paymentApi().getPaymentListUsingPOST({
+                companyId: selectedCompanyPubId,
+                offset: 0,
+                limit: 5
+            }).then((r) => {
+                this.data.lastPaymentsLoading = false
+                this.data.lastPayments = r.data.list
+            })
+        }
     }
 
     @subscribe(CHANGE_SELECTED_USER_TOPIC)
     onChangeSelectedUserListener() {
         let selectedUser = this.userStore.selectedUser;
+        let selectedUserPubId = selectedUser?.pubId;
 
         if (selectedUser) {
             this.companyStore.select(null)
 
-            userApi().getUserUsingGET(selectedUser.pubId).then((r) => {
+            userApi().getUserUsingGET(selectedUserPubId).then((r) => {
                 if (r.data.paymentPlanId) {
                     this.paymentPlanStore.select(r.data.paymentPlanId)
                 }
             })
         }
+        this.loadLastPaymentsByUser(selectedUserPubId);
+    }
+
+    private loadLastPaymentsByUser(selectedUserPubId: string) {
+        if (selectedUserPubId) {
+            this.data.lastPaymentsLoading = true
+            this.data.lastPayments = []
+            paymentApi().getPaymentListUsingPOST({
+                userId: selectedUserPubId,
+                offset: 0,
+                limit: 5
+            }).then((r) => {
+                this.data.lastPaymentsLoading = false
+                this.data.lastPayments = r.data.list
+            })
+        }
+    }
+
+    private editPayment = (payment) => {
+        return () => {
+            this.props.history.push("/dashboard/edit-payment/" + payment.pubId)
+        }
     }
 
     render() {
+        const lastPayments = this.data.lastPayments.map((payment) =>
+            <tr key={payment.pubId}>
+                <td>{payment.assetName}</td>
+                <td>{payment.paymentPlanName}</td>
+                <td className="text-nowrap text-right">{payment.total}</td>
+                <td className="text-nowrap"> {formatDate(payment.start)} </td>
+                <td className="text-nowrap">{formatDate(payment.end)}</td>
+                <td className="text-right">
+                    <Button variant="light"
+                            onClick={this.editPayment(payment)}
+                    >Платеж</Button>
+                </td>
+            </tr>
+        );
         return (
             <div className="payment-form">
                 <MainMenu/>
                 <h4>Платеж</h4>
                 {this.data.isPaymentLoading ? <Spinner animation="grow"/> :
-                    <Form className={style.paymentForm}>
-                        <Form.Group>
-                            <Form.Label>Локация:</Form.Label>
-                            <LocationSelect/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Объект аренды:</Form.Label>
-                            <AssetSelect withEmpty={false}/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Резидент:</Form.Label>
-                            <UserSelect/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Организация:</Form.Label>
-                            <CompanySelect/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Тариф:</Form.Label>
-                            <PaymentPlanSelect/>
-                        </Form.Group>
-                        <Form.Row>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Доступ от:</Form.Label>
-                                    <InputGroup className="mb-3 start">
-                                        <ReactDatePicker
-                                            dateFormat="dd.MM.yyyy"
-                                            className="top__input top__input--select input input--select"
-                                            placeholderText=""
-                                            selected={this.data.startDate}
-                                            onChange={this.setStartDate}/>
-                                        {this.timeUnitStore.selectedId() === 'HOUR' ?
-                                            <DropdownButton
-                                                variant="outline-secondary"
-                                                title={this.getStartHour()}
-                                            >
-                                                {WORK_HOURS.map(h =>
-                                                    <Dropdown.Item
-                                                        key={h}
-                                                        onClick={this.setStartHour(h)}
-                                                    >
-                                                        {h < 10 ? "0" + h : h}:00
-                                                    </Dropdown.Item>
-                                                )}
-                                            </DropdownButton>
-                                            : <></>
-                                        }
-                                    </InputGroup>
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>До:</Form.Label>
-                                    <InputGroup className="mb-3 start">
-                                        {this.timeUnitStore.selectedId() !== 'HOUR' ?
+                    <>
+                        <Form className={style.paymentForm}>
+                            <Form.Group>
+                                <Form.Label>Локация:</Form.Label>
+                                <LocationSelect/>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Объект аренды:</Form.Label>
+                                <AssetSelect withEmpty={false}/>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Резидент:</Form.Label>
+                                <UserSelect/>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Организация:</Form.Label>
+                                <CompanySelect/>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Тариф:</Form.Label>
+                                <PaymentPlanSelect/>
+                            </Form.Group>
+                            <Form.Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Доступ от:</Form.Label>
+                                        <InputGroup className="mb-3 start">
                                             <ReactDatePicker
                                                 dateFormat="dd.MM.yyyy"
                                                 className="top__input top__input--select input input--select"
                                                 placeholderText=""
-                                                selected={this.data.endDate}
-                                                onChange={this.setEndDate}/>
-                                            : <></>}
-                                        {this.timeUnitStore.selectedId() === 'HOUR' ?
-                                            <DropdownButton
-                                                variant="outline-secondary"
-                                                title={this.getEndHour()}
-                                            >
-                                                {WORK_HOURS.map(h =>
-                                                    <Dropdown.Item
-                                                        key={h}
-                                                        onClick={this.setEndHour(h)}
-                                                    >
-                                                        {h < 10 ? "0" + h : h}:00
-                                                    </Dropdown.Item>
-                                                )}
-                                            </DropdownButton>
-                                            : <></>
-                                        }
-                                    </InputGroup>
-                                </Form.Group>
-                            </Col>
-                        </Form.Row>
-                        <Form.Row>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>
-                                        Количество:
-                                    </Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="1"
-                                        value={this.data.payment.length}
-                                        onChange={this.setLength}
-                                    />
-                                </Form.Group>
-                            </Col>
-                            <Col>
-                                <Form.Group>
-                                    <Form.Label>Длительность:</Form.Label>
-                                    <TimeUnitSelect/>
-                                </Form.Group>
-                            </Col>
-                        </Form.Row>
+                                                selected={this.data.startDate}
+                                                onChange={this.setStartDate}/>
+                                            {this.timeUnitStore.selectedId() === 'HOUR' ?
+                                                <DropdownButton
+                                                    variant="outline-secondary"
+                                                    title={this.getStartHour()}
+                                                >
+                                                    {WORK_HOURS.map(h =>
+                                                        <Dropdown.Item
+                                                            key={h}
+                                                            onClick={this.setStartHour(h)}
+                                                        >
+                                                            {h < 10 ? "0" + h : h}:00
+                                                        </Dropdown.Item>
+                                                    )}
+                                                </DropdownButton>
+                                                : <></>
+                                            }
+                                        </InputGroup>
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>До:</Form.Label>
+                                        <InputGroup className="mb-3 start">
+                                            {this.timeUnitStore.selectedId() !== 'HOUR' ?
+                                                <ReactDatePicker
+                                                    dateFormat="dd.MM.yyyy"
+                                                    className="top__input top__input--select input input--select"
+                                                    placeholderText=""
+                                                    selected={this.data.endDate}
+                                                    onChange={this.setEndDate}/>
+                                                : <></>}
+                                            {this.timeUnitStore.selectedId() === 'HOUR' ?
+                                                <DropdownButton
+                                                    variant="outline-secondary"
+                                                    title={this.getEndHour()}
+                                                >
+                                                    {WORK_HOURS.map(h =>
+                                                        <Dropdown.Item
+                                                            key={h}
+                                                            onClick={this.setEndHour(h)}
+                                                        >
+                                                            {h < 10 ? "0" + h : h}:00
+                                                        </Dropdown.Item>
+                                                    )}
+                                                </DropdownButton>
+                                                : <></>
+                                            }
+                                        </InputGroup>
+                                    </Form.Group>
+                                </Col>
+                            </Form.Row>
+                            <Form.Row>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>
+                                            Количество:
+                                        </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="1"
+                                            value={this.data.payment.length}
+                                            onChange={this.setLength}
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label>Длительность:</Form.Label>
+                                        <TimeUnitSelect/>
+                                    </Form.Group>
+                                </Col>
+                            </Form.Row>
 
-                        <Form.Group>
-                            <Form.Label>
-                                Цена:
-                            </Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="100.00"
-                                value={this.data.payment.price}
-                                onChange={this.setPrice}
-                            />
-                        </Form.Group>
-                        {this.paymentPlanStore?.selectedPaymentPlan?.assumption?.workTimeRanges?.length > 0 ?
                             <Form.Group>
-                                <Form.Label>Стоимость:</Form.Label>
-                                <table className={style.space__table}>
-                                    <tbody>
-                                    {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
-                                        .filter(wtr => !wtr.isWeekend)
-                                        .map((wtr, index) =>
-                                            <tr key={index} className={style.space__row}>
-                                                <td className={style.space__cell}>
-                                                    будни:&nbsp;
-                                                    <span>{wtr.start} &ndash; {wtr.end}</span>
-                                                </td>
-                                                <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
-                                            </tr>
-                                        )
-                                    }
-                                    {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
-                                        .filter(wtr => wtr.isWeekend)
-                                        .map((wtr, index) =>
-                                            <tr key={index + 1000} className={style.space__row}>
-                                                <td className={style.space__cell}>
-                                                    выходные:&nbsp;
-                                                    <span>{wtr.start} &ndash; {wtr.end}</span>
-                                                </td>
-                                                <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
-                                            </tr>
-                                        )
-                                    }
-                                    </tbody>
-                                </table>
+                                <Form.Label>
+                                    Цена:
+                                </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="100.00"
+                                    value={this.data.payment.price}
+                                    onChange={this.setPrice}
+                                />
                             </Form.Group>
-                            : (<></>)
-                        }
-                        <Form.Group>
-                            <Form.Label>Всего:</Form.Label>
-                            <div>
-                                {this.data.payment.total}
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            {this.data.error &&
-                            <Alert variant="danger">
-                                {this.data.error}
-                                {
-                                    (<ul>{this.data.fieldErrors.map((e, i) => <li key={i}>{e}</li>)}</ul>)
-                                }
-                            </Alert>
+                            {this.paymentPlanStore?.selectedPaymentPlan?.assumption?.workTimeRanges?.length > 0 ?
+                                <Form.Group>
+                                    <Form.Label>Стоимость:</Form.Label>
+                                    <table className={style.space__table}>
+                                        <tbody>
+                                        {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
+                                            .filter(wtr => !wtr.isWeekend)
+                                            .map((wtr, index) =>
+                                                <tr key={index} className={style.space__row}>
+                                                    <td className={style.space__cell}>
+                                                        будни:&nbsp;
+                                                        <span>{wtr.start} &ndash; {wtr.end}</span>
+                                                    </td>
+                                                    <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
+                                                </tr>
+                                            )
+                                        }
+                                        {this.paymentPlanStore.selectedPaymentPlan.assumption.workTimeRanges
+                                            .filter(wtr => wtr.isWeekend)
+                                            .map((wtr, index) =>
+                                                <tr key={index + 1000} className={style.space__row}>
+                                                    <td className={style.space__cell}>
+                                                        выходные:&nbsp;
+                                                        <span>{wtr.start} &ndash; {wtr.end}</span>
+                                                    </td>
+                                                    <td className={style.space__cell}>{numberFormat(wtr.price)}р/час</td>
+                                                </tr>
+                                            )
+                                        }
+                                        </tbody>
+                                    </table>
+                                </Form.Group>
+                                : (<></>)
                             }
-                        </Form.Group>
-                        <Form.Group className="float-right">
-                            <Button
-                                className="mr-2"
-                                variant="light"
-                                onClick={this.cancel}
-                            >
-                                Отмена
-                            </Button>
-                            <Button
-                                className="mr-2"
-                                variant="primary"
-                                onClick={this.save}
-                            >
-                                Сохранить
-                                {this.data.isSaving &&
-                                <Spinner animation="grow" as="span" size="sm" role="status"/>
+                            <Form.Group>
+                                <Form.Label>Всего:</Form.Label>
+                                <div>
+                                    {this.data.payment.total}
+                                </div>
+                            </Form.Group>
+                            <Form.Group>
+                                {this.data.error &&
+                                <Alert variant="danger">
+                                    {this.data.error}
+                                    {
+                                        (<ul>{this.data.fieldErrors.map((e, i) => <li key={i}>{e}</li>)}</ul>)
+                                    }
+                                </Alert>
                                 }
-                            </Button>
-                        </Form.Group>
-                    </Form>
+                            </Form.Group>
+                            <Form.Group className="float-right">
+                                <Button
+                                    className="mr-2"
+                                    variant="light"
+                                    onClick={this.cancel}
+                                >
+                                    Отмена
+                                </Button>
+                                <Button
+                                    className="mr-2"
+                                    variant="primary"
+                                    onClick={this.save}
+                                >
+                                    Сохранить
+                                    {this.data.isSaving &&
+                                    <Spinner animation="grow" as="span" size="sm" role="status"/>
+                                    }
+                                </Button>
+                            </Form.Group>
+                        </Form>
+
+                        {this.userStore.selectedUser || this.companyStore.selectedCompany
+                            ? <Table striped={true} bordered={true} hover>
+                                <thead>
+                                <tr>
+                                    <th>Объект аренды</th>
+                                    <th>Тариф</th>
+                                    <th>Сумма</th>
+                                    <th>От</th>
+                                    <th>До</th>
+                                    <th/>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {this.data.lastPaymentsLoading ?
+                                    <tr>
+                                        <td colSpan={7}><Spinner size="sm" animation="grow"/></td>
+                                    </tr>
+                                    : lastPayments
+                                }
+                                </tbody>
+                            </Table>
+                            : <></>
+                        }
+                    </>
                 }
             </div>
         );

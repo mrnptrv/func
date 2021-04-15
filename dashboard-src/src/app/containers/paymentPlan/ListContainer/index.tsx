@@ -5,6 +5,8 @@ import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-boo
 import {paymentPlanApi} from "app/constants/api";
 import {PaymentPlan} from "app/api/api";
 import {MainMenu} from "app/components";
+import {getTimeUnitName} from "app/constants/locale_ru";
+import {numberFormat} from "../../../../../../booking-src/src/app/constants/numberFormat";
 
 class PaymentPlanListData {
     @observable isLoading = true
@@ -76,7 +78,37 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.list.map((paymentPlan) =>
             <tr key={paymentPlan.pubId}>
-                <td>{paymentPlan.name}</td>
+                <td onClick={this.editPaymentPlan(paymentPlan)}>{paymentPlan.name}</td>
+                <td onClick={this.editPaymentPlan(paymentPlan)}>{paymentPlan.assetName}</td>
+                <td onClick={this.editPaymentPlan(paymentPlan)}>{getTimeUnitName(paymentPlan.unit)}</td>
+                <td onClick={this.editPaymentPlan(paymentPlan)} className="text-nowrap text-right">
+
+                    {paymentPlan?.assumption?.workTimeRanges?.length > 0 ?
+                        <div>
+                            {paymentPlan.assumption.workTimeRanges
+                                .filter(wtr => !wtr.isWeekend)
+                                .map((wtr, index) =>
+                                    <div>будни:&nbsp;
+                                        <span>{wtr.start} &ndash; {wtr.end}</span>
+                                        &nbsp;
+                                        {numberFormat(wtr.price)}р
+                                    </div>
+                                )
+                            }
+                            {paymentPlan.assumption.workTimeRanges
+                                .filter(wtr => wtr.isWeekend)
+                                .map((wtr, index) =>
+                                    <div>выходные:&nbsp;
+                                        <span>{wtr.start} &ndash; {wtr.end}</span>
+                                        &nbsp;
+                                        {numberFormat(wtr.price)}р
+                                    </div>
+                                )
+                            }
+                        </div>
+                        : (<>{numberFormat(paymentPlan.price)}р</>)
+                    }
+                </td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.editPaymentPlan(paymentPlan)}>Редактировать</Dropdown.Item>
@@ -99,6 +131,9 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                     <thead>
                     <tr>
                         <th>Название</th>
+                        <th>Объект аренды</th>
+                        <th>Длительность</th>
+                        <th>Цена</th>
                         <th/>
                     </tr>
                     </thead>

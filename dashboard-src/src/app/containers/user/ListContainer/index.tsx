@@ -134,10 +134,9 @@ export class UserListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.users.map((user) =>
             <tr key={user.pubId}>
-                <td>{user.firstName} </td>
-                <td>{user.lastName} </td>
-                <td>{user.thirdName}</td>
+                <td>{user.firstName} {user.lastName} {user.thirdName}</td>
                 <td>{user.phone}</td>
+                <td>{user.locationName}</td>
                 <td className="text-nowrap">{user.currentAccessAsset}</td>
                 <td className="text-nowrap">{formatDate(user.currentAccessFrom)}</td>
                 <td className="text-nowrap">{formatDate(user.currentAccessTo)}</td>
@@ -164,7 +163,8 @@ export class UserListContainer extends React.Component<any, any> {
                     <Form.Row className="align-items-center" style={filterRowStyle}>
                         <Col>
                             <Form.Control
-                                type="select"
+                                autoFocus={true}
+                                type="text"
                                 size="sm"
                                 value={this.data.filter}
                                 onChange={(e) => this.setFilter(e.target.value)}
@@ -185,10 +185,9 @@ export class UserListContainer extends React.Component<any, any> {
                     <Table striped={true} bordered={true} hover>
                         <thead>
                         <tr>
-                            <th>Фамилия</th>
-                            <th>Имя</th>
-                            <th>Отчество</th>
+                            <th>ФИО</th>
                             <th>Телефон</th>
+                            <th>Локация</th>
                             <th>Доступ</th>
                             <th>От</th>
                             <th>До</th>

@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {locationApi} from "app/constants/api";
 import {Alert, Button, Form, Spinner} from "react-bootstrap";
-import * as style from "../style.css"
+import * as style from "../../style.css"
 import {MainMenu} from "app/components";
 
 class LocationCreateData {
@@ -29,9 +29,10 @@ export class LocationCreateContainer extends React.Component<any, any> {
 
         locationApi().createLocationUsingPOST({
             name: this.data.name,
-        }).then((r) => {
+        }).then(() => {
             this.data.isSaving = false
-            this.props.history.push("/dashboard/edit-location/" + r.data.pubId)
+
+            this.props.history.push("/dashboard/location/list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -57,6 +58,7 @@ export class LocationCreateContainer extends React.Component<any, any> {
                     <Form.Group>
                         <Form.Label>Название:</Form.Label>
                         <Form.Control
+                            autoFocus={true}
                             type="text"
                             value={this.data.name}
                             onChange={(e) => this.data.name = e.target.value}
@@ -85,7 +87,7 @@ export class LocationCreateContainer extends React.Component<any, any> {
                             variant="primary"
                             onClick={this.save}
                         >
-                            Сохранить
+                            Создать
                             {this.data.isSaving &&
                             <Spinner animation="grow" as="span" size="sm" role="status"/>
                             }

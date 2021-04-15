@@ -82,7 +82,7 @@ export class CompanyListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.companies.map((company) =>
             <tr key={company.pubId}>
-                <td>{company.name}</td>
+                <td onClick={this.editCompany(company)}>{company.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.createPayment(company)}>Оплатить</Dropdown.Item>

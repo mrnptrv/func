@@ -2,24 +2,23 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
 import {Button, Dropdown, DropdownButton, Modal, Spinner, Table} from "react-bootstrap";
-import {assetsApi} from "app/constants/api";
-import {Asset} from "app/api/api";
+import {locationApi} from "app/constants/api";
+import {Location} from "app/api/api";
 import {MainMenu} from "app/components";
-import {getAssetTypeName} from "app/constants/locale_ru";
 
-class AssetListData {
+class LocationListData {
     @observable isLoading = true
     @observable error = ""
-    @observable assets: Array<Asset> = new Array<Asset>()
+    @observable locations: Array<Location> = new Array<Location>()
     @observable isShowDeletionDialog = false;
-    @observable deletionAsset: Asset = null;
+    @observable deletionLocation: Location = null;
 
     @action
-    deleteAsset(asset) {
-        assetsApi().deleteUsingPOST({
-            pubId: asset.pubId
+    deleteLocation(location) {
+        locationApi().deleteLocationUsingPOST({
+            pubId: location.pubId
         }).then(() => {
-            this.assets = this.assets.filter(a => a.pubId != asset.pubId)
+            this.locations = this.locations.filter(a => a.pubId != location.pubId)
         }).catch(error => {
             console.log(error);
         })
@@ -27,19 +26,18 @@ class AssetListData {
 }
 
 @observer
-export class AssetListContainer extends React.Component<any, any> {
-    private data = new AssetListData()
+export class LocationListContainer extends React.Component<any, any> {
+    private data = new LocationListData()
 
     constructor(props: any, context: any) {
         super(props, context);
 
         this.data.isLoading = true
-        assetsApi().assetsListUsingPOST({
-            capacityFilter: "all",
-        }).then((response) => {
-            this.data.assets = response.data
-            this.data.isLoading = false
-        }).catch(error => {
+        locationApi().getLocationListUsingPOST("").then(
+            (response) => {
+                this.data.locations = response.data
+                this.data.isLoading = false
+            }).catch(error => {
             if (error && error.response && error.response.data.message) {
                 this.data.error = error.response.data.message
             }
@@ -48,43 +46,41 @@ export class AssetListContainer extends React.Component<any, any> {
         })
     }
 
-    deleteAsset = () => {
-        this.data.deleteAsset(this.data.deletionAsset)
+    deleteLocation = () => {
+        this.data.deleteLocation(this.data.deletionLocation)
         this.data.isShowDeletionDialog = false;
     }
 
     openDeletionDialog = (asset) => {
         return () => {
-            this.data.deletionAsset = asset;
+            this.data.deletionLocation = asset;
             this.data.isShowDeletionDialog = true
         }
     }
 
     hideDeletionDialog = () => {
         this.data.isShowDeletionDialog = false
-        this.data.deletionAsset = null;
+        this.data.deletionLocation = null;
     }
 
-    editAsset = (asset) => {
+    editLocation = (location) => {
         return () => {
-            this.props.history.push("/dashboard/asset/" + asset.pubId)
+            this.props.history.push("/dashboard/edit-location/" + location.pubId)
         }
     }
 
-    newAsset = () => {
-        this.props.history.push("/dashboard/create-asset")
+    newLocation = () => {
+        this.props.history.push("/dashboard/create-location")
     }
 
     render() {
-        const items = this.data.assets.map((asset) =>
-            <tr key={asset.pubId}>
-                <td>{asset.name}</td>
-                <td>{getAssetTypeName(asset.type)}</td>
-                <td>{asset.capacity}</td>
+        const items = this.data.locations.map((location) =>
+            <tr key={location.pubId}>
+                <td onClick={this.editLocation(location)}>{location.name}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
-                        <Dropdown.Item onClick={this.editAsset(asset)}>Редактировать</Dropdown.Item>
-                        <Dropdown.Item onClick={this.openDeletionDialog(asset)}>Удалить</Dropdown.Item>
+                        <Dropdown.Item onClick={this.editLocation(location)}>Редактировать</Dropdown.Item>
+                        <Dropdown.Item onClick={this.openDeletionDialog(location)}>Удалить</Dropdown.Item>
                     </DropdownButton>
                 </td>
             </tr>
@@ -92,25 +88,24 @@ export class AssetListContainer extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu/>
-                <h4> Объекты аренды
+                <h4>
+                    Локации
                     <Button
                         variant="light"
-                        onClick={this.newAsset}
+                        onClick={this.newLocation}
                     > + </Button>
                 </h4>
                 <Table striped={true} bordered={true} hover>
                     <thead>
                     <tr>
-                    <th>Название</th>
-                    <th>Тип</th>
-                    <th>Вместимость</th>
-                    <th/>
+                        <th>Название</th>
+                        <th/>
                     </tr>
                     </thead>
                     <tbody>
                     {this.data.isLoading ?
                         <tr>
-                            <td colSpan={4}><Spinner size="sm" animation="grow"/></td>
+                            <td colSpan={3}><Spinner size="sm" animation="grow"/></td>
                         </tr>
                         : items
                     }
@@ -123,13 +118,14 @@ export class AssetListContainer extends React.Component<any, any> {
 
                     <Modal.Body>
                         <p>
-                            Продолжить удаление объекта аренды?
+                            Будет удалена локация "{this.data?.deletionLocation?.name}"
+                            Продолжить?
                         </p>
                     </Modal.Body>
 
                     <Modal.Footer>
                         <Button variant="secondary" onClick={this.hideDeletionDialog}>Нет</Button>
-                        <Button variant="primary" onClick={this.deleteAsset}>Да</Button>
+                        <Button variant="primary" onClick={this.deleteLocation}>Да</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

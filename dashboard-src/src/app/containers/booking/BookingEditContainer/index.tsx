@@ -67,6 +67,7 @@ export class BookingEditContainer extends React.Component<any, any> {
             description: this.data.booking.description
         }).then(() => {
             this.data.isSaving = false
+            this.props.history.push("/dashboard/booking")
         }).catch((error) => {
             this.data.isSaving = false
 

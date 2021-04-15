@@ -34,7 +34,7 @@ export class CompanyCreateContainer extends React.Component<any, any> {
             details: this.data.details,
         }).then((r) => {
             this.data.isSaving = false
-            this.props.history.push("/dashboard/edit-company/" + r.data.pubId)
+            this.props.history.push("/dashboard/company-list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -60,6 +60,7 @@ export class CompanyCreateContainer extends React.Component<any, any> {
                     <Form.Group>
                         <Form.Label>Название:</Form.Label>
                         <Form.Control
+                            autoFocus={true}
                             type="text"
                             value={this.data.name}
                             onChange={(e) => this.data.name = e.target.value}
@@ -106,7 +107,7 @@ export class CompanyCreateContainer extends React.Component<any, any> {
                             variant="primary"
                             onClick={this.save}
                         >
-                            Сохранить
+                            Создать
                             {this.data.isSaving &&
                             <Spinner animation="grow" as="span" size="sm" role="status"/>
                             }

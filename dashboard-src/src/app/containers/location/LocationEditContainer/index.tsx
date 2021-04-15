@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as style from "../style.css"
+import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {locationApi} from "app/constants/api";
@@ -33,6 +33,8 @@ export class LocationEditContainer extends React.Component<any, any> {
             name: this.data.location.name,
         }).then(() => {
             this.data.isSaving = false
+
+            this.props.history.push("/dashboard/location/list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -76,6 +78,7 @@ export class LocationEditContainer extends React.Component<any, any> {
                         <Form.Group>
                             <Form.Label>Название:</Form.Label>
                             <Form.Control
+                                autoFocus={true}
                                 type="text"
                                 value={this.data.location.name}
                                 onChange={(e) => this.data.location.name = e.target.value}

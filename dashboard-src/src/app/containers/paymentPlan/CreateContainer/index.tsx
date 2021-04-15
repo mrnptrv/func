@@ -107,7 +107,7 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
             }
         }).then((r) => {
             this.data.isSaving = false
-            this.props.history.push("/dashboard/edit-payment-plan/" + r.data.pubId)
+            this.props.history.push("/dashboard/payment-plan-list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -363,13 +363,13 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                             variant="light"
                             onClick={this.cancel}
                         >
-                            Cancel
+                            Отменить
                         </Button>
                         <Button
                             variant="primary"
                             onClick={this.save}
                         >
-                            Save
+                            Создать
                             {this.data.isSaving &&
                             <Spinner animation="grow" as="span" size="sm" role="status"/>
                             }

@@ -129,7 +129,7 @@ export class BookingCreateContainer extends React.Component<any, any> {
         }).then((res) => {
             this.data.isSaving = false
 
-            this.props.history.push("/dashboard/edit-booking/" + res.data.pubId)
+            this.props.history.push("/dashboard/booking")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -395,7 +395,7 @@ export class BookingCreateContainer extends React.Component<any, any> {
                                 variant="primary"
                                 onClick={this.save}
                             >
-                                Сохранить
+                                Создать
                                 {this.data.isSaving &&
                                 <Spinner animation="grow" as="span" size="sm" role="status"/>
                                 }

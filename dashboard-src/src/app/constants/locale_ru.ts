@@ -62,6 +62,18 @@ export const getStatusName = (status: String) => {
 
 }
 
+export const getTimeUnitName = (status: String) => {
+    return [
+        {v: 'HOUR', c: 'час'},
+        {v: 'DAY', c: 'день'},
+        {v: 'MONTH', c: 'месяц'},
+        {v: 'YEAR', c: 'год'},
+    ].filter(s => s.v === status)
+        .map(s => s.c)
+        .pop()
+
+}
+
 export const getAssetTypeName = (status: String) => {
     return [
         {label: "Рабочее место", id: "WORK_PLACE"},

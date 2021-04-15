@@ -4,19 +4,7 @@ import {observer} from 'mobx-react';
 import {observable} from "mobx";
 import {paymentApi, paymentPlanApi, userApi} from "app/constants/api";
 import {CreatePaymentRequest, Payment} from "app/api/api";
-import {
-    Alert,
-    Button,
-    Col,
-    Container,
-    Dropdown,
-    DropdownButton,
-    Form,
-    InputGroup,
-    Row,
-    Spinner,
-    Table
-} from "react-bootstrap";
+import {Alert, Button, Col, Dropdown, DropdownButton, Form, InputGroup, Spinner, Table} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
 import {LocationSelect} from "app/components/LocationSelect";
 import {eventBus, subscribe} from "mobx-event-bus2";
@@ -54,14 +42,14 @@ class PaymentCreateData {
         assetId: "",
         companyId: "",
         details: "",
-        length: 0,
+        length: 1,
         locationId: LOCATION_STORE.selectedLocationId,
         paymentPlanId: PAYMENT_PLAN_STORE.selectedPaymentId,
         price: "100.00",
         start: "",
         end: "",
         total: "",
-        unit: "HOUR",
+        unit: TIME_UNIT_STORE.selectedId(),
         userId: ""
     }
     @observable fieldErrors: Array<String> = new Array<String>()
@@ -94,6 +82,10 @@ export class PaymentCreateContainer extends React.Component<any, any> {
             this.companyStore.select(companyId)
             this.selectCompany(companyId)
         }
+        this.data.payment.length = 1
+        this.timeUnitStore.selectUnit("DAY")
+        this.calcEndDate()
+        this.calcTotal()
 
         eventBus.register(this)
     }
@@ -189,7 +181,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
         }).then((r) => {
             this.data.isSaving = false
 
-            this.props.history.push("/dashboard/edit-payment/" + r.data.pubId)
+            this.cancel()
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -227,17 +219,17 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     private calcEndDate() {
         if (this.timeUnitStore.selectedId() === "HOUR") {
-            this.data.endHour = this.data.startHour + this.data.payment.length
+            this.data.endHour = this.data.startHour + this.data.payment.length - 1
             if (this.data.endHour > 24) {
                 this.data.endHour = 24;
                 this.data.payment.length = 24 - this.data.startHour
             }
         } else if (this.timeUnitStore.selectedId() === "DAY") {
-            this.data.endDate = addDays(this.data.startDate, this.data.payment.length)
+            this.data.endDate = addDays(addDays(this.data.startDate, this.data.payment.length), -1)
         } else if (this.timeUnitStore.selectedId() === "MONTH") {
-            this.data.endDate = addMonths(this.data.startDate, this.data.payment.length)
+            this.data.endDate = addDays(addMonths(this.data.startDate, this.data.payment.length), -1)
         } else if (this.timeUnitStore.selectedId() === "YEAR") {
-            this.data.endDate = addYears(this.data.startDate, this.data.payment.length)
+            this.data.endDate = addDays(addYears(this.data.startDate, this.data.payment.length), -1)
         }
     }
 
@@ -320,16 +312,16 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     private calcLength() {
         if (this.timeUnitStore.selectedId() === "HOUR") {
-            this.data.payment.length = this.data.endHour - this.data.startHour
+            this.data.payment.length = this.data.endHour - this.data.startHour + 1
         }
         if (this.timeUnitStore.selectedId() === "DAY") {
-            this.data.payment.length = differenceInCalendarDays(this.data.endDate, this.data.startDate)
+            this.data.payment.length = differenceInCalendarDays(this.data.endDate, this.data.startDate) + 1
         }
         if (this.timeUnitStore.selectedId() === "MONTH") {
-            this.data.payment.length = differenceInCalendarMonths(this.data.endDate, this.data.startDate)
+            this.data.payment.length = differenceInCalendarMonths(this.data.endDate, this.data.startDate) + 1
         }
         if (this.timeUnitStore.selectedId() === "YEAR") {
-            this.data.payment.length = differenceInCalendarYears(this.data.endDate, this.data.startDate)
+            this.data.payment.length = differenceInCalendarYears(this.data.endDate, this.data.startDate) + 1
         }
 
         if (this.data.payment.length < 1) {
@@ -490,37 +482,30 @@ export class PaymentCreateContainer extends React.Component<any, any> {
         );
         return (
             <div className="payment-form">
-                <Container>
-                    <Row>
-                        <Col className={style.paymentHeader}>
-                            <MainMenu/>
-                            <h4>Новый платеж</h4>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className={style.paymentForm}>
-                            <Form>
-                                <Form.Group>
-                                    <Form.Label>Локация:</Form.Label>
-                                    <LocationSelect/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Объект аренды:</Form.Label>
-                                    <AssetSelect withEmpty={false}/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Резидент:</Form.Label>
-                                    <UserSelect/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Организация:</Form.Label>
-                                    <CompanySelect/>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Тариф:</Form.Label>
-                                    <PaymentPlanSelect/>
-                                </Form.Group>
-                                <Form.Row>
+                <MainMenu/>
+                <h4>Платеж</h4>
+                <Form className={style.paymentForm}>
+                    <Form.Group>
+                        <Form.Label>Локация:</Form.Label>
+                        <LocationSelect/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Объект аренды:</Form.Label>
+                        <AssetSelect withEmpty={false}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Резидент:</Form.Label>
+                        <UserSelect/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Организация:</Form.Label>
+                        <CompanySelect/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Тариф:</Form.Label>
+                        <PaymentPlanSelect/>
+                    </Form.Group>
+                    <Form.Row>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Доступ от:</Form.Label>
@@ -678,42 +663,38 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                                         variant="primary"
                                         onClick={this.save}
                                     >
-                                        Сохранить
+                                        Создать
                                         {this.data.isSaving &&
                                         <Spinner animation="grow" as="span" size="sm" role="status"/>
                                         }
                                     </Button>
                                 </Form.Group>
-                            </Form>
-                        </Col>
-                        <Col>
-                            {this.userStore.selectedUser || this.companyStore.selectedCompany
-                                ? <Table striped={true} bordered={true} hover>
-                                    <thead>
-                                    <tr>
-                                        <th>Объект аренды</th>
-                                        <th>Платеж</th>
-                                        <th>Сумма</th>
-                                        <th>От</th>
-                                        <th>До</th>
-                                        <th/>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+                </Form>
 
-                                    {this.data.lastPaymentsLoading ?
-                                        <tr>
-                                            <td colSpan={7}><Spinner size="sm" animation="grow"/></td>
-                                        </tr>
-                                        : lastPayments
-                                    }
-                                    </tbody>
-                                </Table>
-                                : <></>
-                            }
-                        </Col>
-                    </Row>
-                </Container>
+                {this.userStore.selectedUser || this.companyStore.selectedCompany
+                    ? <Table striped={true} bordered={true} hover>
+                        <thead>
+                        <tr>
+                            <th>Объект аренды</th>
+                            <th>Тариф</th>
+                            <th>Сумма</th>
+                            <th>От</th>
+                            <th>До</th>
+                            <th/>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {this.data.lastPaymentsLoading ?
+                            <tr>
+                                <td colSpan={7}><Spinner size="sm" animation="grow"/></td>
+                            </tr>
+                            : lastPayments
+                        }
+                        </tbody>
+                    </Table>
+                    : <></>
+                }
             </div>
         );
     }

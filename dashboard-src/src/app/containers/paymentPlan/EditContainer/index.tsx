@@ -81,6 +81,7 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
             }
         }).then(() => {
             this.data.isSaving = false
+            this.props.history.push("/dashboard/payment-plan-list")
         }).catch((error) => {
             this.data.isSaving = false
 

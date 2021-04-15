@@ -138,7 +138,8 @@ export class PaymentListContainer extends React.Component<any, any> {
                     <Form.Row className="align-items-center" style={filterRowStyle}>
                         <Col>
                             <Form.Control
-                                type="select"
+                                autoFocus={true}
+                                type="text"
                                 size="sm"
                                 value={this.data.filter}
                                 onChange={(e) => this.setFilter(e.target.value)}
@@ -171,12 +172,12 @@ export class PaymentListContainer extends React.Component<any, any> {
                         <tbody>
                         {this.data.payments.map((payment, index) => (
                             <tr key={payment.pubId}>
-                                <td>{payment.companyName} {payment.userName}</td>
-                                <td>{payment.assetName}</td>
-                                <td>{payment.paymentPlanName}</td>
-                                <td className="text-nowrap text-right">{payment.total}</td>
-                                <td className="text-nowrap"> {formatDate(payment.start)} </td>
-                                <td className="text-nowrap">{formatDate(payment.end)}</td>
+                                <td onClick={this.editPayment(payment)}>{payment.companyName} {payment.userName}</td>
+                                <td onClick={this.editPayment(payment)}>{payment.assetName}</td>
+                                <td onClick={this.editPayment(payment)} >{payment.paymentPlanName}</td>
+                                <td onClick={this.editPayment(payment)} className="text-nowrap text-right">{payment.total}</td>
+                                <td onClick={this.editPayment(payment)} className="text-nowrap"> {formatDate(payment.start)} </td>
+                                <td onClick={this.editPayment(payment)} className="text-nowrap">{formatDate(payment.end)}</td>
                                 <td className="text-right">
                                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                                         <Dropdown.Item

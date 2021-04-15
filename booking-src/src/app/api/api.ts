@@ -86,7 +86,7 @@ export interface Asset {
      * @type {string}
      * @memberof Asset
      */
-    paymentPlanId: string;
+    paymentPlanId?: string;
     /**
      * 
      * @type {string}
@@ -400,7 +400,7 @@ export interface CreateAssetRequest {
      * @type {string}
      * @memberof CreateAssetRequest
      */
-    paymentPlanId: string;
+    paymentPlanId?: string;
     /**
      * 
      * @type {string}
@@ -1130,6 +1130,12 @@ export interface PaymentPlan {
      * @type {string}
      * @memberof PaymentPlan
      */
+    assetName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentPlan
+     */
     assetPubId?: string;
     /**
      * 
@@ -1408,7 +1414,7 @@ export interface UpdateAssetRequest {
      * @type {string}
      * @memberof UpdateAssetRequest
      */
-    paymentPlanId: string;
+    paymentPlanId?: string;
     /**
      * 
      * @type {string}
@@ -1997,6 +2003,18 @@ export interface UserWithCurrentAccess {
      * @type {string}
      * @memberof UserWithCurrentAccess
      */
+    companyId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    companyName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
     currentAccessAsset: string;
     /**
      * 
@@ -2028,6 +2046,18 @@ export interface UserWithCurrentAccess {
      * @memberof UserWithCurrentAccess
      */
     lastName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    locationId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserWithCurrentAccess
+     */
+    locationName: string;
     /**
      * 
      * @type {string}

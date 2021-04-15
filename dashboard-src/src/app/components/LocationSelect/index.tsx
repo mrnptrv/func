@@ -20,6 +20,7 @@ export class LocationSelect extends React.Component<any, any> {
     render() {
         return (
             <Select
+                autoFocus={true}
                 value={this.store.selectedLocation && {
                     label: this.store.selectedLocation.name,
                     value: this.store.selectedLocation.pubId

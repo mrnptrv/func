@@ -84,7 +84,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
             paymentPlanId: this.paymentPlanStore.selectedId()
         }).then((r) => {
             this.data.isSaving = false
-            this.props.history.push("/dashboard/asset/" + r.data.pubId)
+            this.props.history.push("/dashboard/list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -168,7 +168,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
                             > + </Button>
                         </Form.Label>
                         {this.data.asset.imageUrls.map((imageURL, index) =>
-                            <InputGroup className="mb-3">
+                            <InputGroup className="mb-3 z-index-one">
                                 <Form.Control
                                     aria-describedby="basic-addon1"
                                     value={imageURL}
@@ -176,7 +176,7 @@ export class AssetCreateContainer extends React.Component<any, any> {
                                         this.data.asset.imageUrls[index] = e.target.value
                                     }}
                                 />
-                                <InputGroup.Append>
+                                <InputGroup.Append >
                                     <Button variant="outline-secondary"
                                             onClick={this.deleteImageUrl(index)}
                                     >X</Button>

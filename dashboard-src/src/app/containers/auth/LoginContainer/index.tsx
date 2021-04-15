@@ -4,8 +4,7 @@ import {Alert, Button, Form, Modal, Spinner} from "react-bootstrap";
 import {observable} from "mobx";
 import {authApi, saveAccessToken} from "app/constants/api";
 import {formatPhone} from "app/constants/utils";
-import {grecaptcha, RECAPTCHA_V3_SITE_KEY} from "app/constants/recaptcha";
-import {RECAPTCHA_V2_SITE_KEY} from "../../../../../booking-src/src/app/constants/recaptcha";
+import {grecaptcha, RECAPTCHA_V3_SITE_KEY, RECAPTCHA_V2_SITE_KEY} from "app/constants/recaptcha";
 
 class LoginData {
     @observable mobile = ""
@@ -123,12 +122,14 @@ export class LoginContainer extends React.Component<any, any> {
                                 <Form.Control type="text" placeholder="Sms код"
                                               value={this.data.code}
                                               onChange={this.setCode}
+                                              autoFocus={true}
                                 />
                             </Form.Group>
                             : <Form.Group>
                                 <Form.Control type="text" placeholder="Телефон"
                                               value={this.data.mobile}
                                               onChange={this.setMobile}
+                                              autoFocus={true}
                                 />
                                 <div id="recaptcha-v2"/>
                             </Form.Group>

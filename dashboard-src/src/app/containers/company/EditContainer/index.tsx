@@ -35,6 +35,7 @@ export class CompanyEditContainer extends React.Component<any, any> {
             details: this.data.company.details
         }).then(() => {
             this.data.isSaving = false
+            this.props.history.push("/dashboard/company-list")
         }).catch((error) => {
             this.data.isSaving = false
 
@@ -78,6 +79,7 @@ export class CompanyEditContainer extends React.Component<any, any> {
                         <Form.Group>
                             <Form.Label>Название:</Form.Label>
                             <Form.Control
+                                autoFocus={true}
                                 type="text"
                                 value={this.data.company.name}
                                 onChange={(e) => this.data.company.name = e.target.value}
