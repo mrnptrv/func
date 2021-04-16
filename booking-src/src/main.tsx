@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
-import {App, LocationApp, Login} from 'app';
+import {App, Login} from 'app';
 import ReactModal from 'react-modal';
 
 // prepare history
@@ -14,4 +14,3 @@ ReactModal.setAppElement('#root')// render react DOM
 
 ReactDOM.render(<Login history={history} />, document.getElementById('login'));
 
-ReactDOM.render(<LocationApp history={history} />, document.getElementById('location'));

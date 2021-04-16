@@ -31,6 +31,7 @@ export class LocationEditContainer extends React.Component<any, any> {
         locationApi().updateLocationUsingPOST({
             pubId: this.data.location.pubId,
             name: this.data.location.name,
+            path: this.data.location.path,
         }).then(() => {
             this.data.isSaving = false
 
@@ -82,6 +83,14 @@ export class LocationEditContainer extends React.Component<any, any> {
                                 type="text"
                                 value={this.data.location.name}
                                 onChange={(e) => this.data.location.name = e.target.value}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Путь:</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={this.data.location.path}
+                                onChange={(e) => this.data.location.path = e.target.value}
                             />
                         </Form.Group>
                         <Form.Group>

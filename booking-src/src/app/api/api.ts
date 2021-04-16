@@ -445,6 +445,12 @@ export interface CreateLocationRequest {
      * @memberof CreateLocationRequest
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateLocationRequest
+     */
+    path: string;
 }
 /**
  * 
@@ -830,6 +836,12 @@ export interface Location {
      * @memberof Location
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Location
+     */
+    path: string;
     /**
      * 
      * @type {string}
@@ -1477,6 +1489,12 @@ export interface UpdateLocationRequest {
      * @memberof UpdateLocationRequest
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateLocationRequest
+     */
+    path: string;
     /**
      * 
      * @type {string}

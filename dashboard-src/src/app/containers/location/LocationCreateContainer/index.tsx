@@ -10,6 +10,7 @@ import {MainMenu} from "app/components";
 class LocationCreateData {
     @observable error = ""
     @observable name = ""
+    @observable path = ""
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
 }
@@ -29,6 +30,7 @@ export class LocationCreateContainer extends React.Component<any, any> {
 
         locationApi().createLocationUsingPOST({
             name: this.data.name,
+            path: this.data.path
         }).then(() => {
             this.data.isSaving = false
 
@@ -62,6 +64,14 @@ export class LocationCreateContainer extends React.Component<any, any> {
                             type="text"
                             value={this.data.name}
                             onChange={(e) => this.data.name = e.target.value}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Путь:</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={this.data.path}
+                            onChange={(e) => this.data.path = e.target.value}
                         />
                     </Form.Group>
                     <Form.Group>

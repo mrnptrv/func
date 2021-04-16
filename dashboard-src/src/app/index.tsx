@@ -34,7 +34,7 @@ export const App = hot(({history}) => {
         // history.push("/dashboard/list")
 
         if (history.location.pathname == "/dashboard/index.html" || history.location.pathname == "/dashboard/") {
-            history.push("/dashboard/list")
+            history.push("/dashboard/booking")
         }
     }).catch(() => {
         history.push("/dashboard/login")

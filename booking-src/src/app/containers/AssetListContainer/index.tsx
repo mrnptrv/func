@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {assetsApi, authApi, bookingApi} from "app/constants/api";
+import {assetsApi, authApi, bookingApi, locationApi} from "app/constants/api";
 import ReactDatePicker from "react-datepicker";
 import {AssetItem} from "app/components/AssetItem";
 import * as moment from 'moment';
@@ -39,10 +39,14 @@ export class AssetListContainer extends React.Component<any, any> {
         let bookedAssets: Array<BookedAsset> = new Array<BookedAsset>()
         let userLite: UserLite = null
 
-        assetsApi().assetsListUsingPOST({
-            locationPubId: 'IZHEVSK',
-            type: 'MEETING_ROOM',
-            capacityFilter: this.data.capacityFilter
+        locationApi().getLocationListUsingPOST().then(r => {
+            return r.data.filter(l => l.path.toUpperCase() === this.props.match.params.id.toUpperCase()).pop()
+        }).then(l => {
+            return assetsApi().assetsListUsingPOST({
+                locationPubId: l.pubId,
+                type: 'MEETING_ROOM',
+                capacityFilter: this.data.capacityFilter
+            })
         }).then((response) => {
             assets = response.data
         }).then(() => {

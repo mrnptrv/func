@@ -1,13 +1,26 @@
 import * as React from 'react';
 import {hot} from 'react-hot-loader/root';
-import {AssetListContainer} from "app/containers/AssetListContainer";
 import {AccountTile} from "app/components/AccountTile";
-import {LocationTile} from "app/components/LocationTile";
+import {AssetListContainer} from "app/containers/AssetListContainer";
+import {Route, Router, Switch} from "react-router";
 
 // render react DOM
 export const App = hot(({history}) => {
+    if (history.location.pathname == "/booking/index.html" || history.location.pathname == "/booking/") {
+        history.push("/booking/izhevsk")
+    }
+
+    if (history.location.pathname.includes("/dashboard/")){
+        history.push("/booking/izhevsk")
+    }
+
     return (
-        <AssetListContainer />
+        <Router history={history}>
+            <Switch>
+                <Route path="/booking/:id" component={AssetListContainer}/>
+                <Route>Загрузка...</Route>
+            </Switch>
+        </Router>
     );
 });
 
@@ -17,9 +30,4 @@ export const Login = hot(({history}) => {
     );
 });
 
-export const LocationApp = hot(({history}) => {
-    return (
-        <LocationTile/>
-    );
-});
 

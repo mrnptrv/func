@@ -77,6 +77,7 @@ export class LocationListContainer extends React.Component<any, any> {
         const items = this.data.locations.map((location) =>
             <tr key={location.pubId}>
                 <td onClick={this.editLocation(location)}>{location.name}</td>
+                <td onClick={this.editLocation(location)}>{location.path}</td>
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.editLocation(location)}>Редактировать</Dropdown.Item>
@@ -99,6 +100,7 @@ export class LocationListContainer extends React.Component<any, any> {
                     <thead>
                     <tr>
                         <th>Название</th>
+                        <th>Путь</th>
                         <th/>
                     </tr>
                     </thead>
