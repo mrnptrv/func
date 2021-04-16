@@ -758,6 +758,7 @@ a.nav__logo:active {
   .description__illustration {
     position: relative;
     width: calc(100% - 48px);
+    height: 356px;
     max-height: 50vh;
     margin-top: 64px;
   }
