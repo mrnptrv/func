@@ -534,16 +534,12 @@ body {
     box-shadow: none;
   }
 
-  .dropdown-menu__item {
+  .dropdown-menu__link {
     padding: 0 24px;
   }
 }
 
 @media (max-width: 666px) {
-  .index {
-    text-align: center;
-  }
-
   .section {
     padding-top: 48px;
     padding-bottom: 0;
