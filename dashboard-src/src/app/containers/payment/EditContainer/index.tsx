@@ -185,6 +185,10 @@ export class PaymentEditContainer extends React.Component<any, any> {
 
         this.data.payment.length = newValue ? parseInt(newValue) : 0
 
+        if (this.data.payment.length <= 0) {
+            this.data.payment.length = 1
+        }
+
         this.calcEndDate()
         this.calcTotal()
     }
@@ -258,13 +262,14 @@ export class PaymentEditContainer extends React.Component<any, any> {
 
     private setStartDate = (d: Date) => {
         this.data.startDate = d;
-        this.calcLength()
+        this.calcEndDate()
+        this.calcTotal()
     }
 
     private setEndDate = (d: Date) => {
         this.data.endDate = d;
 
-        this.timeUnitStore.selectUnit("DAY")
+        this.timeUnitStore.selectUnitSilent("DAY")
         this.calcLength()
         this.calcTotal()
     }
@@ -333,7 +338,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
 
     @subscribe(TIME_UNIT_CHANGE_TOPIC)
     onChangeSelectedTimeUnitListener() {
-        this.calcLength()
+        this.calcEndDate()
         this.cleanPaymentPlanIfNotEqual()
         this.calcTotal()
     }

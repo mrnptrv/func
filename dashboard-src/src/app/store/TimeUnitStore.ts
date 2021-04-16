@@ -40,6 +40,13 @@ class TimeUnitStore {
             eventBus.post(TIME_UNIT_CHANGE_TOPIC, this.selectedUnit)
         }
     }
+
+    @action
+    selectUnitSilent(id) {
+        if (this.selectedUnit?.id != id) {
+            this.selectedUnit = this.units.find(l => l.id === id)
+        }
+    }
 }
 
 export const TIME_UNIT_STORE = new TimeUnitStore()
