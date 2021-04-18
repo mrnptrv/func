@@ -17,6 +17,7 @@ import {WORK_HOURS} from "app/constants/constants";
 import {eventBus, subscribe} from "mobx-event-bus2";
 import {MainMenu} from "app/components";
 import Select from "react-select";
+import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
 
 class PaymentPlanEditData {
     @observable isPaymentPlanLoading = true
@@ -27,6 +28,7 @@ class PaymentPlanEditData {
     @observable fieldErrors: Array<String> = new Array<String>()
     @observable isSaving = false
     @observable selectedAccessAssumptionAssets: Array<Asset> = new Array<Asset>();
+    @observable selectedExceptPaymentPlans: Array<PaymentPlan> = new Array<PaymentPlan>();
     @observable selectedAssetAssumptionAssets: Array<Asset> = new Array<Asset>();
 
     @action
@@ -35,6 +37,15 @@ class PaymentPlanEditData {
 
         if (selected) {
             this.selectedAccessAssumptionAssets.push(selected)
+        }
+    }
+
+    @action
+    selectExceptPaymentpaln(pubId) {
+        let selected = PAYMENT_PLAN_STORE.paymentPlans.find(l => l.pubId === pubId)
+
+        if (selected) {
+            this.selectedExceptPaymentPlans.push(selected)
         }
     }
 
@@ -55,6 +66,7 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
     private assetStore = ASSET_STORE
     private companyStore = COMPANY_STORE
     private timeUnitStore = TIME_UNIT_STORE
+    private paymentPlanStore = PAYMENT_PLAN_STORE
 
     cancel = () => {
         this.props.history.push("/dashboard/payment-plan-list")
@@ -137,7 +149,9 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
         this.locationStore.loadLocations().then(() => {
             return this.assetStore.loadAssets()
         }).then((r) => {
-            paymentPlanApi().getPaymentPlanUsingGET(this.props.match.params.id)
+            return this.paymentPlanStore.loadPaymentPlans()
+        }).then((r) => {
+            return paymentPlanApi().getPaymentPlanUsingGET(this.props.match.params.id)
                 .then(res => {
                     this.data.paymentPlan = res.data
                     this.data.isPaymentPlanLoading = false
@@ -151,6 +165,11 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
 
                     (this.data.paymentPlan?.assumption?.access?.assetsIds ?? []).forEach(id => {
                         this.data.selectAccessAssumptionAsset(id);
+                    })
+
+                    this.data.selectedExceptPaymentPlans = [];
+                    (this.data.paymentPlan?.assumption?.access?.exceptPaymentPlansIds ?? []).forEach(id => {
+                        this.data.selectExceptPaymentpaln(id);
                     })
 
                     this.data.selectedAssetAssumptionAssets = [];
@@ -184,12 +203,14 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
     }
 
     private getAccessAssumptionReq(): AccessAssumptionReq {
-        if (this.data.selectedAccessAssumptionAssets.length == 0) {
+        if (this.data.selectedAccessAssumptionAssets.length == 0
+            && this.data.selectedExceptPaymentPlans.length == 0) {
             return null
         }
 
         return {
             assetsIds: this.data.selectedAccessAssumptionAssets.map(it => it.pubId),
+            exceptPaymentPlansIds: this.data.selectedExceptPaymentPlans.map(it => it.pubId)
         }
     }
 
@@ -199,6 +220,36 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
         }
         return {
             assetsIds: this.data.selectedAssetAssumptionAssets.map(it => it.pubId),
+        }
+    }
+
+    private exceptPaymentPlansDefaultValue() {
+        if (this.data.selectedExceptPaymentPlans) {
+            return this.data.selectedExceptPaymentPlans.map(it => ({
+                label: it.name,
+                value: it.pubId
+            }));
+        }
+
+        return [];
+    }
+
+    private exceptPaymentPlansOptions() {
+        return this.paymentPlanStore.paymentPlans
+            .filter(i=>i.pubId !== this.data.paymentPlan.pubId)
+            .map(l => ({"label": l.name, "value": l.pubId}))
+    }
+
+    private exceptPaymentPlanSelect(selected) {
+        this.data.selectedExceptPaymentPlans = []
+        if (selected) {
+            selected.forEach(it => {
+                let selected = this.paymentPlanStore.paymentPlans.find(l => l.pubId === it.value)
+
+                if (selected) {
+                    this.data.selectedExceptPaymentPlans.push(selected)
+                }
+            })
         }
     }
 
@@ -371,7 +422,7 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                             </Form.Group>
                         ) : (<></>)}
                         <Form.Group>
-                            <Form.Label>Будет применяться к:</Form.Label>
+                            <Form.Label>Будет применяться к объектам аренды:</Form.Label>
                             <Select
                                 isMulti
                                 value={this.assetAssumptionDefaultValue()}
@@ -380,12 +431,21 @@ export class PaymentPlanEditContainer extends React.Component<any, any> {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Есть доступ к:</Form.Label>
+                            <Form.Label>Будет применяться, если есть доступ к объектам аренды:</Form.Label>
                             <Select
                                 isMulti
                                 value={this.accessAssumptionDefaultValue()}
                                 options={this.accessAssumptionOptions()}
                                 onChange={e => this.accessAssumptionSelect(e)}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Будет применяться, если нет доступа по тарифам:</Form.Label>
+                            <Select
+                                isMulti
+                                value={this.exceptPaymentPlansDefaultValue()}
+                                options={this.exceptPaymentPlansOptions()}
+                                onChange={e => this.exceptPaymentPlanSelect(e)}
                             />
                         </Form.Group>
                         <Form.Group>

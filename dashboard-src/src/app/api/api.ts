@@ -31,6 +31,12 @@ export interface AccessAssumptionReq {
      * @memberof AccessAssumptionReq
      */
     assetsIds?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AccessAssumptionReq
+     */
+    exceptPaymentPlansIds?: Array<string>;
 }
 /**
  * 
@@ -44,6 +50,12 @@ export interface AccessAssumptionRes {
      * @memberof AccessAssumptionRes
      */
     assetsIds: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AccessAssumptionRes
+     */
+    exceptPaymentPlansIds: Array<string>;
 }
 /**
  * 

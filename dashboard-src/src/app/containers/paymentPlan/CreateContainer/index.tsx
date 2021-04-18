@@ -15,8 +15,9 @@ import {TimeUnitSelect} from "app/components/TimeUnitSelect";
 import {TIME_UNIT_CHANGE_TOPIC, TIME_UNIT_STORE} from "app/store/TimeUnitStore";
 import {WORK_HOURS} from "app/constants/constants";
 import {eventBus, subscribe} from "mobx-event-bus2";
-import {AccessAssumptionReq, Asset, AssetAssumptionReq, WorkTimeRangeReq} from "app/api";
+import {AccessAssumptionReq, Asset, AssetAssumptionReq, PaymentPlan, WorkTimeRangeReq} from "app/api";
 import {MainMenu} from "app/components";
+import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
 
 class PaymentPlanCreateData {
     @observable workTimeRanges: Array<WorkTimeRangeReq> = new Array<WorkTimeRangeReq>();
@@ -31,6 +32,7 @@ class PaymentPlanCreateData {
     @observable beginDisabled = false;
     @observable endDisabled = false;
     @observable selectedAccessAssumptionAssets: Array<Asset> = new Array<Asset>();
+    @observable selectedExceptPaymentPlans: Array<PaymentPlan> = new Array<PaymentPlan>();
     @observable selectedAssetAssumptionAssets: Array<Asset> = new Array<Asset>();
 }
 
@@ -39,6 +41,7 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
     private data = new PaymentPlanCreateData()
     private locationStore = LOCATION_STORE
     private assetStore = ASSET_STORE
+    private paymentPlanStore = PAYMENT_PLAN_STORE
     private companyStore = COMPANY_STORE
     private timeUnitStore = TIME_UNIT_STORE
 
@@ -70,11 +73,13 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
     }
 
     private getAccessAssumptionReq(): AccessAssumptionReq {
-        if (this.data.selectedAccessAssumptionAssets.length == 0) {
+        if (this.data.selectedAccessAssumptionAssets.length == 0
+            && this.data.selectedExceptPaymentPlans.length == 0) {
             return null
         }
         return {
             assetsIds: this.data.selectedAccessAssumptionAssets.map(it => it.pubId),
+            exceptPaymentPlansIds: this.data.selectedExceptPaymentPlans.map(it => it.pubId),
         }
     }
 
@@ -151,6 +156,34 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
     private setWeekend(wtr: WorkTimeRangeReq, isWeekend: boolean) {
         return () => {
             wtr.isWeekend = isWeekend
+        }
+    }
+
+    private exceptPaymentPlansDefaultValue() {
+        if (this.data.selectedExceptPaymentPlans) {
+            return this.data.selectedExceptPaymentPlans.map(it => ({
+                label: it.name,
+                value: it.pubId
+            }));
+        }
+
+        return [];
+    }
+
+    private exceptPaymentPlansOptions() {
+        return this.paymentPlanStore.paymentPlans.map(l => ({"label": l.name, "value": l.pubId}))
+    }
+
+    private exceptPaymentPlanSelect(selected) {
+        this.data.selectedExceptPaymentPlans = []
+        if (selected) {
+            selected.forEach(it => {
+                let selected = this.paymentPlanStore.paymentPlans.find(l => l.pubId === it.value)
+
+                if (selected) {
+                    this.data.selectedExceptPaymentPlans.push(selected)
+                }
+            })
         }
     }
 
@@ -331,7 +364,7 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                         </Form.Group>
                     ) : (<></>)}
                     <Form.Group>
-                        <Form.Label>Будет применяться к:</Form.Label>
+                        <Form.Label>Будет применяться к объектам аренды:</Form.Label>
                         <Select
                             isMulti
                             value={this.assetAssumptionDefaultValue()}
@@ -340,12 +373,21 @@ export class PaymentPlanCreateContainer extends React.Component<any, any> {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Есть доступ к:</Form.Label>
+                        <Form.Label>Будет применяться, если есть доступ к объектам аренды:</Form.Label>
                         <Select
                             isMulti
                             value={this.accessAssumptionDefaultValue()}
                             options={this.accessAssumptionOptions()}
                             onChange={e => this.accessAssumptionSelect(e)}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Будет применяться, если нет доступа по тарифам:</Form.Label>
+                        <Select
+                            isMulti
+                            value={this.exceptPaymentPlansDefaultValue()}
+                            options={this.exceptPaymentPlansOptions()}
+                            onChange={e => this.exceptPaymentPlanSelect(e)}
                         />
                     </Form.Group>
                     <Form.Group>
