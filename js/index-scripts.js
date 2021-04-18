@@ -266,8 +266,11 @@ window.addEventListener('scroll', () => {
 // Хэндлим мобильное меню
 
 document.querySelector('.nav__burger').addEventListener('click', (event) => {
-    topBar.classList.toggle('nav--open-menu');
-    document.querySelector('html').classList.toggle('no-scroll');
+    document.querySelector('.nav__menu').style.display = 'flex';
+    setTimeout(() => {
+        topBar.classList.toggle('nav--open-menu');
+        document.querySelector('html').classList.toggle('no-scroll');
+    }, 200);
 });
 
 document.querySelectorAll('.nav__item').forEach((item) => {

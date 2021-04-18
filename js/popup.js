@@ -21,7 +21,10 @@ let scrollPositionY;
 const openForm = form => {
     document.body.classList.add('no-scroll');
     document.querySelector('html').classList.add('no-scroll');
-    form.classList.add('popup--shown');
+    form.style.display = 'flex';
+    setTimeout(() => {
+        form.classList.add('popup--shown');
+    }, 200);
 
     window.location.hash = 'zapolnenie-formy';
 
@@ -60,6 +63,9 @@ const closeForm = form => {
     document.body.classList.remove('no-scroll-ios');
     document.querySelector('html').classList.remove('no-scroll');
     form.classList.remove('popup--shown');
+    setTimeout(() => {
+        form.style.display = 'none';
+    }, 400);
     document.removeEventListener('keyup', closeFormOnEscape);
     window.location.hash = '';
     window.scrollTo(0, scrollPositionY);
