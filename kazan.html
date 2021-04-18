@@ -358,9 +358,9 @@
             <li class="city-nav__item">
               <a class="city-nav__link city-nav__link--anchor" href="#prices">Тарифы и услуги</a>
             </li>
-            <li class="city-nav__item">
+            <!-- <li class="city-nav__item">
               <a class="city-nav__link" href="booking/index.html">Аренда переговорных</a>
-            </li>
+            </li> -->
             <li class="city-nav__item">
               <a class="city-nav__link city-nav__link--anchor" href="#contacts">Контакты</a>
             </li>
@@ -723,12 +723,18 @@
               Юридический адрес + услуги ресепшн
             </li>
           </ul>
+		  <button class="prices__button button apply-button unbutton" type="button" data-goal="try">
+            <span>Записаться на экскурсию</span>
+            <svg width="20" height="16">
+              <use xlink:href="#long-arrow-right"></use>
+            </svg>
+          </button><!-- 
           <a class="prices__button button unbutton" href="/booking/index.html">
             <span>Забронировать</span>
             <svg width="20" height="16">
               <use xlink:href="#long-arrow-right"></use>
             </svg>
-          </a>
+          </a> -->
         </li>
         <li class="prices__item">
           <b class="prices__name">«Свой» офис</b>
@@ -784,12 +790,18 @@
               Юридический адрес + услуги ресепшн
             </li>
           </ul>
-          <button class="prices__button button apply-button unbutton" type="button" data-goal="apply">
-            <span>Оставить заявку</span>
+		  <button class="prices__button button apply-button unbutton" type="button" data-goal="try">
+            <span>Записаться на экскурсию</span>
             <svg width="20" height="16">
               <use xlink:href="#long-arrow-right"></use>
             </svg>
           </button>
+          <!-- <button class="prices__button button apply-button unbutton" type="button" data-goal="apply">
+            <span>Оставить заявку</span>
+            <svg width="20" height="16">
+              <use xlink:href="#long-arrow-right"></use>
+            </svg>
+          </button> -->
         </li>
         <li class="prices__item">
           <b class="prices__name">Аренда переговорок</b>
@@ -825,12 +837,18 @@
               Дополнительно: кофе, чай
             </li>
           </ul>
-          <a class="prices__button button unbutton" href="/booking/index.html">
+		  <button class="prices__button button apply-button unbutton" type="button" data-goal="apply">
+            <span>Оставить заявку</span>
+            <svg width="20" height="16">
+              <use xlink:href="#long-arrow-right"></use>
+            </svg>
+          </button>
+          <!-- <a class="prices__button button unbutton" href="/booking/index.html">
             <span>Забронировать</span>
             <svg width="20" height="16">
               <use xlink:href="#long-arrow-right"></use>
             </svg>
-          </a>
+          </a> -->
         </li>
         <li class="prices__item">
           <b class="prices__name">Конференц-зал</b>
@@ -958,8 +976,8 @@
         </p>
         <p class="popup__group popup__group--location group">
           <select class="popup__input input" id="apply-location" name="apply-location" required>
-            <option value="IJK" selected>Ижевск</option>
-            <option value="KZN">Казань</option>
+            <option value="IJK">Ижевск</option>
+            <option value="KZN" selected>Казань</option>
           </select>
           <label class="popup__label label" for="apply-location">Локация</label>
         </p>
