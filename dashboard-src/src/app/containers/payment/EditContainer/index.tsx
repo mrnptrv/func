@@ -287,7 +287,7 @@ export class PaymentEditContainer extends React.Component<any, any> {
             return (this.data.endHour < 10 ? "0" + this.data.endHour : this.data.endHour) + ":00"
         }
 
-        return "00:00"
+        return "23:59"
     }
 
     private setStartHour(h) {

@@ -25,7 +25,7 @@ export class UserSelect extends React.Component<any, any> {
     }
 
     private static getLabel(l: UserWithCurrentAccess) {
-        return l.lastName + " " + l.firstName + " " + l.thirdName;
+        return l.lastName + ", " + l.firstName + " " + l.thirdName;
     }
 
     value() {

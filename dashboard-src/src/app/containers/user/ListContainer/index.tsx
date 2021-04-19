@@ -144,7 +144,7 @@ export class UserListContainer extends React.Component<any, any> {
     render() {
         const items = this.data.users.map((user) =>
             <tr key={user.pubId}>
-                <td onClick={this.editUser(user)}>{user.firstName} {user.lastName} {user.thirdName}</td>
+                <td onClick={this.editUser(user)}>{user.lastName}, {user.firstName} {user.thirdName}</td>
                 <td onClick={this.editUser(user)}>{user.phone}</td>
                 <td onClick={this.editUser(user)}>{user.locationName}</td>
                 <td onClick={this.editUser(user)} className="text-nowrap">{user.currentAccessAsset}</td>
