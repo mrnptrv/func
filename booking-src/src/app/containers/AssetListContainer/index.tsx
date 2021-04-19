@@ -40,7 +40,9 @@ export class AssetListContainer extends React.Component<any, any> {
         let userLite: UserLite = null
 
         locationApi().getLocationListUsingPOST().then(r => {
-            return r.data.filter(l => l.path.toUpperCase() === this.props.match.params.id.toUpperCase()).pop()
+            return r.data.filter(l => {
+                return l.path.toUpperCase() === this.props.match.params.id.toUpperCase()
+            }).pop()
         }).then(l => {
             return assetsApi().assetsListUsingPOST({
                 locationPubId: l.pubId,

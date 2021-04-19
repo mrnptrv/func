@@ -37,7 +37,6 @@ class UserStore {
             this.users = r.data.list
             this.select(this.selectedUserId, false)
         })
-
     }
 
     selectedId(): string {

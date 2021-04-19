@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as style from "../../style.css"
 import {observer} from 'mobx-react';
 import {observable} from "mobx";
-import {paymentApi, paymentPlanApi, userApi} from "app/constants/api";
+import {bookingApi, paymentApi, paymentPlanApi, userApi} from "app/constants/api";
 import {CreatePaymentRequest, Payment} from "app/api/api";
 import {Alert, Button, Col, Dropdown, DropdownButton, Form, InputGroup, Spinner, Table} from "react-bootstrap";
 import {LOCATION_STORE} from "app/store/LocationStore";
@@ -73,6 +73,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
         let userId = this.props.location?.state?.userId
         let companyId = this.props.location?.state?.companyId
+        let bookingId = this.props.location?.state?.bookingId
 
 
         if (userId) {
@@ -80,15 +81,48 @@ export class PaymentCreateContainer extends React.Component<any, any> {
                 this.locationStore.selectLocation(r.data.locationId)
                 this.userStore.select(userId)
                 this.selectUser(userId)
+                this.data.payment.length = 1
+                this.timeUnitStore.selectUnit("DAY")
+                this.calcEndDate()
+                this.calcTotal()
             })
         } else if (companyId) {
             this.companyStore.select(companyId)
             this.selectCompany(companyId)
+            this.data.payment.length = 1
+            this.timeUnitStore.selectUnit("DAY")
+            this.calcEndDate()
+            this.calcTotal()
+        } else if (bookingId) {
+            bookingApi().getUsingGET2(bookingId).then(r => {
+                let booking = r.data
+                this.locationStore.loadLocations().then(() => {
+                    this.locationStore.selectLocation(booking?.asset?.location?.pubId)
+                }).then(() => {
+                    return this.assetStore.loadAssets();
+                }).then(() => {
+                    this.assetStore.selectAsset(booking?.asset?.pubId, false)
+                }).then(() => {
+                    return this.paymentPlanStore.loadPaymentPlans();
+                }).then(() => {
+                    this.paymentPlanStore.selectSilent(this.assetStore.selectedAsset.paymentPlanId)
+                }).then(() => {
+                    return this.userStore.loadUsers()
+                }).then(() => {
+                    this.userStore.select(booking?.uid, false)
+                    this.selectUser(booking?.uid)
+                    this.timeUnitStore.selectUnitSilent("HOUR")
+                    this.data.startDate = new Date(booking.date);
+                    this.data.endDate = new Date(booking.date);
+                    this.data.startHour = this.getHour(booking.start)
+                    this.data.endHour = this.getHour(booking.end) - 1
+
+
+                    this.calcLength()
+                    this.calcTotal()
+                })
+            })
         }
-        this.data.payment.length = 1
-        this.timeUnitStore.selectUnit("DAY")
-        this.calcEndDate()
-        this.calcTotal()
 
         eventBus.register(this)
     }

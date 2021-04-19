@@ -83,7 +83,7 @@ export class BookingContainer extends React.Component<any, any> {
         let bs = this.data.booking.filter(b =>
             b.asset.pubId === asset.pubId &&
             format(day, "yyyy-MM-dd") === format(new Date(b.date), "yyyy-MM-dd") &&
-            h > this.getHour(b.start) && h <= this.getHour(b.end)
+            h >= this.getHour(b.start) && h < this.getHour(b.end)
         )
 
         if (bs.length > 0) {
@@ -153,6 +153,12 @@ export class BookingContainer extends React.Component<any, any> {
                     this.showErrorDialog()
                 }
             })
+        }
+    }
+
+    private createPayment(booking) {
+        return () => {
+            this.props.history.push("/dashboard/create-payment/", {bookingId: booking.pubId})
         }
     }
 
@@ -415,6 +421,13 @@ export class BookingContainer extends React.Component<any, any> {
                                     onClick={this.decline(booking)}
                             >
                                 Отменить
+                            </Button> : <></>
+                        }
+                        {booking?.status == "BOOKED" ?
+                            <Button variant="link"
+                                    onClick={this.createPayment(booking)}
+                            >
+                                Оплатить
                             </Button> : <></>
                         }
                     </ButtonGroup>

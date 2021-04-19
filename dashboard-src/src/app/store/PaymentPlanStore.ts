@@ -92,6 +92,21 @@ class PaymentPlanStore {
             eventBus.post(CHANGE_SELECTED_PAYMENT_PLAN_TOPIC, pubId)
         }
     }
+
+    @action
+    selectSilent(pubId) {
+        if (this.selectedPaymentId !== pubId || this.selectedPaymentPlan?.pubId !== pubId) {
+            let selected = this.paymentPlans.find(l => l.pubId === pubId)
+
+            if (selected) {
+                this.selectedPaymentPlan = selected
+            } else {
+                this.selectedPaymentPlan = null
+            }
+            this.selectedPaymentId = pubId
+
+        }
+    }
 }
 
 export const PAYMENT_PLAN_STORE = new PaymentPlanStore()
