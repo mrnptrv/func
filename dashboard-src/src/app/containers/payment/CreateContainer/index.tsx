@@ -259,7 +259,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     private calcEndDate() {
         if (this.timeUnitStore.selectedId() === "HOUR") {
-            this.data.endHour = this.data.startHour + this.data.payment.length - 1
+            this.data.endHour = this.data.startHour + this.data.payment.length
             if (this.data.endHour > 24) {
                 this.data.endHour = 24;
                 this.data.payment.length = 24 - this.data.startHour
@@ -353,7 +353,7 @@ export class PaymentCreateContainer extends React.Component<any, any> {
 
     private calcLength() {
         if (this.timeUnitStore.selectedId() === "HOUR") {
-            this.data.payment.length = this.data.endHour - this.data.startHour + 1
+            this.data.payment.length = this.data.endHour - this.data.startHour;
         }
         if (this.timeUnitStore.selectedId() === "DAY") {
             this.data.payment.length = differenceInCalendarDays(this.data.endDate, this.data.startDate) + 1
