@@ -42,7 +42,6 @@
 .nav--sticky {
   position: fixed;
   background-color: rgba(255, 255, 255, 0.95);
-  border-bottom: 1px solid rgba(36, 36, 36, 0.06);
   animation: slideDown 0.3s ease-in;
 }
 
@@ -207,7 +206,6 @@ a.nav__logo:active {
 
 .city-nav__wrapper {
   position: relative;
-  background-color: #ffffff;
 }
 
 .city-nav__wrapper::after {

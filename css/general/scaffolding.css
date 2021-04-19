@@ -274,17 +274,12 @@ body {
 .slider-control {
   width: 44px;
   height: 44px;
-  outline: 0;
   transition: opacity 0.1s ease-out;
 }
 
 .slider-control:hover,
 .slider-control:focus {
   opacity: 1;
-}
-
-.slider-control:active {
-  opacity: 0.3;
 }
 
 .slider-control:disabled {
@@ -301,8 +296,7 @@ body {
   transition: fill 0.1s ease-out;
 }
 
-.slider-control:hover svg,
-.slider-control:focus svg {
+.slider-control:hover svg {
   fill: var(--feature-color);
 }
 
@@ -416,7 +410,7 @@ body {
 }
 
 .group--message .label {
-  top: 25px;
+  top: 21px;
   bottom: unset;
   padding-right: 24px;
 }
@@ -482,6 +476,21 @@ body {
   align-items: center;
   margin-left: 24px;
   background-color: #ffffff;
+  overflow: hidden;
+}
+
+.caption__icons {
+  position: relative;
+  transition: transform 0.25s ease-in;
+}
+
+.caption__arrow {
+  position: absolute;
+  top: 0;
+  right: 120px;
+  bottom: 0;
+  margin: auto 0;
+  transform: translateX(0);
 }
 
 .caption__button svg {

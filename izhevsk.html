@@ -486,12 +486,17 @@
                 <img class="events__pic" src="img/work/events-work-4.jpg" width="496" height="396" alt="">
                 <figcaption class="events__caption caption">
                   <span class="events__caption-text events__caption-text--work caption__text">Рабочие места</span>
-                  <button class="events__button circle-button caption__button unbutton" type="button">
+                  <div class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями рабочих мест</span>
-                    <svg width="20" height="20">
-                      <use xlink:href="#pic"></use>
-                    </svg>
-                  </button>
+                    <p class="events__icons caption__icons">
+                      <svg width="20" height="20">
+                        <use xlink:href="#pic"></use>
+                      </svg>
+                      <svg class="events__arrow caption__arrow" width="16" height="16">
+                        <use xlink:href="#arrow-right"></use>
+                      </svg>
+                    </p>
+                  </div>
                 </figcaption>
               </figure>
             </li>
@@ -500,12 +505,17 @@
                 <img class="events__pic" src="img/meetings/events-meetings-1.jpg" width="496" height="396" alt="">
                 <figcaption class="events__caption caption">
                   <span class="events__caption-text events__caption-text--rooms caption__text">Переговорные</span>
-                  <button class="events__button circle-button caption__button unbutton" type="button">
+                  <div class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями переговорок</span>
-                    <svg width="20" height="20">
-                      <use xlink:href="#pic"></use>
-                    </svg>
-                  </button>
+                    <p class="events__icons caption__icons">
+                      <svg width="20" height="20">
+                        <use xlink:href="#pic"></use>
+                      </svg>
+                      <svg class="events__arrow caption__arrow" width="16" height="16">
+                        <use xlink:href="#arrow-right"></use>
+                      </svg>
+                    </p>
+                  </div>
                 </figcaption>
               </figure>
             </li>
@@ -514,12 +524,17 @@
                 <img class="events__pic" src="img/chill/events-chill-2.jpg" width="496" height="396" alt="">
                 <figcaption class="events__caption caption">
                   <span class="events__caption-text events__caption-text--chill caption__text">Отдых</span>
-                  <button class="events__button circle-button caption__button unbutton" type="button">
+                  <div class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями зон отдыха</span>
-                    <svg width="20" height="20">
-                      <use xlink:href="#pic"></use>
-                    </svg>
-                  </button>
+                    <p class="events__icons caption__icons">
+                      <svg width="20" height="20">
+                        <use xlink:href="#pic"></use>
+                      </svg>
+                      <svg class="events__arrow caption__arrow" width="16" height="16">
+                        <use xlink:href="#arrow-right"></use>
+                      </svg>
+                    </p>
+                  </div>
                 </figcaption>
               </figure>
             </li>
@@ -528,12 +543,17 @@
                 <img class="events__pic" src="img/parties/events-parties-1.jpg" width="496" height="396" alt="">
                 <figcaption class="events__caption caption">
                   <span class="events__caption-text events__caption-text--events caption__text">Мероприятия</span>
-                  <button class="events__button circle-button caption__button unbutton" type="button">
+                  <div class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями мероприятий</span>
-                    <svg width="20" height="20">
-                      <use xlink:href="#pic"></use>
-                    </svg>
-                  </button>
+                    <p class="events__icons caption__icons">
+                      <svg width="20" height="20">
+                        <use xlink:href="#pic"></use>
+                      </svg>
+                      <svg class="events__arrow caption__arrow" width="16" height="16">
+                        <use xlink:href="#arrow-right"></use>
+                      </svg>
+                    </p>
+                  </div>
                 </figcaption>
               </figure>
             </li>
@@ -542,12 +562,17 @@
                 <img class="events__pic" src="img/hub/events-hub-1.jpg" width="496" height="396" alt="">
                 <figcaption class="events__caption caption">
                   <span class="events__caption-text events__caption-text--lounge caption__text">Кафетерий и лаунжи</span>
-                  <button class="events__button circle-button caption__button unbutton" type="button">
+                  <div class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями кафетерия</span>
-                    <svg width="20" height="20">
-                      <use xlink:href="#pic"></use>
-                    </svg>
-                  </button>
+                    <p class="events__icons caption__icons">
+                      <svg width="20" height="20">
+                        <use xlink:href="#pic"></use>
+                      </svg>
+                      <svg class="events__arrow caption__arrow" width="16" height="16">
+                        <use xlink:href="#arrow-right"></use>
+                      </svg>
+                    </p>
+                  </div>
                 </figcaption>
               </figure>
             </li>
@@ -977,6 +1002,10 @@
           <textarea class="popup__input popup__input--message input input--message" id="apply-message" name="apply-message" rows="7" cols="20" maxlength="340" placeholder="&nbsp;" required></textarea>
           <label class="popup__label label" for="apply-message">Расскажите о себе<span>, чем занимаетесь и сколько вас человек</span></label>
         </p>
+        <p class="popup__footer">
+          <input class="popup__checkmark visually-hidden" id="apply-accept-terms" name="apply-accept-terms" type="checkbox" required>
+          <label class="popup__checkmark-label" for="apply-accept-terms">Я принимаю <a href="docs/personal-data-terms.pdf" title="Обработка персональных данных (PDF)" target="_blank">условия обработки персональных&nbsp;данных</a></label>
+        </p>
         <p class="popup__actions">
           <button class="popup__button button button--secondary unbutton" id="apply-cancel" type="button">
             <span>Отмена</span>
@@ -990,10 +1019,6 @@
               <use xlink:href="#long-arrow-right"></use>
             </svg>
           </button>
-        </p>
-        <p class="popup__footer">
-          <input class="popup__checkmark visually-hidden" id="apply-accept-terms" name="apply-accept-terms" type="checkbox" required>
-          <label class="popup__checkmark-label" for="apply-accept-terms">Я принимаю <a href="docs/personal-data-terms.pdf" title="Обработка персональных данных (PDF)" target="_blank">условия обработки персональных&nbsp;данных</a></label>
         </p>
       </div>
     </div>

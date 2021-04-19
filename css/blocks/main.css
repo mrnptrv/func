@@ -520,6 +520,10 @@
   transform: scale(1.03);
 }
 
+.events__slide:hover .events__icons {
+  transform: translateX(120px);
+}
+
 .events__caption-text {
   white-space: nowrap;
   overflow: hidden;
@@ -863,6 +867,7 @@
 
 .speech__text {
   margin-bottom: 22px;
+  font-weight: 300;
   font-size: 18px;
   line-height: 28px;
 }

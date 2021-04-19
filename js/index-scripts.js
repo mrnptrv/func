@@ -95,7 +95,7 @@ window.addEventListener('resize', () => {
 
 const roomsSlider = new Glide('.rooms__slider', {
     type: 'slider',
-    rewind: false,
+    rewind: true,
     gap: 24,
     breakpoints: {
         767: {
@@ -110,8 +110,6 @@ roomsSlider.on(['mount.after', 'run'], () => {
     const slides = document.querySelectorAll('.rooms__slide');
     const leftArrow = slider.querySelector('.slider-control--left');
     const rightArrow = slider.querySelector('.slider-control--right');
-
-    assignDisabledArrowButton(roomsSlider, slides.length, leftArrow, rightArrow);
 
     roomsSlider.on('run.before', move => {
         moveBullets(move.direction, slider.querySelector('.glide__bullet--active'));
