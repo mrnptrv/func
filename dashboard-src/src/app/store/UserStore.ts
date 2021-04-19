@@ -1,12 +1,12 @@
 import {action, observable} from "mobx";
-import {UserLite} from "app/api";
+import {UserWithCurrentAccess} from "app/api";
 import {userApi} from "app/constants";
 import {CHANGE_LOCATION_TOPIC, LOCATION_STORE} from "app/store/LocationStore";
 import {eventBus, subscribe} from 'mobx-event-bus2'
 
 class UserStore {
-    @observable users: Array<UserLite> = new Array<UserLite>();
-    @observable selectedUser: UserLite = null;
+    @observable users: Array<UserWithCurrentAccess> = new Array<UserWithCurrentAccess>();
+    @observable selectedUser: UserWithCurrentAccess = null;
     private locationId: string = ""
     private selectedUserId: string = ""
 

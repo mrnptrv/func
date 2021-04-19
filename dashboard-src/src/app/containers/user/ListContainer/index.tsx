@@ -2,8 +2,8 @@ import * as React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from "mobx";
 import {Button, Dropdown, DropdownButton, Form, Modal, Spinner, Table} from "react-bootstrap";
-import {userApi} from "app/constants/api";
-import {UserWithCurrentAccess} from "app/api/api";
+import {authApi, userApi} from "app/constants/api";
+import {UserLite, UserWithCurrentAccess} from "app/api/api";
 import {MainMenu} from "app/components";
 import {formatDate} from "app/constants/utils";
 import Col from "react-bootstrap/Col";
@@ -19,6 +19,7 @@ class UserListData {
     @observable users: Array<UserWithCurrentAccess> = new Array<UserWithCurrentAccess>()
     @observable isShowDeletionDialog = false;
     @observable deletionUser: UserWithCurrentAccess = null;
+    @observable currentUser: UserLite = null
 
     @observable filter = ""
     @observable limit = 50
@@ -46,22 +47,26 @@ class UserListData {
     @action
     load() {
         this.isLoading = true
-        userApi().getUserListUsingPOST({
-            filter: this.filter,
-            offset: this.offset,
-            limit: this.limit
-        }).then(
-            response => {
-                this.total = response.data.total
-                response.data.list.forEach(it => this.users.push(it))
-                this.calcHasMore()
-                this.isLoading = false
-            }).catch(error => {
-            if (error && error.response && error.response.data.message) {
-                this.error = error.response.data.message
-            }
+        authApi().getUsingGET1().then(r => {
+            this.currentUser = r.data
 
-            this.isLoading = false;
+            userApi().getUserListUsingPOST({
+                filter: this.filter,
+                offset: this.offset,
+                limit: this.limit
+            }).then(
+                response => {
+                    this.total = response.data.total
+                    response.data.list.forEach(it => this.users.push(it))
+                    this.calcHasMore()
+                    this.isLoading = false
+                }).catch(error => {
+                if (error && error.response && error.response.data.message) {
+                    this.error = error.response.data.message
+                }
+
+                this.isLoading = false;
+            })
         })
     }
 
@@ -80,12 +85,12 @@ export class UserListContainer extends React.Component<any, any> {
         this.data.load()
     }
 
-    deleteUser = () => {
+    private deleteUser = () => {
         this.data.deleteUser(this.data.deletionUser)
         this.data.isShowDeletionDialog = false;
     }
 
-    openDeletionDialog = (asset) => {
+    private openDeletionDialog = (asset) => {
         return () => {
             this.data.deletionUser = asset;
             this.data.isShowDeletionDialog = true
@@ -100,6 +105,11 @@ export class UserListContainer extends React.Component<any, any> {
     private editUser = (user) => {
         return () => {
             this.props.history.push("/dashboard/edit-user/" + user.pubId)
+        }
+    }
+    private assignRole = (user) => {
+        return () => {
+            this.props.history.push("/dashboard/assign-role-user/" + user.pubId)
         }
     }
 
@@ -144,6 +154,10 @@ export class UserListContainer extends React.Component<any, any> {
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.createPayment(user)}>Оплатить</Dropdown.Item>
                         <Dropdown.Item onClick={this.editUser(user)}>Редактировать</Dropdown.Item>
+                        {this.data.currentUser.role == "GOD"
+                            ? <Dropdown.Item onClick={this.assignRole(user)}>Роль</Dropdown.Item>
+                            : <></>
+                        }
                         <Dropdown.Item onClick={this.openDeletionDialog(user)}>Удалить</Dropdown.Item>
                     </DropdownButton>
                 </td>

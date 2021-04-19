@@ -2,7 +2,7 @@ import * as React from "react";
 import {observer} from "mobx-react";
 import Select from 'react-select'
 import {USER_STORE} from "app/store/UserStore";
-import {UserLite} from "app/api";
+import {UserWithCurrentAccess} from "app/api";
 
 
 @observer
@@ -24,7 +24,7 @@ export class UserSelect extends React.Component<any, any> {
         return options
     }
 
-    private static getLabel(l: UserLite) {
+    private static getLabel(l: UserWithCurrentAccess) {
         return l.lastName + " " + l.firstName + " " + l.thirdName;
     }
 

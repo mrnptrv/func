@@ -25,13 +25,17 @@ import {PaymentListContainer} from "app/containers/payment/ListContainer";
 import {PaymentEditContainer} from "app/containers/payment/EditContainer";
 import {PaymentCreateContainer} from "app/containers/payment/CreateContainer";
 import {BookingCreateContainer} from "app/containers/booking/BookingCreateContainer";
+import {AssignRoleContainer} from "./containers/auth/AssignRoleContainer";
 
 // render react DOM
 export const App = hot(({history}) => {
     let api = authApi()
 
-    api.getUsingGET1().then(() => {
+    api.getUsingGET1().then((r) => {
         // history.push("/dashboard/list")
+        if (r.data.role === "RESIDENT") {
+            window.location.href = "/"
+        }
 
         if (history.location.pathname == "/dashboard/index.html" || history.location.pathname == "/dashboard/") {
             history.push("/dashboard/booking")
@@ -64,6 +68,7 @@ export const App = hot(({history}) => {
                     <Route path="/dashboard/user-list" exact component={UserListContainer}/>
                     <Route path="/dashboard/create-user" exact component={UserCreateContainer}/>
                     <Route path="/dashboard/edit-user/:id" exact component={UserEditContainer}/>
+                    <Route path="/dashboard/assign-role-user/:id" exact component={AssignRoleContainer}/>
                     <Route path="/dashboard/payment-list" exact component={PaymentListContainer}/>
                     <Route path="/dashboard/create-payment" exact component={PaymentCreateContainer}/>
                     <Route path="/dashboard/edit-payment/:id" exact component={PaymentEditContainer}/>

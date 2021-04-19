@@ -1,10 +1,24 @@
 import * as Cookies from "js-cookie";
-import {CompanyApi, AssetsApi, AuthAPIApi, BookingApi, LocationApi, PaymentPlanApi, UserApi, PaymentApi} from "app/api";
+import {
+    CompanyApi,
+    AssetsApi,
+    AuthAPIApi,
+    BookingApi,
+    LocationApi,
+    PaymentPlanApi,
+    UserApi,
+    PaymentApi,
+    RoleApi
+} from "app/api";
 
 const BASE_URL = ""
 
 export const authApi = () => {
     return new AuthAPIApi(getConfiguration())
+}
+
+export const roleApi = () => {
+    return new RoleApi(getConfiguration())
 }
 
 export const userApi = () => {

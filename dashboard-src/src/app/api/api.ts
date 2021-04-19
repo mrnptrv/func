@@ -166,6 +166,31 @@ export interface AssetListRequest {
 /**
  * 
  * @export
+ * @interface AssignRoleRequest
+ */
+export interface AssignRoleRequest {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof AssignRoleRequest
+     */
+    locationIds?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssignRoleRequest
+     */
+    role?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AssignRoleRequest
+     */
+    userId?: string;
+}
+/**
+ * 
+ * @export
  * @interface BookedAsset
  */
 export interface BookedAsset {
@@ -1349,6 +1374,31 @@ export interface RegisterRequest {
 /**
  * 
  * @export
+ * @interface Role
+ */
+export interface Role {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Role
+     */
+    locationIds?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Role
+     */
+    role?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Role
+     */
+    userId?: string;
+}
+/**
+ * 
+ * @export
  * @interface SaveAccountRequest
  */
 export interface SaveAccountRequest {
@@ -2021,6 +2071,12 @@ export interface UserLite {
      * @memberof UserLite
      */
     pubId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLite
+     */
+    role: string;
     /**
      * 
      * @type {string}
@@ -5656,11 +5712,261 @@ export class PaymentPlanApi extends BaseAPI {
 
 
 /**
+ * RoleApi - axios parameter creator
+ * @export
+ */
+export const RoleApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assignRoleUsingPOST: async (assignRoleRequest: AssignRoleRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'assignRoleRequest' is not null or undefined
+            if (assignRoleRequest === null || assignRoleRequest === undefined) {
+                throw new RequiredError('assignRoleRequest','Required parameter assignRoleRequest was null or undefined when calling assignRoleUsingPOST.');
+            }
+            const localVarPath = `/api/user/roles/assign`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof assignRoleRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(assignRoleRequest !== undefined ? assignRoleRequest : {}) : (assignRoleRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRoleUsingPOST: async (pubId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pubId' is not null or undefined
+            if (pubId === null || pubId === undefined) {
+                throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling getRoleUsingPOST.');
+            }
+            const localVarPath = `/api/user/roles/get/{pubId}`
+                .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * RoleApi - functional programming interface
+ * @export
+ */
+export const RoleApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async assignRoleUsingPOST(assignRoleRequest: AssignRoleRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await RoleApiAxiosParamCreator(configuration).assignRoleUsingPOST(assignRoleRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRoleUsingPOST(pubId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Role>> {
+            const localVarAxiosArgs = await RoleApiAxiosParamCreator(configuration).getRoleUsingPOST(pubId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * RoleApi - factory interface
+ * @export
+ */
+export const RoleApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assignRoleUsingPOST(assignRoleRequest: AssignRoleRequest, options?: any): AxiosPromise<void> {
+            return RoleApiFp(configuration).assignRoleUsingPOST(assignRoleRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRoleUsingPOST(pubId: string, options?: any): AxiosPromise<Role> {
+            return RoleApiFp(configuration).getRoleUsingPOST(pubId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * RoleApi - object-oriented interface
+ * @export
+ * @class RoleApi
+ * @extends {BaseAPI}
+ */
+export class RoleApi extends BaseAPI {
+    /**
+     * 
+     * @summary Assign role to user
+     * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RoleApi
+     */
+    public assignRoleUsingPOST(assignRoleRequest: AssignRoleRequest, options?: any) {
+        return RoleApiFp(this.configuration).assignRoleUsingPOST(assignRoleRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Assign role to user
+     * @param {string} pubId pubId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RoleApi
+     */
+    public getRoleUsingPOST(pubId: string, options?: any) {
+        return RoleApiFp(this.configuration).getRoleUsingPOST(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
  * UserApi - axios parameter creator
  * @export
  */
 export const UserApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assignRoleUsingPOST: async (assignRoleRequest: AssignRoleRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'assignRoleRequest' is not null or undefined
+            if (assignRoleRequest === null || assignRoleRequest === undefined) {
+                throw new RequiredError('assignRoleRequest','Required parameter assignRoleRequest was null or undefined when calling assignRoleUsingPOST.');
+            }
+            const localVarPath = `/api/user/roles/assign`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof assignRoleRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(assignRoleRequest !== undefined ? assignRoleRequest : {}) : (assignRoleRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary Create a user
@@ -5751,6 +6057,51 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             const needsSerialization = (typeof deleteRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(deleteRequest !== undefined ? deleteRequest : {}) : (deleteRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRoleUsingPOST: async (pubId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pubId' is not null or undefined
+            if (pubId === null || pubId === undefined) {
+                throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling getRoleUsingPOST.');
+            }
+            const localVarPath = `/api/user/roles/get/{pubId}`
+                .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -5957,6 +6308,20 @@ export const UserApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Assign role to user
+         * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async assignRoleUsingPOST(assignRoleRequest: AssignRoleRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).assignRoleUsingPOST(assignRoleRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Create a user
          * @param {CreateUserRequest} createRequest createRequest
          * @param {*} [options] Override http request option.
@@ -5978,6 +6343,20 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async deleteUserUsingPOST(deleteRequest: DeleteUserRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).deleteUserUsingPOST(deleteRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRoleUsingPOST(pubId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Role>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getRoleUsingPOST(pubId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -6050,6 +6429,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
     return {
         /**
          * 
+         * @summary Assign role to user
+         * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        assignRoleUsingPOST(assignRoleRequest: AssignRoleRequest, options?: any): AxiosPromise<void> {
+            return UserApiFp(configuration).assignRoleUsingPOST(assignRoleRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Create a user
          * @param {CreateUserRequest} createRequest createRequest
          * @param {*} [options] Override http request option.
@@ -6067,6 +6456,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         deleteUserUsingPOST(deleteRequest: DeleteUserRequest, options?: any): AxiosPromise<void> {
             return UserApiFp(configuration).deleteUserUsingPOST(deleteRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Assign role to user
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRoleUsingPOST(pubId: string, options?: any): AxiosPromise<Role> {
+            return UserApiFp(configuration).getRoleUsingPOST(pubId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6120,6 +6519,18 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
 export class UserApi extends BaseAPI {
     /**
      * 
+     * @summary Assign role to user
+     * @param {AssignRoleRequest} assignRoleRequest assignRoleRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public assignRoleUsingPOST(assignRoleRequest: AssignRoleRequest, options?: any) {
+        return UserApiFp(this.configuration).assignRoleUsingPOST(assignRoleRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Create a user
      * @param {CreateUserRequest} createRequest createRequest
      * @param {*} [options] Override http request option.
@@ -6140,6 +6551,18 @@ export class UserApi extends BaseAPI {
      */
     public deleteUserUsingPOST(deleteRequest: DeleteUserRequest, options?: any) {
         return UserApiFp(this.configuration).deleteUserUsingPOST(deleteRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Assign role to user
+     * @param {string} pubId pubId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public getRoleUsingPOST(pubId: string, options?: any) {
+        return UserApiFp(this.configuration).getRoleUsingPOST(pubId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
