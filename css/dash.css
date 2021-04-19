@@ -2,9 +2,6 @@
     overflow: visible !important;
 }
 
-.z-index-one, .z-index-one .input-group-append .btn {
-    z-index: -1;
-}
 
 .payment-form.container {
     padding-right: 0;

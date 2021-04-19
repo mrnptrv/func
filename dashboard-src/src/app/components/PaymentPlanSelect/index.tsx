@@ -4,6 +4,13 @@ import Select from 'react-select'
 import {PAYMENT_PLAN_STORE} from "app/store/PaymentPlanStore";
 
 
+const customStyles = {
+    menu: (provided, state) => ({
+        ...provided,
+        zIndex: 100
+    }),
+}
+
 @observer
 export class PaymentPlanSelect extends React.Component<any, any> {
     private store = PAYMENT_PLAN_STORE
@@ -40,6 +47,7 @@ export class PaymentPlanSelect extends React.Component<any, any> {
     render() {
         return (
             <Select
+                styles={customStyles}
                 value={this.value()}
                 options={this.options()}
                 onChange={e => this.selectCompany(e.value)}

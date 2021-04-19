@@ -6,6 +6,9 @@ export const formatDate = (d: string) => {
         if (format(date, "HH:mm") === "00:00") {
             return format(date, "dd.MM.yyyy")
         }
+        if (format(date, "HH:mm") === "23:59") {
+            return format(date, "dd.MM.yyyy")
+        }
         return format(date, "dd.MM.yyyy HH:mm")
     }
     return ""
