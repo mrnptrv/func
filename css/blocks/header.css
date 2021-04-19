@@ -202,7 +202,6 @@ a.nav__logo:active {
 /* HEADER -> city navigation */
 
 .city-nav {
-  position: relative;
   border-top: 1px solid rgba(36, 36, 36, 0.06);
 }
 
@@ -264,29 +263,31 @@ a.nav__logo:active {
   color: var(--feature-color);
 }
 
-.city-nav__picture {
+/* HEADER -> picture */
+
+.page-header__picture {
   background-image: url("../../img/func-kitchen.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
-.city-nav__picture--kazan {
+.page-header__picture--kazan {
   background-image: url("../../img/location-top-kazan.jpg");
 }
 
-.city-nav__headline-wrapper {
+.page-header__headline-wrapper {
   display: flex;
   align-items: flex-end;
   min-height: 380px;
   padding: 36px 0;
 }
 
-.city-nav__headline {
+.page-header__headline {
   position: static;
 }
 
-.city-nav__headline-text {
+.page-header__headline-text {
   background-image: url("data:image/svg+xml,%3Csvg width='16' height='18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.377 11.294C-.168 7.305 2.663 1 8 1s8.168 6.305 4.623 10.294L8 16.494l-4.623-5.2z' stroke='%23F06724' stroke-width='2'/%3E%3Ccircle cx='8' cy='7' r='2' stroke='%23F06724' stroke-width='2'/%3E%3C/svg%3E");
 }
 
@@ -694,11 +695,6 @@ a.nav__logo:active {
     width: 80px;
   }
 
-  .city-nav {
-    padding-top: 0;
-    min-height: 420px;
-  }
-
   .city-nav__container {
     display: block;
   }
@@ -749,12 +745,6 @@ a.nav__logo:active {
   .description__content {
     max-width: unset;
     padding: 0;
-  }
-
-  .description__headline,
-  .description__text {
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .description__illustration {

@@ -180,9 +180,8 @@
       <path
           fill-rule="evenodd"
           clip-rule="evenodd"
-          d="M16 17V3H0V17H16ZM2 5H14V15H12.4142L6.70711 9.29289L6 8.58579L5.29289 9.29289L2 12.5858V5ZM6 11.4142L2.41421 15H9.58579L6 11.4142ZM11 9C10.4477 9 10 8.55228 10 8C10 7.44772 10.4477 7 11 7C11.5523 7 12 7.44772 12 8C12 8.55228 11.5523 9 11 9Z"
-          fill="white"/>
-      <rect x="18" y="3" width="2" height="14" fill="white"/>
+          d="M16 17V3H0V17H16ZM2 5H14V15H12.4142L6.70711 9.29289L6 8.58579L5.29289 9.29289L2 12.5858V5ZM6 11.4142L2.41421 15H9.58579L6 11.4142ZM11 9C10.4477 9 10 8.55228 10 8C10 7.44772 10.4477 7 11 7C11.5523 7 12 7.44772 12 8C12 8.55228 11.5523 9 11 9Z"/>
+      <rect x="18" y="3" width="2" height="14"/>
     </symbol>
     <symbol id="projector" viewBox="0 0 20 20">
       <path
@@ -345,37 +344,37 @@
         </svg>
       </button>
     </div>
-  </nav>
-
-  <nav class="city-nav">
-    <div class="city-nav__wrapper">
-      <div class="city-nav__menu">
-        <div class="city-nav__container container">
-          <ul class="city-nav__list list">
-            <li class="city-nav__item city-nav__item--location">
-              <a class="city-nav__link city-nav__link--anchor" href="#intro">О локации</a>
-            </li>
-            <li class="city-nav__item">
-              <a class="city-nav__link city-nav__link--anchor" href="#prices">Тарифы и услуги</a>
-            </li>
-            <!-- <li class="city-nav__item">
-              <a class="city-nav__link" href="booking/index.html">Аренда переговорных</a>
-            </li> -->
-            <li class="city-nav__item">
-              <a class="city-nav__link city-nav__link--anchor" href="#contacts">Контакты</a>
-            </li>
-          </ul>
+    <div class="nav__city-nav city-nav">
+      <div class="city-nav__wrapper">
+        <div class="city-nav__menu">
+          <div class="city-nav__container container">
+            <ul class="city-nav__list list">
+              <li class="city-nav__item city-nav__item--location">
+                <a class="city-nav__link city-nav__link--anchor" href="#intro">О локации</a>
+              </li>
+              <li class="city-nav__item">
+                <a class="city-nav__link city-nav__link--anchor" href="#prices">Тарифы и услуги</a>
+              </li>
+              <!-- <li class="city-nav__item">
+                <a class="city-nav__link" href="/booking/index.html">Аренда переговорных</a>
+              </li> -->
+              <li class="city-nav__item">
+                <a class="city-nav__link city-nav__link--anchor" href="#contacts">Контакты</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-    <div class="city-nav__picture city-nav__picture--kazan">
-      <div class="city-nav__headline-wrapper container">
-        <p class="city-nav__headline caption">
-          <span class="city-nav__headline-text caption__text">fun(c) Казань</span>
-        </p>
-      </div>
-    </div>
   </nav>
+
+  <div class="page-header__picture page-header__picture--kazan">
+    <div class="page-header__headline-wrapper container">
+      <p class="page-header__headline caption">
+        <span class="page-header__headline-text caption__text">fun(c) Казань</span>
+      </p>
+    </div>
+  </div>
 
 </header>
 
@@ -488,8 +487,8 @@
                   <span class="events__caption-text events__caption-text--work caption__text">Рабочие места</span>
                   <p class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями рабочих мест</span>
-                    <svg width="16" height="16">
-                      <use xlink:href="#arrow-right"></use>
+                    <svg width="20" height="20">
+                      <use xlink:href="#pic"></use>
                     </svg>
                   </p>
                 </figcaption>
@@ -502,8 +501,8 @@
                   <span class="events__caption-text events__caption-text--rooms caption__text">Переговорные</span>
                   <p class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями переговорок</span>
-                    <svg width="16" height="16">
-                      <use xlink:href="#arrow-right"></use>
+                    <svg width="20" height="20">
+                      <use xlink:href="#pic"></use>
                     </svg>
                   </p>
                 </figcaption>
@@ -516,8 +515,8 @@
                   <span class="events__caption-text events__caption-text--chill caption__text">Отдых</span>
                   <p class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями зон отдыха</span>
-                    <svg width="16" height="16">
-                      <use xlink:href="#arrow-right"></use>
+                    <svg width="20" height="20">
+                      <use xlink:href="#pic"></use>
                     </svg>
                   </p>
                 </figcaption>
@@ -530,8 +529,8 @@
                   <span class="events__caption-text events__caption-text--lounge caption__text">Кафетерий</span>
                   <p class="events__button circle-button caption__button">
                     <span class="visually-hidden">Открыть слайдер с фотографиями кафетерия</span>
-                    <svg width="16" height="16">
-                      <use xlink:href="#arrow-right"></use>
+                    <svg width="20" height="20">
+                      <use xlink:href="#pic"></use>
                     </svg>
                   </p>
                 </figcaption>
@@ -950,19 +949,16 @@
 <div class="popup">
   <div class="popup__backdrop"></div>
   <form class="popup__form pageclip-form" id="apply-form" action="https://send.pageclip.co/lIOU7euBRxRAWiYxGv05fe5Ow3pHu2Gw" method="post">
-    <p class="popup__top">
-      <svg class="popup__logo" width="80" height="22">
-        <use xlink:href="#logo"></use>
-      </svg>
+    <div class="popup__top">
+      <h2 class="popup__headline">Отправить заявку</h2>
       <button class="popup__close unbutton" id="apply-close" type="button">
         <span class="visually-hidden">Закрыть модальное окно</span>
         <svg width="16" height="16">
           <use xlink:href="#x"></use>
         </svg>
       </button>
-    </p>
+    </div>
     <div class="popup__content">
-      <h2 class="popup__headline">Отправить заявку</h2>
       <h3 class="popup__subtitle"></h3>
       <div class="popup__wrapper">
         <input id="apply-goal" name="apply-goal" type="hidden" value="general">

@@ -89,10 +89,9 @@ textarea {
   -webkit-appearance: none;
 }
 
-input[type="text"],
-input[type="tel"],
+input,
 textarea {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 input::-webkit-outer-spin-button,
@@ -350,7 +349,7 @@ body {
   width: 100%;
   padding: 26px 20px 8px;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 20px;
   color: inherit;
   background-color: rgba(255, 255, 255, 0);
@@ -465,7 +464,7 @@ body {
 .caption__text {
   display: block;
   padding: 20px 24px 20px 56px;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
   line-height: 16px;
   color: #0f0f15;
@@ -478,8 +477,7 @@ body {
 
 .caption__button {
   flex-shrink: 0;
-  display: none;
-  /*display: flex;*/
+  display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 24px;
@@ -487,7 +485,7 @@ body {
 }
 
 .caption__button svg {
-  fill: #0f0f15;
+  fill: var(--feature-color);
   transition: fill 0.1s ease-in;
 }
 
@@ -502,6 +500,12 @@ body {
   .section {
     padding-top: 64px;
     padding-bottom: 64px;
+  }
+
+  input,
+  textarea,
+  .input {
+    font-size: 16px;
   }
 }
 

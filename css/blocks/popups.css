@@ -55,6 +55,7 @@
 }
 
 .popup__close {
+  display: flex;
   width: 44px;
   height: 44px;
   margin-left: auto;
@@ -65,12 +66,13 @@
 .popup__close svg {
   stroke: #333333;
   display: inline-block;
-  transition: transform 0.2s ease-out;
+  margin: auto;
+  transition: stroke 0.2s ease-out;
 }
 
 .popup__close:hover svg,
 .popup__close:focus svg {
-  transform: rotate(180deg);
+  stroke: var(--feature-color);
 }
 
 .popup__info {
@@ -138,9 +140,9 @@
 }
 
 .popup__headline {
-  font-weight: 800;
-  font-size: 22px;
-  line-height: 34px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .inner .popup__headline {
@@ -150,21 +152,21 @@
 }
 
 .popup__subtitle {
-  margin-bottom: 5px;
-  font-weight: 200;
+  display: none;
+  margin-bottom: 12px;
+  font-weight: 400;
   font-size: 14px;
   line-height: 24px;
 }
 
 .popup__wrapper {
-  margin-top: 35px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
 .inner .popup__wrapper {
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .popup__toggler {
@@ -264,7 +266,7 @@
 .popup__checkmark-label::before {
   content: "";
   position: absolute;
-  top: 5px;
+  top: 3px;
   left: 0;
   width: 16px;
   height: 16px;
@@ -361,7 +363,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 62px 0 auto;
+  margin: 62px 0 42px;
 }
 
 .popup-slider__close {
