@@ -274,6 +274,7 @@ body {
 .slider-control {
   width: 44px;
   height: 44px;
+  outline: 0;
   transition: opacity 0.1s ease-out;
 }
 
@@ -296,7 +297,8 @@ body {
   transition: fill 0.1s ease-out;
 }
 
-.slider-control:hover svg {
+.slider-control:hover svg,
+.slider-control:focus svg {
   fill: var(--feature-color);
 }
 

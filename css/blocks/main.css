@@ -521,7 +521,7 @@
 }
 
 .events__slide:hover .events__icons {
-  transform: translateX(120px);
+  transform: translateX(119px);
 }
 
 .events__caption-text {
