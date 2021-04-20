@@ -71,6 +71,18 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
         }
     }
 
+    clone = (paymentPlan) => {
+        return () => {
+            paymentPlanApi().cloneUsingGET(paymentPlan.pubId).then(r => {
+                this.props.history.push("/dashboard/edit-payment-plan/" + r.data.pubId)
+            }).catch(error => {
+                if (error && error.response && error.response.data.message) {
+                    this.data.error = error.response.data.message
+                }
+            })
+        }
+    }
+
     newPaymentPlan = () => {
         this.props.history.push("/dashboard/create-payment-plan")
     }
@@ -113,6 +125,7 @@ export class PaymentPlanListContainer extends React.Component<any, any> {
                 <td className="text-right">
                     <DropdownButton variant="outline-secondary" title="&bull;&bull;&bull;">
                         <Dropdown.Item onClick={this.editPaymentPlan(paymentPlan)}>Редактировать</Dropdown.Item>
+                        <Dropdown.Item onClick={this.clone(paymentPlan)}>Копировать</Dropdown.Item>
                         <Dropdown.Item onClick={this.openDeletionDialog(paymentPlan)}>Удалить</Dropdown.Item>
                     </DropdownButton>
                 </td>
