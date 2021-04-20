@@ -1934,6 +1934,12 @@ export interface UserDataReq {
      * @type {string}
      * @memberof UserDataReq
      */
+    lastName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataReq
+     */
     name: string;
     /**
      * 
@@ -1948,6 +1954,12 @@ export interface UserDataReq {
  * @interface UserDataRes
  */
 export interface UserDataRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataRes
+     */
+    lastName: string;
     /**
      * 
      * @type {string}
@@ -5181,6 +5193,51 @@ export const PaymentPlanApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * 
+         * @summary clone the payment plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cloneUsingGET: async (pubId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pubId' is not null or undefined
+            if (pubId === null || pubId === undefined) {
+                throw new RequiredError('pubId','Required parameter pubId was null or undefined when calling cloneUsingGET.');
+            }
+            const localVarPath = `/api/paymentplan/clone/{pubId}`
+                .replace(`{${"pubId"}}`, encodeURIComponent(String(pubId)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth required
+            // oauth required
+            if (configuration && configuration.accessToken) {
+                const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
+                    ? configuration.accessToken("oauth", ["read", "write", "foo"])
+                    : configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + localVarAccessTokenValue;
+            }
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Create payment plan
          * @param {CreatePaymentPlanRequest} createRequest createRequest
          * @param {*} [options] Override http request option.
@@ -5475,6 +5532,20 @@ export const PaymentPlanApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary clone the payment plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cloneUsingGET(pubId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPlan>> {
+            const localVarAxiosArgs = await PaymentPlanApiAxiosParamCreator(configuration).cloneUsingGET(pubId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Create payment plan
          * @param {CreatePaymentPlanRequest} createRequest createRequest
          * @param {*} [options] Override http request option.
@@ -5568,6 +5639,16 @@ export const PaymentPlanApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * 
+         * @summary clone the payment plan
+         * @param {string} pubId pubId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cloneUsingGET(pubId: string, options?: any): AxiosPromise<PaymentPlan> {
+            return PaymentPlanApiFp(configuration).cloneUsingGET(pubId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Create payment plan
          * @param {CreatePaymentPlanRequest} createRequest createRequest
          * @param {*} [options] Override http request option.
@@ -5636,6 +5717,18 @@ export const PaymentPlanApiFactory = function (configuration?: Configuration, ba
  * @extends {BaseAPI}
  */
 export class PaymentPlanApi extends BaseAPI {
+    /**
+     * 
+     * @summary clone the payment plan
+     * @param {string} pubId pubId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentPlanApi
+     */
+    public cloneUsingGET(pubId: string, options?: any) {
+        return PaymentPlanApiFp(this.configuration).cloneUsingGET(pubId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Create payment plan

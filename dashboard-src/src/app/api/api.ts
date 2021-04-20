@@ -1934,6 +1934,12 @@ export interface UserDataReq {
      * @type {string}
      * @memberof UserDataReq
      */
+    lastName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataReq
+     */
     name: string;
     /**
      * 
@@ -1948,6 +1954,12 @@ export interface UserDataReq {
  * @interface UserDataRes
  */
 export interface UserDataRes {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDataRes
+     */
+    lastName: string;
     /**
      * 
      * @type {string}

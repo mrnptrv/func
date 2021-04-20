@@ -26,6 +26,7 @@ class AssetItemData {
     @observable bookingHour = 0
     @observable bookingHourAmount = 1
     @observable bookingName = ""
+    @observable bookingLastName = ""
     @observable bookingPhone = "+7 ("
     @observable bookingDescription = ""
     @observable bookingAgreementCheck = false
@@ -184,10 +185,12 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             this.data.bookingHourAmount = 1
 
             if (this.props.user) {
-                this.data.bookingName = this.props.user.lastName + " " + this.props.user.firstName + " " + this.props.user.thirdName
+                this.data.bookingName = this.props.user.firstName
+                this.data.bookingLastName = this.props.user.lastName
                 this.data.bookingPhone = formatPhone(this.props.user.phone)
             } else {
                 this.data.bookingName = ""
+                this.data.bookingLastName = ""
                 this.data.bookingPhone = "+7 ("
             }
 
@@ -205,7 +208,8 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
             code: this.data.code
         }).then((r) => {
             saveAccessToken(r.data.accessToken)
-            return this.bookAsset()
+            this.data.isCodeSent = false
+            return this.bookAssetOrSendCode()
         }).catch(error => {
 
             if (error && error.response && error.response.data && error.response.data.message) {
@@ -220,9 +224,24 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
 
     private bookAssetOrSendCode = () => {
         let me = this
-        if (this.props.user) {
-            this.bookAsset();
-        } else {
+        authApi().getUsingGET1().then(r=>{
+            if (r.data) {
+                this.bookAsset(r.data);
+            } else {
+                this.data.isBooking = true
+
+                grecaptcha.ready(function () {
+                    grecaptcha.execute(RECAPTCHA_V3_SITE_KEY, {action: 'submit'}).then(function (tokenV3) {
+                        if (me.data.needV2) {
+                            me.doSendCode(tokenV3, me.data.v2Token)
+                        }
+
+                        me.doSendCode(tokenV3, "");
+                    });
+                });
+
+            }
+        }).catch(()=>{
             this.data.isBooking = true
 
             grecaptcha.ready(function () {
@@ -235,7 +254,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                 });
             });
 
-        }
+        })
     }
 
     private doSendCode(tokenV3, tokenV2){
@@ -285,7 +304,7 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         });
     }
 
-    private bookAsset = () => {
+    private bookAsset = (user) => {
         let start = this.getStartHour();
         let end = this.getEndHour();
 
@@ -296,9 +315,10 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
         return bookingApi().bookUsingPOST({
             assetId: this.data.asset.pubId,
             date: (moment(this.data.bookingDate)).format("yyyy-MM-DD"),
-            uid: this.props?.user?.pubId,
+            uid: user.pubId,
             userData: {
                 name: this.data.bookingName,
+                lastName: this.data.bookingLastName,
                 phone: this.data.bookingPhone,
             },
             description: this.data.bookingDescription,
@@ -441,6 +461,11 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
 
     private setBookingName = (e) => {
         this.data.bookingName = e.target.value
+        this.enableBookingButton()
+    }
+
+    private setBookingLastName = (e) => {
+        this.data.bookingLastName = e.target.value
         this.enableBookingButton()
     }
 
@@ -722,6 +747,15 @@ export class AssetItem extends React.Component<AssetItemProps, any> {
                                     <div className="popup__content">
                                         <h2 className="popup__headline">Контактные данные</h2>
                                         <div className="popup__wrapper">
+                                            <div className="popup__group group">
+                                                <input className="popup__input input"
+                                                       type="text" placeholder="&nbsp;"
+                                                       value={this.data.bookingLastName}
+                                                       onChange={this.setBookingLastName}
+                                                       readOnly={!!this.props.user}
+                                                       required/>
+                                                <label className="popup__label label" htmlFor="apply-name">Фамилия</label>
+                                            </div>
                                             <div className="popup__group group">
                                                 <input className="popup__input input"
                                                        type="text" placeholder="&nbsp;"
