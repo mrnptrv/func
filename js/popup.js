@@ -19,12 +19,15 @@ const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 let scrollPositionY;
 
 const openForm = form => {
-    document.body.classList.add('no-scroll');
-    document.querySelector('html').classList.add('no-scroll');
     form.style.display = 'flex';
     setTimeout(() => {
         form.classList.add('popup--shown');
     }, 200);
+
+    setTimeout(() => {
+        document.body.classList.add('no-scroll');
+        document.querySelector('html').classList.add('no-scroll');
+    }, 400);
 
     window.location.hash = 'zapolnenie-formy';
 
@@ -50,11 +53,7 @@ const openForm = form => {
     popupApplyPhone.value = '+7 (';
 
     popupApplyTerms.addEventListener('change', () => {
-        if (popupApplyTerms.checked) {
-            popupApplySubmit.disabled = false;
-        } else {
-            popupApplySubmit.disabled = true;
-        }
+        popupApplySubmit.disabled = !popupApplyTerms.checked;
     });
 };
 
@@ -83,7 +82,6 @@ document.querySelectorAll('.apply-button').forEach((item) => {
         openForm(popupApply);
 
         document.querySelector('#apply-goal').value = 'general';
-        // document.querySelector('.popup__subtitle').innerText = '';
         if (item.dataset.goal === 'try') {
             document.querySelector('.popup__headline').innerText = 'Запишись на экскурсию';
         } else if (item.dataset.goal === 'demo') {

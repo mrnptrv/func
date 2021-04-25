@@ -37,11 +37,11 @@
   width: 100%;
   text-align: left;
   background-color: #ffffff;
+  box-shadow: 0 4px 10px 0 rgba(36, 36, 36, 0.03);
 }
 
 .nav--sticky {
   position: fixed;
-  background-color: rgba(255, 255, 255, 0.95);
   animation: slideDown 0.3s ease-in;
 }
 
@@ -495,7 +495,6 @@ a.nav__logo:active {
 
   .nav--open-menu {
     background-color: #ffffff;
-    border-bottom: 1px solid rgba(36, 36, 36, 0.06);
   }
 
   .nav__container {
@@ -511,7 +510,7 @@ a.nav__logo:active {
 
   .nav__menu {
     position: fixed;
-    top: 65px;
+    top: 64px;
     bottom: 0;
     left: 0;
     display: none;
@@ -521,6 +520,7 @@ a.nav__logo:active {
     margin: 0;
     padding: 24px 72px 28px var(--basic-gap);
     background-color: #ffffff;
+    border-top: 1px solid rgba(36, 36, 36, 0.06);
     transform: translateX(100vw);
     transition-property: transform;
     transition-delay: 0.2s;
@@ -547,16 +547,6 @@ a.nav__logo:active {
     height: 64px;
     z-index: 21;
     outline: 0;
-  }
-
-  .nav--sticky .nav__item--button {
-    display: none;
-  }
-
-  .nav--open-menu .nav__item--button {
-    position: static;
-    display: block;
-    margin: auto auto 0;
   }
 
   .nav__user {
@@ -586,10 +576,6 @@ a.nav__logo:active {
     width: 14px;
     height: 2px;
     background-color: #242424;
-    transition-property: background-color, transform;
-    transition-duration: 0.2s, 0.3s;
-    transition-timing-function: ease-in, ease-in;
-    transition-delay: 0s, 0.5s;
   }
 
   .nav--open-menu .nav__line {
@@ -604,7 +590,6 @@ a.nav__logo:active {
     width: 100%;
     height: 2px;
     background-color: inherit;
-    transition: inherit;
   }
 
   .nav__line::before {
@@ -616,12 +601,10 @@ a.nav__logo:active {
   }
 
   .nav--open-menu .nav__line::before {
-    transition-delay: 0s, 0s;
     transform: translateY(5px) rotate(90deg);
   }
 
   .nav--open-menu .nav__line::after {
-    transition-delay: 0s, 0s;
     transform: translateY(-5px);
   }
 
@@ -632,9 +615,14 @@ a.nav__logo:active {
 
   .nav__item--button {
     order: 2;
+    position: static;
     display: block;
     margin: auto auto 0;
     text-align: center;
+  }
+
+  .nav--sticky .nav__item--button {
+    display: none;
   }
 
   .nav__link {

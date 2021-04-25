@@ -184,7 +184,10 @@ document.querySelectorAll('.events__slide').forEach((item, index) => {
                     }
                 };
 
-                popupSlider.classList.add('popup-slider--shown');
+                popupSlider.style.display = 'block';
+                setTimeout(() => {
+                    popupSlider.classList.add('popup-slider--shown');
+                }, 200);
                 document.querySelector('.popup-slider__headline').innerText = eventCaption;
                 document.querySelector('.popup-slider__list').innerHTML = '';
                 document.querySelector('.popup-slider__list').appendChild(eventPics.cloneNode(true));

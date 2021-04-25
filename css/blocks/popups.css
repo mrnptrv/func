@@ -4,7 +4,6 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  /*display: flex;*/
   display: none;
   justify-content: center;
   align-items: center;
@@ -330,6 +329,7 @@
   left: 0;
   width: 100%;
   height: calc(100vh + 48px);
+  display: none;
   padding-bottom: 48px;
   color: #ffffff;
   background-color: #333333;

@@ -59,8 +59,6 @@ roomsSlider.on(['mount.after', 'run'], () => {
     const leftArrow = slider.querySelector('.slider-control--left');
     const rightArrow = slider.querySelector('.slider-control--right');
 
-    // assignDisabledArrowButton(roomsSlider, slides.length, leftArrow, rightArrow);
-
     roomsSlider.on('run.before', move => {
         moveBullets(move.direction, slider.querySelector('.glide__bullet--active'));
     });
@@ -134,7 +132,10 @@ document.querySelectorAll('.events__slide').forEach((item, index) => {
                     }
                 };
 
-                popupSlider.classList.add('popup-slider--shown');
+                popupSlider.style.display = 'block';
+                setTimeout(() => {
+                    popupSlider.classList.add('popup-slider--shown');
+                }, 200);
                 document.querySelector('.popup-slider__headline').innerText = eventCaption;
                 document.querySelector('.popup-slider__list').innerHTML = '';
                 document.querySelector('.popup-slider__list').appendChild(eventPics.cloneNode(true));
