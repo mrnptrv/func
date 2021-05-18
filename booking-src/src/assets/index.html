@@ -53,6 +53,15 @@
           <path d="M4.5 6.5L8 10L11.5 6.5" stroke="#333333" stroke-width="2"/>
         </g>
       </symbol>
+      <symbol id="triangle" viewBox="0 0 12 6" fill="none">
+        <path d="M6 0L12 6H0L6 0Z" fill="white"/>
+      </symbol>
+      <symbol id="user" viewbox="0 0 16 16">
+        <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8 9a3 3 0 100-6 3 3 0 000 6zm5-3c0 1.39-.567 2.646-1.482 3.553A6 6 0 0115 15h-2a4 4 0 00-4-4H7a4 4 0 00-4 4H1a6 6 0 013.482-5.447A5 5 0 1113 6z"/>
+      </symbol>
       <symbol id="angle-arrow-right" viewBox="0 0 16 16">
         <g opacity="0.4">
           <path d="M6.5 11.5L10 8L6.5 4.5" stroke="#F06724" stroke-width="2"/>
@@ -78,6 +87,9 @@
       <symbol id="long-arrow-right" width="20" height="20" viewBox="0 0 20 20">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M16.0858 8.99995L12.2929 5.20706L13.7071 3.79285L19.9142 9.99995L13.7071 16.2071L12.2929 14.7928L16.0858 11H0V8.99995H16.0858Z"/>
       </symbol>
+      <symbol id="close-cross" viewBox="0 0 14 14">
+        <path xmlns="http://www.w3.org/2000/svg" d="M1.5 1.5L12.5 12.5M12.5 1.5L1.5 12.5" stroke="#242424" stroke-opacity="0.4" stroke-width="2"/>
+      </symbol>
       <symbol id="checkmark" viewBox="0 0 12 12">
         <path d="M1.5 6.5L4 9L10.5 2.5" stroke="#333333" stroke-width="2"/>
       </symbol>
@@ -92,6 +104,9 @@
       </symbol>
       <symbol id="menu" viewBox="0 0 16 16">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M1 2H15V4H1V2ZM1 7H15V9H1V7ZM15 12H1V14H15V12Z" fill="white"/>
+      </symbol>
+      <symbol id="logout" viewBox="0 0 16 16">
+        <path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" d="M9 0H7V8H9V0ZM8 14C11.3137 14 14 11.3137 14 8C14 5.77914 12.7934 3.84012 11 2.80267V0.581512C13.9318 1.76828 16 4.64261 16 8C16 12.4183 12.4183 16 8 16C3.58173 16 0 12.4183 0 8C0 4.64261 2.06818 1.76828 5 0.581512V2.80267C3.20659 3.84012 2 5.77914 2 8C2 11.3137 4.68629 14 8 14Z"/>
       </symbol>
       <symbol id="social-facebook" viewBox="0 0 20 20">
         <path
@@ -119,46 +134,45 @@
   </div>
 
   <header class="page-header">
-    <nav class="page-header__nav nav nav--sticky" role="navigation">
-      <div class="nav__container container">
-        <a class="nav__logo" href="/" title="На главную">
+
+    <h1 class="visually-hidden">fun(c): сеть соверменных IT коворкингов</h1>
+
+    <nav class="page-header__nav nav" role="navigation">
+      <div class="nav__container nav__container--booking container">
+        <a class="nav__logo" href="/index.html">
           <span class="visually-hidden">На главную</span>
           <svg class="nav__logo-pic" width="104" height="29">
             <use xlink:href="#logo"></use>
           </svg>
         </a>
-        <ul class="nav__menu list">
-          <li class="nav__item nav__item--button">
-            <button class="nav__button button apply-button unbutton" type="button" data-goal="try">
-              <span>Запишись на экскурсию</span>
-              <svg width="20" height="16">
-                <use xlink:href="#long-arrow-right"></use>
+        <ul class="nav__menu nav__menu--booking list">
+          <li class="nav__item">
+            <a class="nav__link nav__link--anchor" href="/index.html#intro">О нас</a>
+          </li>
+          <li class="nav__item nav__item--has-dropdown">
+            <button class="nav__link nav__link--has-dropdown unbutton" type="button">
+              Локации
+              <svg width="16" height="16" fill="none">
+                <use xlink:href="#angle-arrow-down"></use>
               </svg>
             </button>
-          </li>
-          <li class="nav__item">
-            <a class="nav__link" href="/index.html#intro">О нас</a>
-          </li>
-          <li class="nav__item">
-            <a class="nav__link" href="/index.html#func-rooms">Пространства</a>
-          </li>
-          <li class="nav__item">
-            <a class="nav__link" href="/index.html#prices">Тарифы</a>
-          </li>
-          <li class="nav__item">
-            <a class="nav__link" href="/index.html#events">События</a>
-          </li>
-          <li class="nav__item">
-            <a class="nav__link" href="/index.html#contacts">Контакты</a>
-          </li>
-          <li class="nav__item">
-              <div id="login"></div>
+            <div class="nav__dropdown dropdown-menu">
+              <ul class="dropdown-menu__list list">
+                <li class=" dropdown-menu__item">
+                  <a class="dropdown-menu__link" href="/izhevsk.html">fun(c) Ижевск</a>
+                </li>
+                <li class="dropdown-menu__item">
+                  <a class="dropdown-menu__link" href="/kazan.html">fun(c) Казань</a>
+                </li>
+              </ul>
+            </div>
           </li>
         </ul>
-        <button class="nav__burger unbutton" type="button">
+        <button class="nav__burger nav__tool-button unbutton" type="button">
           <span class="visually-hidden">Открыть меню</span>
           <span class="nav__line"></span>
         </button>
+        <div id="login" class="nav__user-wrapper"></div>
       </div>
     </nav>
   </header>
@@ -167,67 +181,40 @@
   </main>
 
   <footer class="footer" id="contacts" role="contentinfo">
-    <h2 class="visually-hidden">Контактная информация Func</h2>
-    <div class="footer__contacts contacts">
-      <div class="footer__container container">
-        <p class="contacts__description text">Fun(c) &mdash; современный коворкинг в Ижевске</p>
-        <ul class="contacts__list list">
-          <li class="contacts__item">
-            <p class="contacts__text contacts__text--secondary">Email</p>
-            <p class="contacts__text">
-              <a href="mailto:hello@func.town">hello@func.town</a>
-            </p>
-          </li>
-          <li class="contacts__item">
-            <p class="contacts__text contacts__text--secondary">Телефон</p>
-            <p class="contacts__text">
-              <a href="tel:+79127673293">+7&nbsp;(912)&nbsp;767-32-93</a>
-            </p>
-          </li>
-          <li class="contacts__item">
-            <p class="contacts__text contacts__text--secondary">Адрес</p>
-            <p class="contacts__text">им. Дерябина проезд, 3/4</p>
-          </li>
-        </ul>
-        <p class="contacts__social social">
-          <a class="social__button social__button--vk unbutton" href="https://vk.com/func.coworking">
-            <span class="visually-hidden">ВКонтакте</span>
-            <svg width="20" height="20">
-              <use xlink:href="#social-vk"></use>
-            </svg>
-          </a>
-          <a class="social__button social__button--instagram unbutton" href="https://www.instagram.com/func_coworking/">
-            <span class="visually-hidden">Instagram</span>
-            <svg width="20" height="20">
-              <use xlink:href="#social-instagram"></use>
-            </svg>
-          </a>
-          <a class="social__button social__button--facebook unbutton" href="https://www.facebook.com/func.coworking/">
-            <span class="visually-hidden">Facebook</span>
-            <svg width="20" height="20">
-              <use xlink:href="#social-facebook"></use>
-            </svg>
-          </a>
-        </p>
-      </div>
-    </div>
+    <h2 class="visually-hidden">Контактная информация fun(c)</h2>
     <div class="footer__links">
-      <div class="footer__container container">
-        <p class="footer__copyright footer__text">© Коворкинг «fun(c)», 2019 &ndash; <span id="current-year">2020</span></p>
+      <div class="footer__container footer__container--bottom container">
+        <p class="footer__copyright footer__text">© Коворкинг «fun(c)», 2019 &ndash; <span id="current-year">2021</span></p>
         <ul class="footer__list list">
           <li class="footer__item">
-            <a class="footer__link" href="/docs/personal-data-terms.pdf" title="Обработка персональных данных (PDF)" target="_blank">Обработка персональных данных</a>
+            <a class="footer__link" href="docs/personal-data-terms.pdf" title="Обработка персональных данных (PDF)" target="_blank">Обработка персональных данных</a>
           </li>
           <li class="footer__item">
-            <a class="footer__link" href="/docs/offer.pdf" title="Договор оферты (PDF)" target="_blank">Договор оферты</a>
+            <a class="footer__link" href="docs/offer.pdf" title="Договор оферты (PDF)" target="_blank">Договор оферты</a>
           </li>
         </ul>
-        <button class="footer__up circle-button unbutton" type="button">
-          <span class="visually-hidden">Прокрутить страницу вверх</span>
-          <svg width="16" height="16">
-            <use xlink:href="#arrow-up"></use>
-          </svg>
-        </button>
+        <div class="footer__nav">
+          <p class="footer__social social">
+            <a class="social__button social__button--vk unbutton" href="https://vk.com/func.coworking">
+              <span class="visually-hidden">ВКонтакте</span>
+              <svg width="20" height="20">
+                <use xlink:href="#social-vk"></use>
+              </svg>
+            </a>
+            <a class="social__button social__button--instagram unbutton" href="https://www.instagram.com/func_coworking/">
+              <span class="visually-hidden">Instagram</span>
+              <svg width="20" height="20">
+                <use xlink:href="#social-instagram"></use>
+              </svg>
+            </a>
+            <a class="social__button social__button--facebook unbutton" href="https://www.facebook.com/func.coworking/">
+              <span class="visually-hidden">Facebook</span>
+              <svg width="20" height="20">
+                <use xlink:href="#social-facebook"></use>
+              </svg>
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </footer>
@@ -288,5 +275,25 @@
   <script src="/js/booking-scripts.js"></script>
   <script src="https://s.pageclip.co/v1/pageclip.js" charset="utf-8"></script>
   <script src="/js/popup.js"></script>
+  <!---- VK pixel --->
+  <script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?168",t.onload=function(){VK.Retargeting.Init("VK-RTRG-781551-a94YG"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-781551-a94YG" style="position:fixed; left:-999px;" alt=""/></noscript>
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '300704507608693');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+                 src="https://www.facebook.com/tr?id=300704507608693&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Facebook Pixel Code -->
+
   </body>
 </html>

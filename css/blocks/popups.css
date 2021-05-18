@@ -4,11 +4,12 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: calc(100% + 48px);
+  text-align: left;
   z-index: 31;
   transform: translateY(-100vh);
   transition: transform 0.3s cubic-bezier(0.34, 0, 0, 1.22);
@@ -53,6 +54,7 @@
 }
 
 .popup__close {
+  display: flex;
   width: 44px;
   height: 44px;
   margin-left: auto;
@@ -63,12 +65,13 @@
 .popup__close svg {
   stroke: #333333;
   display: inline-block;
-  transition: transform 0.2s ease-out;
+  margin: auto;
+  transition: stroke 0.2s ease-out;
 }
 
 .popup__close:hover svg,
 .popup__close:focus svg {
-  transform: rotate(180deg);
+  stroke: var(--feature-color);
 }
 
 .popup__info {
@@ -123,7 +126,7 @@
   margin: 0;
 }
 
-.popup__content.successfully-booked{
+.popup__content.successfully-booked {
   justify-content: center;
   font-size: 1.2rem;
   line-height: 2;
@@ -136,33 +139,26 @@
 }
 
 .popup__headline {
-  font-weight: 800;
-  font-size: 22px;
-  line-height: 34px;
-}
-
-.inner .popup__headline {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font: inherit;
+  font-weight: 600;
 }
 
 .popup__subtitle {
-  margin-bottom: 5px;
-  font-weight: 200;
+  display: none;
+  margin-bottom: 12px;
+  font-weight: 400;
   font-size: 14px;
   line-height: 24px;
 }
 
 .popup__wrapper {
-  margin-top: 35px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
 .inner .popup__wrapper {
-  margin-top: 20px;
+  /*margin-top: 20px;*/
 }
 
 .popup__toggler {
@@ -177,8 +173,12 @@
   margin-bottom: 16px;
 }
 
-.popup__group:nth-of-type(even) {
+.popup__group:nth-of-type(odd) {
   margin-right: 0;
+}
+
+.popup__group--name {
+  width: 100%;
 }
 
 .popup__group--message {
@@ -242,10 +242,6 @@
 
 .popup__footer {
   width: 100%;
-  margin-top: 24px;
-}
-
-.inner .popup__footer {
   margin-bottom: 24px;
 }
 
@@ -258,7 +254,7 @@
 .popup__checkmark-label::before {
   content: "";
   position: absolute;
-  top: 5px;
+  top: 3px;
   left: 0;
   width: 16px;
   height: 16px;
@@ -287,7 +283,7 @@
   padding: 20px;
   font: inherit;
   color: #ffffff;
-  background: var(--secondary-feature-color) ;
+  background: var(--secondary-feature-color);
 }
 
 /* responsive */
@@ -303,17 +299,13 @@
   }
 
   .popup__content {
-    padding-bottom: 64px;
+    padding-bottom: 124px;
   }
 
   .popup__group {
     width: 100%;
     margin-right: 0;
   }
-
-  /* .popup__label span {
-    display: none;
-  } */
 
   .popup__actions {
     flex-direction: column;
@@ -337,6 +329,7 @@
   left: 0;
   width: 100%;
   height: calc(100vh + 48px);
+  display: none;
   padding-bottom: 48px;
   color: #ffffff;
   background-color: #333333;
@@ -359,7 +352,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 62px 0 auto;
+  margin: 62px 0 42px;
 }
 
 .popup-slider__close {
@@ -401,7 +394,7 @@
 }
 
 video.popup-slider__pic {
-  background-image: url('../../img/func-hall.jpg');
+  background-image: url("../../img/func-hall.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -417,6 +410,252 @@ video.popup-slider__pic {
 
 .popup-slider svg {
   fill: #ffffff;
+}
+
+/* react modal modification */
+
+.ReactModal__Overlay {
+  width: 1224px;
+  max-width: calc(100% - 48px);
+  margin: 0 auto;
+  z-index: 10;
+
+  opacity: 0;
+  transform: translateX(400px);
+  transition: all 500ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+  transform: translateX(400px);
+}
+
+.ReactModal__Content {
+  position: absolute;
+  top: 112px;
+  right: 0;
+
+  width: 336px;
+
+  background-color: #ffffff;
+  box-shadow: 0px 25px 40px rgba(51, 51, 51, 0.1);
+}
+
+.login-form__arrow {
+  position: absolute;
+  top: -5px;
+  right: 18px;
+}
+
+.login-form__top {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 24px;
+  margin-bottom: 36px;
+
+  border-bottom: 1px solid rgba(36, 36, 36, 0.06);
+}
+
+.login-form__top-title {
+  font-weight: 500;
+  line-height: 16px;
+  color: #242424;
+}
+
+.login-form__cross-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: none;
+  width: 64px;
+  height: 64px;
+
+  border-left: 1px solid rgba(36, 36, 36, 0.06);
+  cursor: pointer;
+}
+
+.login-form__close-cross {
+  width: 11px;
+}
+
+.login-form__top-button {
+  margin-right: 17px;
+
+  fill: rgba(36, 36, 36, 0.1);
+  cursor: pointer;
+}
+
+.login-form__main {
+  padding: 0 24px 24px 24px;
+}
+
+.login-form__main--code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form__text-top {
+  padding: 0 20px;
+  margin-bottom: 36px;
+
+  line-height: 24px;
+  text-align: center;
+}
+
+.login-form__text-top--phone {
+  padding: 0;
+}
+
+.login-form__text-top--accent {
+  font-weight: 500;
+}
+
+.login-form__button {
+  width: 100%;
+  height: 56px;
+  padding: 0px 24px;
+  margin-bottom: 28px;
+
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.login-form__input {
+  height: 56px;
+  padding: 20px 16px;
+  margin-bottom: 22px;
+
+  color: rgba(36, 36, 36, 1);
+}
+
+.login-form__code-wrapper {
+  display: flex !important;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 17px;
+}
+
+.login-form__code-wrapper > input {
+  width: 48.84px;
+  height: 56px;
+  border: 1px solid rgba(36, 36, 36, 0.1);
+  border-right-color: transparent;
+  text-align: center;
+
+  margin-left: -1px;
+}
+
+.login-form__code-wrapper > input:last-child {
+  border-right-color: rgba(36, 36, 36, 0.1);
+}
+
+.login-form__code-wrapper > input:focus-visible {
+  outline: 0;
+}
+
+.login-form__code-wrapper > input:focus {
+  position: relative;
+  border-color: rgba(36, 36, 36, 0.4) !important;
+}
+
+.login-form__code-wrapper > input[data-valid="false"] {
+  border-color: rgba(241, 78, 27, 0.4);
+}
+
+.login-form__code-wrapper > input[data-valid="false"]:first-child {
+  border-left-color: rgba(241, 78, 27, 0.4);
+}
+
+.login-form__code-wrapper > input[data-valid="false"]:last-child {
+  border-right-color: rgba(241, 78, 27, 0.4);
+}
+
+.login-form__captcha {
+  margin-bottom: 18px;
+}
+
+.login-form__captcha > div {
+  position: relative;
+  transform: scale(0.95);
+  transform-origin: top left;
+}
+
+.login-form__button span {
+  position: relative;
+  left: 50%;
+  display: inline-block;
+  transition: all 0.2s ease-out;
+  transform: translateX(-50%);
+}
+
+.login-form__button:hover span,
+.login-form__button:focus span {
+  left: 0;
+  transform: translateX(0);
+}
+
+.login-form__button svg {
+  display: block;
+}
+
+.login-form__text-bottom {
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.login-form__text-bottom-error {
+  margin-bottom: 24px;
+
+  color: rgba(241, 78, 27, 1);
+}
+
+.login-form__text-bottom--accent {
+  font-weight: 500;
+}
+
+.login-form__text-bottom--link {
+  padding-bottom: 4px;
+
+  font-weight: 500;
+
+  background: linear-gradient(
+      to right,
+      rgba(36, 36, 36, 0.1),
+      rgba(36, 36, 36, 0.1)
+    )
+    no-repeat;
+  background-position: right bottom;
+  background-size: 100% 1px;
+}
+
+.login-form__group {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.login-form__name-input {
+  width: 100%;
+
+  color: rgba(36, 36, 36, 1);
+}
+
+.login-form__name-label {
+  color: rgba(36, 36, 36, 0.7);
+}
+
+.login-form__button--name {
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 
 /* responsive */
@@ -442,6 +681,49 @@ video.popup-slider__pic {
   .popup-slider__pic {
     height: 500px;
     max-height: calc(100vh - 140px);
+  }
+
+  .ReactModal__Overlay {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+  }
+
+  .ReactModal__Content {
+    top: 0;
+
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .login-form {
+    position: relative;
+    height: 100vh;
+  }
+
+  .login-form__cross-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-form__close-cross {
+    display: block;
+  }
+
+  .login-form__captcha > div{
+    left: 50%;
+    transform: scale(0.95) translate(-50%, 0);
+  }
+
+  .login-form__text-bottom-wrapper {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+
+    width: 290px;
+
+    transform: translate(-50%, 0);
   }
 }
 
@@ -512,16 +794,16 @@ video.popup-slider__pic {
     margin: 10px 0 0;
     text-align: left;
   }
+
+  .login-form__code-wrapper > input {
+    width: 16.9%;
+  }
 }
 
-/* react modal modification */
 
-.ReactModal__Overlay {
-  background-color: #333333 !important;
-  z-index: 4;
-}
 
-.ReactModal__Content {
-  background-color: rgba(255, 255, 255, 0) !important;
-  border: 0 !important;
+@media (max-width: 335px) {
+  .login-form__captcha > div {
+    transform: scale(0.898) translate(-50%, 0);
+  }
 }

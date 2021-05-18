@@ -16,12 +16,22 @@ const android = /Android/.test(userAgent);
 
 const applyFormCloseElements = [backdrop, popupApplyClose, popupApplyCancel];
 
+let scrollPositionY;
+
 const openForm = form => {
-    document.body.classList.add('no-scroll');
-    document.querySelector('html').classList.add('no-scroll');
-    form.classList.add('popup--shown');
+    form.style.display = 'flex';
+    setTimeout(() => {
+        form.classList.add('popup--shown');
+    }, 200);
+
+    setTimeout(() => {
+        document.body.classList.add('no-scroll');
+        document.querySelector('html').classList.add('no-scroll');
+    }, 400);
 
     window.location.hash = 'zapolnenie-formy';
+
+    scrollPositionY = window.scrollY;
 
     if (iOS && iOS11) {
         document.body.classList.add('no-scroll-ios');
@@ -43,11 +53,7 @@ const openForm = form => {
     popupApplyPhone.value = '+7 (';
 
     popupApplyTerms.addEventListener('change', () => {
-        if (popupApplyTerms.checked) {
-            popupApplySubmit.disabled = false;
-        } else {
-            popupApplySubmit.disabled = true;
-        }
+        popupApplySubmit.disabled = !popupApplyTerms.checked;
     });
 };
 
@@ -56,8 +62,13 @@ const closeForm = form => {
     document.body.classList.remove('no-scroll-ios');
     document.querySelector('html').classList.remove('no-scroll');
     form.classList.remove('popup--shown');
+    document.querySelector('.popup__subtitle').style.display = 'none';
+    setTimeout(() => {
+        form.style.display = 'none';
+    }, 400);
     document.removeEventListener('keyup', closeFormOnEscape);
     window.location.hash = '';
+    window.scrollTo(0, scrollPositionY);
 };
 
 const closeFormOnEscape = event => {
@@ -71,11 +82,11 @@ document.querySelectorAll('.apply-button').forEach((item) => {
         openForm(popupApply);
 
         document.querySelector('#apply-goal').value = 'general';
-        document.querySelector('.popup__subtitle').innerText = ' ';
         if (item.dataset.goal === 'try') {
             document.querySelector('.popup__headline').innerText = 'Запишись на экскурсию';
         } else if (item.dataset.goal === 'demo') {
             document.querySelector('.popup__headline').innerText = 'Запишись на демо-день';
+            document.querySelector('.popup__subtitle').style.display = 'block';
             document.querySelector('.popup__subtitle').innerText = 'стоимость демо-дня 100 руб';
             document.querySelector('#apply-goal').value = 'demo';
         } else {

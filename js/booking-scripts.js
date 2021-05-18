@@ -29,9 +29,12 @@ navLinks.forEach((item) => {
 // Хэндлим мобильное меню
 
 const topBar = document.querySelector('.nav');
+const navProfile = document.getElementById('login')
 
 document.querySelector('.nav__burger').addEventListener('click', (event) => {
+  document.querySelector('html').classList.toggle('no-scroll');
   topBar.classList.toggle('nav--open-menu');
+  navProfile.classList.toggle('nav__user-wrapper--disabled')
 });
 
 document.querySelectorAll('.nav__item').forEach((item) => {
@@ -42,13 +45,13 @@ document.querySelectorAll('.nav__item').forEach((item) => {
 
 // Назначаем кнопку для скроллирования
 
-document.querySelector('.footer__up').addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth'
-  });
-});
+// document.querySelector('.footer__up').addEventListener('click', () => {
+//   window.scrollTo({
+//     top: 0,
+//     left: 0,
+//     behavior: 'smooth'
+//   });
+// });
 
 // Заставляем аккордеоны работать
 
@@ -57,3 +60,15 @@ document.querySelectorAll('.space__button').forEach((item) => {
     event.target.parentNode.classList.toggle('space__accordion--closed');
   });
 });
+
+//=> nav => nav--sticky
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 100) {
+        topBar.classList.add('nav--sticky');
+    } else {
+        topBar.classList.remove('nav--sticky');
+    }
+});
+
+

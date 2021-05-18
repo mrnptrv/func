@@ -1,53 +1,119 @@
 'use strict';
 
-////// СЛАЙДЕР //////
+////// СЛАЙДЕРЫ //////
 
 // Логика для назначения неактивной кнопки-стрелки
 
 const assignDisabledArrowButton = (slider, slidesAmount, leftArrow, rightArrow) => {
-  if (slider.index === 0) {
-    leftArrow.disabled = true;
-  } else {
-    leftArrow.disabled = false;
-  }
+    if (slider.index === 0) {
+        leftArrow.disabled = true;
+    } else {
+        leftArrow.disabled = false;
+    }
 
-  if (slider.index === (slidesAmount - 1)) {
-    rightArrow.disabled = true;
-  } else {
-    rightArrow.disabled = false;
-  }
+    if (slider.index === (slidesAmount - 1)) {
+        rightArrow.disabled = true;
+    } else {
+        rightArrow.disabled = false;
+    }
+};
+
+// Логика для анимации буллетов
+
+const moveBullets = (direction, activeBullet) => {
+    const switchingClass = 'glide__bullet--switching';
+    const switchingBackClass = 'glide__bullet--switching-back';
+
+    if (direction === '>') {
+        activeBullet.classList.add(switchingClass);
+
+        setTimeout(() => {
+            activeBullet.classList.remove(switchingClass);
+        }, 400);
+    } else if (direction === '<') {
+        activeBullet.classList.add(switchingBackClass);
+
+        setTimeout(() => {
+            activeBullet.classList.remove(switchingBackClass);
+        }, 400);
+    }
+};
+
+// Слайдер в разделе "Интро"
+
+const introSlider = new Glide('.intro__slider', {
+    type: 'slider',
+    rewind: true,
+    perView: 2,
+    gap: 24,
+    breakpoints: {
+        767: {
+            perView: 1,
+            peek: {
+                before: 0,
+                after: 82
+            }
+        },
+        666: {
+            perView: 1,
+            gap: 12,
+            peek: {
+                before: 0,
+                after: 0
+            }
+        }
+    }
+});
+
+const handleIntroSlider = () => {
+    if (window.innerWidth <= 767) {
+        introSlider.enable();
+    } else {
+        introSlider.disable();
+    }
 }
+
+introSlider.on(['mount.after', 'run'], () => {
+    let index = introSlider.index;
+    const slider = document.querySelector('.intro__slider');
+    const slides = document.querySelectorAll('.intro__slide');
+
+    introSlider.on('run.before', move => {
+        moveBullets(move.direction, slider.querySelector('.glide__bullet--active'));
+    });
+});
+
+introSlider.mount();
+
+handleIntroSlider();
+
+window.addEventListener('resize', () => {
+    handleIntroSlider();
+});
 
 // Слайдер в разделе "Пространства"
 
 const roomsSlider = new Glide('.rooms__slider', {
-  type: 'slider',
-  rewind: false,
-  peek: {
-    before: 0,
-    after: 100
-  },
-  gap: 24,
-  breakpoints: {
-    666: {
-      peek: 0
+    type: 'slider',
+    rewind: true,
+    gap: 24,
+    breakpoints: {
+        767: {
+            gap: 12
+        }
     }
-  }
 });
 
 roomsSlider.on(['mount.after', 'run'], () => {
-  let index = roomsSlider.index;
-  const slider = document.querySelector('.rooms__slider');
-  const slides = document.querySelectorAll('.rooms__slide');
-  const caption = slides[index].querySelector('img').alt;
-  const leftArrow = slider.querySelector('.slider-control--left');
-  const rightArrow = slider.querySelector('.slider-control--right');
+    let index = roomsSlider.index;
+    const slider = document.querySelector('.rooms__slider');
+    const slides = document.querySelectorAll('.rooms__slide');
+    const leftArrow = slider.querySelector('.slider-control--left');
+    const rightArrow = slider.querySelector('.slider-control--right');
 
-  document.querySelector('#rooms-slider-index').innerHTML = index + 1;
-  document.querySelector('#rooms-slider-total').innerHTML = slides.length;
-  document.querySelector('.rooms__caption').innerHTML = caption;
-
-  assignDisabledArrowButton(roomsSlider, slides.length, leftArrow, rightArrow);
+    roomsSlider.on('run.before', move => {
+        moveBullets(move.direction, slider.querySelector('.glide__bullet--active'));
+    });
 });
 
 roomsSlider.mount();
@@ -55,41 +121,34 @@ roomsSlider.mount();
 // Слайдер в разделе "События"
 
 const eventsSlider = new Glide('.events__slider', {
-  type: 'slider',
-  rewind: true,
-  perView: 2,
-  bound: true,
-  peek: {
-    before: 0,
-    after: 120
-  },
-  gap: 24,
-  breakpoints: {
-    959: {
-      peek: 0
-    },
-    767: {
-      perView: 1,
-      peek: {
-        before: 0,
-        after: 120
-      }
-    },
-    519: {
-      perView: 1,
-      peek: 0,
-      gap: 0
+    type: 'slider',
+    rewind: true,
+    bound: true,
+    perView: 3,
+    gap: 24,
+    breakpoints: {
+        1279: {
+            perView: 2
+        },
+        767: {
+            perView: 1,
+            gap: 12,
+            peek: {
+                before: 0,
+                after: 0
+            }
+        }
     }
-  }
 });
 
 eventsSlider.on(['mount.after', 'run'], () => {
-  let index = eventsSlider.index;
-  const slider = document.querySelector('.events__slider');
-  const slides = document.querySelectorAll('.events__slide');
+    let index = eventsSlider.index;
+    const slider = document.querySelector('.events__slider');
+    const slides = document.querySelectorAll('.events__slide');
 
-  document.querySelector('#events-slider-index').innerHTML = index + 1;
-  document.querySelector('#events-slider-total').innerHTML = slides.length;
+    eventsSlider.on('run.before', move => {
+        moveBullets(move.direction, slider.querySelector('.glide__bullet--active'));
+    });
 });
 
 eventsSlider.mount();
@@ -97,351 +156,144 @@ eventsSlider.mount();
 // Всплывающий слайдер в разделе "События"
 
 document.querySelectorAll('.events__slide').forEach((item, index) => {
-  const eventCaption = item.querySelector('.events__caption span').innerText;
-  const eventPics = document.querySelector('#popup-slider-event-' + (index + 1)).content;
-  const popupSlider = document.querySelector('.popup-slider');
+    const eventCaption = item.querySelector('.events__caption-text').innerText;
+    const eventPics = document.querySelector('#popup-slider-event-' + (index + 1)).content;
+    const popupSlider = document.querySelector('.popup-slider');
 
-  item.querySelector('.events__tag--pics').innerText = eventPics.children.length;
+    item.addEventListener('mousedown', (event) => {
 
-  item.addEventListener('click', (event) => {
-    const closePopupSlider = () => {
-      popupSlider.classList.remove('popup-slider--shown');
-      document.querySelector('.popup-slider__list').innerHTML = '';
-      document.body.classList.remove('no-scroll');
-      document.removeEventListener('keyup', closePopupSliderOnEscape);
-    };
+        let mouseMoved = false;
 
-    const closePopupSliderOnEscape = event => {
-      if (event.keyCode === 27) {
-        closePopupSlider();
-      }
-    };
+        const trackMouseMovement = () => {
+            mouseMoved = true;
+        };
 
-    popupSlider.classList.add('popup-slider--shown');
-    document.querySelector('.popup-slider__headline').innerText = eventCaption;
-    document.querySelector('.popup-slider__list').appendChild(eventPics.cloneNode(true));
-    document.body.classList.add('no-scroll');
+        item.addEventListener('mousemove', trackMouseMovement);
 
-    const eventsPopupSlider = new Glide('.popup-slider__wrapper', {
-      type: 'slider',
-      rewind: true,
-      perView: 1,
-      bound: true,
-      peek: {
-        before: 0,
-        after: 125
-      },
-      gap: 24,
-      breakpoints: {
-        959: {
-          peek: 0,
-          gap: 0
-        }
-      }
-    });
+        item.addEventListener('mouseup', () => {
+            if (!mouseMoved) {
+                const closePopupSlider = () => {
+                    popupSlider.classList.remove('popup-slider--shown');
+                    document.body.classList.remove('no-scroll');
+                    document.removeEventListener('keyup', closePopupSliderOnEscape);
+                };
 
-    eventsPopupSlider.on(['mount.after', 'run'], () => {
-      let index = eventsPopupSlider.index;
-      const slider = document.querySelector('.popup-slider__wrapper');
-      const slides = document.querySelectorAll('.popup-slider__pic');
-      const arrows = slider.querySelectorAll('.slider-control');
+                const closePopupSliderOnEscape = event => {
+                    if (event.keyCode === 27) {
+                        closePopupSlider();
+                    }
+                };
 
-      document.querySelector('#popup-slider-index').innerHTML = index + 1;
-      document.querySelector('#popup-slider-total').innerHTML = slides.length;
+                popupSlider.style.display = 'block';
+                setTimeout(() => {
+                    popupSlider.classList.add('popup-slider--shown');
+                }, 200);
+                document.querySelector('.popup-slider__headline').innerText = eventCaption;
+                document.querySelector('.popup-slider__list').innerHTML = '';
+                document.querySelector('.popup-slider__list').appendChild(eventPics.cloneNode(true));
+                document.body.classList.add('no-scroll');
 
-      if (slides.length === 1) {
-        arrows.forEach((item) => {
-          item.disabled = true;
+                const eventsPopupSlider = new Glide('.popup-slider__wrapper', {
+                    type: 'slider',
+                    rewind: true,
+                    bound: true,
+                    perView: 1,
+                    gap: 24,
+                    peek: {
+                        before: 0,
+                        after: 125
+                    },
+                    breakpoints: {
+                        959: {
+                            peek: 0,
+                            gap: 0
+                        }
+                    }
+                });
+
+                eventsPopupSlider.on(['mount.after', 'run'], () => {
+                    let index = eventsPopupSlider.index;
+                    const slider = document.querySelector('.popup-slider__wrapper');
+                    const slides = document.querySelectorAll('.popup-slider__pic');
+                    const arrows = slider.querySelectorAll('.slider-control');
+
+                    document.querySelector('#popup-slider-index').innerHTML = index + 1;
+                    document.querySelector('#popup-slider-total').innerHTML = slides.length;
+
+                    if (slides.length === 1) {
+                        arrows.forEach((item) => {
+                            item.disabled = true;
+                        });
+                    } else {
+                        arrows.forEach((item) => {
+                            item.disabled = false;
+                        });
+                    }
+                });
+
+                eventsPopupSlider.mount();
+
+                document.querySelector('.popup-slider__close').addEventListener('click', () => {
+                    closePopupSlider();
+                });
+
+                document.addEventListener('keyup', closePopupSliderOnEscape);
+            }
         });
-      } else {
-        arrows.forEach((item) => {
-          item.disabled = false;
-        });
-      }
     });
-
-    eventsPopupSlider.mount();
-
-    document.querySelector('.popup-slider__close').addEventListener('click', () => {
-      closePopupSlider();
-    });
-
-    document.addEventListener('keyup', closePopupSliderOnEscape);
-  });
 });
-
-// Слайдер в разделе "ИТ-тусовки"
-
-const organizeSlider = new Glide('.organize__slider', {
-  type: 'slider',
-  rewind: true
-});
-
-organizeSlider.on(['mount.after', 'run'], () => {
-  let index = organizeSlider.index;
-  const slider = document.querySelector('.organize__slider');
-  const slides = document.querySelectorAll('.organize__gallery-item');
-  const leftArrow = slider.querySelector('.slider-control--left');
-  const rightArrow = slider.querySelector('.slider-control--right');
-
-  document.querySelector('#organize-slider-index').innerHTML = index + 1;
-  document.querySelector('#organize-slider-total').innerHTML = slides.length;
-
-  assignDisabledArrowButton(organizeSlider, slides.length, leftArrow, rightArrow);
-});
-
-organizeSlider.mount();
-
-// Слайдер в разделе "Отзывы"
-
-const feedbackSlider = new Glide('.feedback__slider', {
-  type: 'slider',
-  rewind: false,
-  perView: 1,
-  gap: 24,
-  peek: {
-    before: 0,
-    after: 200
-  },
-  breakpoints: {
-    959: {
-      gap: 0,
-      peek: 0
-    }
-  }
-});
-
-feedbackSlider.on(['mount.after', 'run'], () => {
-  let index = feedbackSlider.index;
-  const slider = document.querySelector('.feedback__slider');
-  const slides = document.querySelectorAll('.feedback__item');
-  const leftArrow = slider.querySelector('.slider-control--left');
-  const rightArrow = slider.querySelector('.slider-control--right');
-
-  document.querySelector('#feedback-slider-index').innerHTML = index + 1;
-  document.querySelector('#feedback-slider-total').innerHTML = slides.length;
-
-  assignDisabledArrowButton(feedbackSlider, slides.length, leftArrow, rightArrow);
-});
-
-feedbackSlider.mount();
-
-////// ЯНДЕКС.КАРТА //////
-
-// Вставляем Яндекс.Карту
-
-ymaps.ready(init);
-
-function init() {
-    const myMap = new ymaps.Map('map', {
-        center: [56.844870, 53.182412],
-        zoom: 16,
-        controls: [],
-        type: 'yandex#satellite'
-    }),
-
-    FuncIconContentLayout = ymaps.templateLayoutFactory.createClass(
-        '<button class="unbutton">$[properties.iconContent]</button>'
-    ),
-
-    funcPlacemark = new ymaps.Placemark(myMap.getCenter(), {
-        hintContent: 'Коворкинг Fun(c)'
-    }, {
-        iconLayout: 'default#image',
-        iconImageHref: 'img/icon-map-pin.svg',
-        iconImageSize: [30, 41],
-        iconImageOffset: [-15, -39]
-    }),
-
-    ZoomLayout = ymaps.templateLayoutFactory.createClass('<p class="map__buttons">' +
-        '<button class="map__button map__button--plus circle-button unbutton" type="button" id="zoom-in">+</button>' +
-        '<button class="map__button map__button--minus circle-button unbutton" type="button" id="zoom-out">&dash;</button>' +
-        '</ul>', {
-
-        build: function () {
-            ZoomLayout.superclass.build.call(this);
-
-            this.zoomInCallback = ymaps.util.bind(this.zoomIn, this);
-            this.zoomOutCallback = ymaps.util.bind(this.zoomOut, this);
-
-            document.querySelector('#zoom-in').addEventListener('click', this.zoomInCallback);
-            document.querySelector('#zoom-out').addEventListener('click', this.zoomOutCallback);
-        },
-
-        clear: function () {
-            document.querySelector('#zoom-in').removeEventListener('click', this.zoomInCallback);
-            document.querySelector('#zoom-out').removeEventListener('click', this.zoomOutCallback);
-
-            ZoomLayout.superclass.clear.call(this);
-        },
-
-        zoomIn: function () {
-            const map = this.getData().control.getMap();
-            map.setZoom(map.getZoom() + 1, {checkZoomRange: true});
-        },
-
-        zoomOut: function () {
-            const map = this.getData().control.getMap();
-            map.setZoom(map.getZoom() - 1, {checkZoomRange: true});
-        }
-    }),
-
-    zoomControl = new ymaps.control.ZoomControl({
-      options: {
-        layout: ZoomLayout,
-        position: {
-          bottom: '58px',
-          right: '30px'
-        }
-      }
-    });
-
-    myMap.controls.add(zoomControl);
-
-    myMap.controls.add('routeButtonControl', {
-      position: {
-        top: '58px',
-        left: '30px'
-      }
-    });
-
-    myMap.controls.get('routeButtonControl').routePanel.state.set('to', 'Ижевск, проезд Дерябина, 3/4');
-
-    var placemark = new ymaps.Placemark([56.844870, 53.182412]);
-
-    myMap.geoObjects.add(funcPlacemark);
-    myMap.behaviors.disable('scrollZoom');
-}
 
 ////// ПРОЧЕЕ //////
 
 // Пишем, какой на дворе год
 
 window.addEventListener('DOMContentLoaded', () => {
-  const date = new Date();
-  document.querySelector('#current-year').innerText = date.getFullYear();
+    const date = new Date();
+    document.querySelector('#current-year').innerText = date.getFullYear();
 });
-
-// Добавляем ховер эффект на меню
-
-const navLinks = document.querySelectorAll('.nav__link');
-const anchorLinks = document.querySelectorAll('.nav__link--anchor');
-
-navLinks.forEach((item) => {
-  item.addEventListener('mouseover', () => {
-    navLinks.forEach((item) => {
-      item.style.opacity = '0.5';
-    });
-    item.style.opacity = '1';
-  });
-
-  item.addEventListener('mouseout', () => {
-    navLinks.forEach((item) => {
-      item.style.opacity = '1';
-    });
-  });
-});
-
-// Назначаем кнопки для скроллирования
-
-document.querySelector('.contacts__down').addEventListener('click', () => {
-  document.querySelector('.intro').scrollIntoView({
-    behavior: 'smooth'
-  });
-});
-
-document.querySelector('.footer__up').addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth'
-  });
-});
-
-// Добавляем эффект наведения на категории
-
-const categories = document.querySelectorAll('.amenities__category');
-const amenities = document.querySelectorAll('.amenities__item');
-
-categories.forEach((item) => {
-  item.addEventListener('mouseover', (event) => {
-
-    const filteredAmenities = Array.from(amenities).filter(item => item.dataset.category.includes(event.target.dataset.id));
-    const restAmenities = Array.from(amenities).filter(item => !(item.dataset.category.includes(event.target.dataset.id)));
-
-    categories.forEach((item) => {
-      item.style.opacity = '0.5';
-    });
-
-    item.style.opacity = '1';
-
-    filteredAmenities.map(item => item.classList.add('amenities__item--highlighted'));
-    restAmenities.map(item => item.style.opacity = '0.7');
-
-    event.target.addEventListener('mouseout', () => {
-      categories.forEach((item) => {
-        item.style.opacity = '1';
-      });
-
-      filteredAmenities.map(item => item.classList.remove('amenities__item--highlighted'));
-      restAmenities.map(item => item.style.opacity = '1');
-    });
-  });
-});
-
-// Показываем больше/меньше плюшек
-
-const showMoreAmenitiesButton = document.querySelector('.amenities__show-more');
-
-showMoreAmenitiesButton.addEventListener('click', (event) => {
-  event.target.parentNode.classList.toggle('amenities--full');
-
-  event.target.blur();
-
-  if (document.querySelector('.amenities--full')) {
-    showMoreAmenitiesButton.querySelector('span').innerText = 'Скрыть';
-  } else {
-    showMoreAmenitiesButton.querySelector('span').innerText = 'Показать ещё';
-  }
-});
-
 
 // Приклеиваем меню
 
 const topBar = document.querySelector('.nav');
 
 window.addEventListener('scroll', () => {
-  if (window.pageYOffset > 100) {
-    topBar.classList.add('nav--sticky');
-  } else {
-    topBar.classList.remove('nav--sticky');
-  }
+    if (window.pageYOffset > 100) {
+        topBar.classList.add('nav--sticky');
+    } else {
+        topBar.classList.remove('nav--sticky');
+    }
 });
 
 // Хэндлим мобильное меню
 
 document.querySelector('.nav__burger').addEventListener('click', (event) => {
-  topBar.classList.toggle('nav--open-menu');
+    document.querySelector('.nav__menu').style.display = 'flex';
+    setTimeout(() => {
+        topBar.classList.toggle('nav--open-menu');
+        document.querySelector('html').classList.toggle('no-scroll');
+    }, 200);
 });
 
 document.querySelectorAll('.nav__item').forEach((item) => {
-  item.addEventListener('click', () => {
-    topBar.classList.remove('nav--open-menu');
-  });
+    item.addEventListener('click', () => {
+        topBar.classList.remove('nav--open-menu');
+    });
 });
 
 // Скроллим к секции по клику в меню
 
+const anchorLinks = document.querySelectorAll('.nav__link--anchor');
+
 anchorLinks.forEach((item) => {
-  item.addEventListener('click', (event) => {
-    event.preventDefault();
+    item.addEventListener('click', (event) => {
+        event.preventDefault();
 
-    const sectionId = item.getAttribute('href');
-    const scrollAmount = document.querySelector(sectionId).offsetTop - topBar.offsetHeight;
+        const sectionId = item.getAttribute('href');
+        const scrollAmount = document.querySelector(sectionId).offsetTop - topBar.offsetHeight;
 
-    window.scrollTo({
-      top: scrollAmount,
-      behavior: 'smooth'
+        window.scrollTo({
+            top: scrollAmount,
+            behavior: 'smooth'
+        });
     });
-  });
 });
